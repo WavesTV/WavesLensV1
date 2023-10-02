@@ -43,8 +43,9 @@ const Login: NextPage = () => {
 <Space h="md" />
             <Center>
               <Text c="dimmed" fw={500}>
-                You don't have a Lens Profile yet. 😞
-              </Text>
+  You don&apos;t have a Lens Profile yet. 😞
+</Text>
+
               </Center>
 
               

@@ -201,7 +201,7 @@ export const Stream = () => {
           </Text>
           <Space h="xs" />
           <Text fw={500} size="sm">
-            Streaming via OBS Studio or Streamlabs is great for Gamers and more experienced Streamers. You'll be given a 1-time use Stream Key/URL to go Live!
+            Streaming via OBS Studio or Streamlabs is great for Gamers and more experienced Streamers. You&apos;ll be given a 1-time use Stream Key/URL to go Live!
           </Text>
         </HoverCard.Dropdown>
       </HoverCard>
