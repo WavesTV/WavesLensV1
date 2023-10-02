@@ -104,7 +104,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
             authUrl: "/api/auth",
           }}
-          clientId={process.env.NEXT_PUBLIC_THIRDWEB_API_KEY || ""}
+          clientId="4a312a420d5955a7b84f3ef3dd754864"
         >
           <LensThirdwebProvider>
               <AppShell
@@ -156,7 +156,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     ) : null}
    
   
-            <NetworkSwitchModal />
+          
             <Component {...pageProps} />
             <Toaster />
            

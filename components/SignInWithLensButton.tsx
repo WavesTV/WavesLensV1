@@ -33,7 +33,7 @@ export default function SignInWithLensButton() {
   if (wrongNetwork) {
     return (
       <Button
-       variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
+        variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
         onClick={() => {
           switchChain(CHAIN.chainId);
         }}

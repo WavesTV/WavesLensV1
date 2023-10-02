@@ -4,7 +4,6 @@ import Link from "next/link";
 import React from "react";
 import SignInWithLensButton from "@/components/SignInWithLensButton";
 import { useActiveProfile, useActiveWallet } from "@lens-protocol/react-web";
-import { MediaRenderer } from "@thirdweb-dev/react";
 import { useRouter } from "next/router";
 import { Center, Container, Paper, Text, Button, ActionIcon, UnstyledButton, Space, Group, Tooltip } from "@mantine/core";
 
