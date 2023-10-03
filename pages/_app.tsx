@@ -61,7 +61,7 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
   return (
     <LensProvider
       config={{
-        environment: IS_DEV_ENV ? production : production,
+        environment: IS_DEV_ENV ? development : production,
         bindings: {
           getSigner: async () => signerWrapped as RequiredSigner,
           getProvider: async () =>
@@ -99,7 +99,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <LivepeerConfig client={livepeerClient}>
             <MantineProvider>
               <ThirdwebProvider
-          activeChain={"polygon"}
+          activeChain={CHAIN}
           authConfig={{
             domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
             authUrl: "/api/auth",
@@ -108,19 +108,19 @@ function MyApp({ Component, pageProps }: AppProps) {
         >
           <LensThirdwebProvider>
               <AppShell
-      padding="md"
-      header={{ height: 60 }}
-      navbar={{
-        width: 300,
-        breakpoint: 'md',
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
-      }}
-      aside={{
-        width: 300,
-        breakpoint: 'md',
-        collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
-      }}
-    >
+                  padding="md"
+                  header={{ height: 60 }}
+                  navbar={{
+                    width: 300,
+                    breakpoint: 'md',
+                    collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+                  }}
+                  aside={{
+                    width: 300,
+                    breakpoint: 'md',
+                    collapsed: { mobile: !mobileOpened, desktop: !desktopOpened },
+                  }}
+                >
       <AppShell.Header>
 
         <MantineHeader/>

@@ -28,7 +28,7 @@ const walletInfo = useActiveWallet();
       />
 
 <Space h="lg"/>
-      <Login/>
+    
       <Space h="lg"/>
         <Center>
             <iframe

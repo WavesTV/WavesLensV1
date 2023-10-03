@@ -78,9 +78,7 @@ const Feed: NextPage = () => {
       
    {walletInfo?.data && !activeProfile?.data &&
              (
-                 <Container>
-              <Login />
-            </Container>
+                  <></>
               )}
     {/* Public feed loading */}
             {
@@ -101,9 +99,7 @@ const Feed: NextPage = () => {
                 loader={
                   <>
                    
-                         <Group justify="center">
-              <Loader size="sm" />
-                    </Group>
+          
                    
                   </>
                 }
@@ -130,9 +126,7 @@ const Feed: NextPage = () => {
       {/* Wallet connected, but no Lens profile */}
            {walletInfo?.data && !activeProfile?.data &&
              (
-                 <Container>
-              <Login />
-            </Container>
+                 <></>
               )}
 
             {personalizedFeed?.loading &&
@@ -152,9 +146,9 @@ const Feed: NextPage = () => {
                 loader={
                   <>
                     
-                       <Group justify="center">
-              <Loader size="sm" />
-            </Group>
+                     
+              
+         
                   
                   </>
                 }
