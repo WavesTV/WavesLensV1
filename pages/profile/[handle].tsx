@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FollowButton from "@/components/FollowButton";
 import { Center, Space, Button, Card, Group, Avatar, Text, Loader, Image, Container  } from "@mantine/core";
-import styles from "@/styles/ProfileCard.module.css";
+import styles from "../../styles/ProfileCard.module.css";
 
 const ProfilePage = () => {
   // Get the post ID from the URL
