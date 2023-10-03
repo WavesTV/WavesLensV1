@@ -2,8 +2,8 @@ import { SiteConfig } from "../types";
 
 export const siteConfig: SiteConfig = {
   name: "Waves",
-  description: "A new way to fund your favorite creators.",
-  url: "https://backme.dev",
+  description: "Decentralized Live Streaming",
+  url: "https://waves-lensv1.vercel.app/",
   ogImage: "TODO: Add og image",
   links: {
     twitter: "https://twitter.com/jarrodwattsdev",

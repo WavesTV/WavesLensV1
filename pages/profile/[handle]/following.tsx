@@ -5,6 +5,7 @@ import { useProfile, useProfileFollowing } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { MediaRenderer } from "@thirdweb-dev/react";
+import { Center, Space } from "@mantine/core";
 
 const FollowingPage = () => {
   // Get the post ID from the URL
@@ -23,19 +24,15 @@ const FollowingPage = () => {
   if (profile?.error) {
     return (
       <>
-        <Nav />
-        <section className="w-full container flex max-w-[720px] flex-col items-center gap-4 text-center h-screen">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+        <Center>
+          <h1>
             Profile not found
           </h1>
-          <p className="leading-7">
-            Sorry, that profile doesn&rsquo;t exist, or it has been deleted.
-          </p>
-
-          <Button className="mt-2" onClick={() => router.push("/feed")}>
-            Back to Feed
+          <Space h="lg"/>
+          <Button onClick={() => router.push("/")}>
+            Back to Home
           </Button>
-        </section>
+        </Center>
       </>
     );
   }

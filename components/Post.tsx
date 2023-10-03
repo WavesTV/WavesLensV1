@@ -1,35 +1,26 @@
-import { MediaRenderer } from "@thirdweb-dev/react";
+
 import React, { useEffect, useMemo, useState } from "react";
 import { Icons } from "./icons";
 import formatDate from "@/lib/formatDate";
 import Link from "next/link";
-import { Dialog, DialogContent, DialogTrigger } from "./ui/dialog";
 import {
-  useActiveProfile,
   useCreateMirror,
   useCollect,
   useReaction,
   Post,
   Comment,
-  ReactionType,
+  ReactionTypes,
   CollectState,
   useEncryptedPublication,
   ProfileOwnedByMe,
-  UnspecifiedError,
-  ReadResult,
 } from "@lens-protocol/react-web";
-import { cn } from "@/lib/utils";
-import { Button } from "./ui/button";
 import { useRouter } from "next/router";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./ui/tooltip";
 import { Skeleton } from "./ui/skeleton";
-import Image from "next/image";
+
+import { Paper, ActionIcon, Group, Tooltip, Avatar, Space, UnstyledButton, Text, Spoiler, Image} from "@mantine/core";
+import { IconHeart, IconHeartFilled, IconMessageCircle, IconMessageShare, IconScriptMinus, IconScriptPlus, IconStack3 } from "@tabler/icons-react";
+
 
 type Props = {
   post: Post | Comment;
@@ -38,7 +29,7 @@ type Props = {
 };
 
 // Currently only handle upvote
-const reactionType = ReactionType.UPVOTE;
+const reactionType = ReactionTypes.Upvote;
 
 export default function Post({ post, className, activeProfile }: Props) {
   const router = useRouter();
@@ -139,42 +130,23 @@ export default function Post({ post, className, activeProfile }: Props) {
     }
   }
 
+    const replaceURLs = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const atSymbolRegex = /(\S*@+\S*)/g;
+
+    return text
+      .replace(urlRegex, (url: string) => `<a href="${url}" target="_blank">${url}</a>`)
+      .replace(atSymbolRegex, (match: string) => ` ${match} `);
+  };
+
   return (
     <>
-      <Dialog>
-        <DialogContent className="h-auto border w-screen p-1 max-w-6xl max-h-screen">
-          {
-            // Render media in big mode
-            postMedia && (
-              <MediaRenderer
-                src={postMedia}
-                alt={`A post by ${
-                  postToUse.profile.name || postToUse.profile.handle
-                }`}
-                width="100%"
-                height="auto"
-                className="rounded-sm w-screen"
-              />
-            )
-          }
-        </DialogContent>
-
-        <div
-          onClick={() => {
-            router.push(`/post/${postToUse.id}`);
-          }}
-          className={cn(
-            "flex flex-col w-full h-full border border-solid p-4 rounded-md mt-4 z-0 hover:cursor-pointer transition-all duration-250 hover:bg-muted hover:text-accent-foreground",
-            className
-          )}
-        >
-          <div className="flex flex-col ml-2 w-6/8">
-            {/* Relative, top right (opposite name section below), show lock icon */}
-            {postToUse.isGated && (
-              <div className="relative flex justify-end h-0 z-20">
-                <TooltipProvider>
-                  <Tooltip>
-                    <TooltipTrigger>
+      <Paper shadow="xl" radius="md" withBorder p="xl">
+      <Group justify="apart">
+         {postToUse.isGated && (
+                  <Tooltip label={hasDecrypted
+                        ? "Only followers can see this content."
+                        : "This content is for followers only."}>
                       <Icons.gated
                         className="text-muted-foreground"
                         color={
@@ -183,129 +155,150 @@ export default function Post({ post, className, activeProfile }: Props) {
                             : "hsl(var(--muted-foreground))"
                         }
                       />
-                    </TooltipTrigger>
-                    <TooltipContent>
-                      {hasDecrypted
-                        ? "Only followers can see this content."
-                        : "This content is for followers only."}
-                    </TooltipContent>
                   </Tooltip>
-                </TooltipProvider>
-              </div>
             )}
-            <div className="flex flex-row items-center gap-2 z-10">
-              <Link
-                href={`/profile/${postToUse.profile.handle}`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <MediaRenderer
-                  // @ts-ignore
-                  src={postToUse.profile.picture?.original?.url || "/user.png"}
+         
+             <Text c="dimmed" size="xs" fw={500}>{formatDate(postToUse.createdAt)} ago</Text>
+      
+                  <Tooltip label="Go to Post">
+                    <ActionIcon
+                      color="blue"
+                      size="sm"
+                      variant="light"
+                      onClick={() => {
+                        router.push(`/post/${postToUse.id}`);
+                      }}
+                    >
+                      <IconMessageShare />
+                    </ActionIcon>
+                  </Tooltip>
+          </Group>
+
+      <UnstyledButton component={Link} href={`/profile/${postToUse.profile.handle}`}>
+        <Group justify="center">
+        <Avatar
+        // @ts-ignore
+        src={postToUse.profile.picture?.original?.url || "/user.png"}
                   alt={`${
                     postToUse.profile.name || postToUse.profile.handle
                   }'s profile picture`}
-                  height="52px"
-                  width="52px"
-                  className="rounded-full"
-                />
-              </Link>
-              <div className="flex flex-col items-start">
-                {/* Profile Name */}
-                <Link
-                  href={`/profile/${postToUse.profile.handle}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  className="font-semibold hover:underline transition-all duration-150"
-                >
-                  {postToUse.profile.name || postToUse.profile.handle}
-                </Link>
-                {/* Handle */}
-                <Link
-                  href={`/profile/${postToUse.profile.handle}`}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                  }}
-                  className="text-sm text-muted-foreground  hover:underline transition-all duration-150"
-                >
-                  @{postToUse.profile.handle}
-                </Link>
-                {/* Time ago posted */}
-                <p className="text-xs text-muted-foreground mt-1">
-                  {formatDate(postToUse.createdAt)} ago
-                </p>
-              </div>
-            </div>
+        size="lg" 
+        />
 
-            {/* Post content */}
+       
+         <Text fw={500} c="dimmed" >{postToUse.profile.name || postToUse.profile.handle}</Text>
+         </Group>
+      </UnstyledButton>
+      <Space h="xl" />
+       
+           <Group justify="center">
+      <Spoiler
+                  maxHeight={222}
+                  showLabel={
+                    <>
+                      <Space h="xs" />
+                      <Tooltip label="Show More">
+                        <IconScriptPlus />
+                      </Tooltip>
+                    </>
+                  }
+                  hideLabel={
+                    <>
+                      <Space h="xs" />
+                      <Tooltip label="Show Less">
+                        <IconScriptMinus />
+                      </Tooltip>
+                    </>
+                  }
+                >
+                   
+                   <div
+          style={{
+            maxWidth: "100%", // Adjust this value to control the maximum width
+            margin: "0 auto", // Center the content horizontally if needed
+          }}
+        >
+ {/* Post content */}
             {encryptedPublication?.isPending && (
               <Skeleton className="w-full h-20 mt-2" />
             )}
 
             {post.isGated && post.canObserverDecrypt.result === false ? (
-              <div className="flex flex-col w-full mt-2 gap-3">
-                <p className="text-start mt-2 text-ellipsis break-words">
-                  {`This is a followers only exclusive. Follow ${
+                <Text size="md" fw={500}>
+                  {`This is a followers-only exclusive. Follow ${
                     post.profile.name || post.profile.handle
                   } to see this content.`}
-                </p>
-                <Image
-                  src="/backme-exclusive.png"
-                  height={256}
-                  alt="Backme Exclusive Placeholder"
-                  width={512}
-                />
-              </div>
+                </Text>
             ) : (
               !encryptedPublication?.isPending && (
-                <p className="text-start mt-2 text-ellipsis break-words">
-                  {postToUse.metadata.content}
-                </p>
+                <Text
+                size="md"
+               
+                dangerouslySetInnerHTML={{
+                  // @ts-ignore
+                        __html: replaceURLs(postToUse.metadata.content.replace(/\n/g, "<br> ")),
+                      }}
+                />
+
               )
             )}
+                
+         </div>
+             
+                </Spoiler>
+                </Group>
+                <Space h="md"/>  
+       
+
+           
 
             {postMedia && (
-              <DialogTrigger
-                className="pr-2 z-010"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <MediaRenderer
-                  src={postMedia}
-                  alt={`A post by ${
+              <Group justify="center">
+                    <UnstyledButton
+                      
+                    >
+                      <Image
+                         src={postMedia}
+                        alt={`A post by ${
                     postToUse.profile.name || postToUse.profile.handle
                   }`}
-                  width="100%"
-                  height="auto"
-                  className="my-2 rounded-sm"
-                />
-              </DialogTrigger>
+                        radius="md"
+                       
+                        fit="contain"
+                      />
+                    </UnstyledButton>
+                  </Group>
+                
             )}
 
+            <Space h="xl" />
+
             {/* Post metadata */}
-            <div className="flex flex-row items-center justify-between w-full text-muted-foreground mt-4 pr-5 z-10">
+            <Group justify="center">
               {/* Comments - Take user to the post */}
-              <Button
-                variant={"ghost"}
+              <ActionIcon
+                variant="subtle"
+                      radius="md"
+                      size={36}
                 onClick={(e) => {
                   router.push(`/post/${postToUse?.id}`);
                   e.stopPropagation();
                 }}
-                className="flex flex-row items-center gap-2 hover:text-foreground transition-all duration-150 hover:cursor-pointer"
-                tabIndex={0}
               >
-                <Icons.comment />
-                <p className="text-sm">{postToUse?.stats?.commentsCount}</p>
-              </Button>
+                <IconMessageCircle size={18} stroke={1.5} />
+                
+              </ActionIcon>
+                <Text size="xs" c="dimmed">
+                  {postToUse?.stats?.commentsCount}
+                  </Text>
+
 
               {/* Mirrors */}
-              <Button
-                variant={"ghost"}
-                className="flex flex-row items-center gap-2 hover:text-foreground transition-all duration-150"
-                tabIndex={1}
+              <ActionIcon
+               variant="subtle"
+               radius="md"
+                size={36}
+               
                 onClick={async (e) => {
                   try {
                     e.stopPropagation();
@@ -344,12 +337,14 @@ export default function Post({ post, className, activeProfile }: Props) {
                 >
                   {postToUse?.stats?.totalAmountOfMirrors}
                 </p>
-              </Button>
+              </ActionIcon>
+
               {/* Hearts */}
-              <Button
-                variant={"ghost"}
-                className="flex flex-row items-center gap-2 hover:text-foreground transition-all duration-150"
-                tabIndex={2}
+              <ActionIcon
+               variant="subtle"
+                      radius="md"
+                      size={36}
+             
                 onClick={(e) => {
                   e.stopPropagation();
                   try {
@@ -359,25 +354,26 @@ export default function Post({ post, className, activeProfile }: Props) {
                   }
                 }}
               >
-                <Icons.heart
-                  fill={hasReaction ? "rgb(74 222 128)" : ""}
-                  className={`${
-                    hasReaction ? "text-green-400" : "text-muted-foreground"
-                  }`}
-                />
-                <p
-                  className={`${
-                    hasReaction ? "text-green-400" : "text-muted-foreground"
-                  } text-sm`}
-                >
-                  {postToUse?.stats?.totalUpvotes}
-                </p>
-              </Button>
+               
 
-              <Button
-                variant={"ghost"}
-                className="flex flex-row items-center gap-2 hover:text-foreground transition-all duration-150"
-                tabIndex={2}
+                {hasReaction ? (
+  <IconHeartFilled size={18} stroke={1.5} />
+) : (
+  <IconHeart size={18} stroke={1.5} />
+)}
+               
+                   
+              </ActionIcon>
+                <Text size="xs" c="dimmed">
+                  {postToUse?.stats?.totalUpvotes}
+                  </Text>
+
+              <ActionIcon
+                      
+                      variant="subtle"
+                      radius="md"
+                      size={36}
+                
                 onClick={async (e) => {
                   e.stopPropagation();
                   try {
@@ -439,27 +435,18 @@ export default function Post({ post, className, activeProfile }: Props) {
                   }
                 }}
               >
-                <Icons.collect
-                  className={`${
-                    postToUse.hasCollectedByMe
-                      ? "text-green-400"
-                      : "text-muted-foreground"
-                  }`}
-                />
-                <p
-                  className={
-                    postToUse.hasCollectedByMe
-                      ? "text-green-400 text-sm"
-                      : "text-muted-foreground text-sm"
-                  }
-                >
+                <IconStack3
+                      size={18}
+                      stroke={1.5}
+                      />  
+              </ActionIcon>
+              <Text size="xs" c="dimmed">
                   {postToUse?.stats?.totalAmountOfCollects}
-                </p>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Dialog>
+              </Text>
+            </Group>
+         
+       
+      </Paper>
     </>
   );
 }

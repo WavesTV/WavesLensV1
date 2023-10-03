@@ -1,6 +1,5 @@
 import { useState } from "react";
 import Post from "@/components/Post";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
 import {
@@ -17,13 +16,11 @@ import {
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Input } from "@/components/ui/input";
-import { MediaRenderer } from "@thirdweb-dev/react";
 import { useToast } from "@/components/ui/use-toast";
 import useUpload from "@/lib/useUpload";
-import { Paper, UnstyledButton, Avatar, Spoiler, Tooltip, ActionIcon, Text } from "@mantine/core";
-import { IconScriptPlus, IconScriptMinus, IconRecycle, IconStack3, IconMessageCircle } from "@tabler/icons-react";
-import { Container, Link, Group, Space, Box } from "lucide-react";
+import { Input, Button, Space, Center, Container } from "@mantine/core";
+
+
 
 const PostPage = () => {
   // Get the post ID from the URL
@@ -68,18 +65,16 @@ const PostPage = () => {
     return (
       <>
 
-        <section className="w-full container flex max-w-[720px] flex-col items-center gap-4 text-center h-screen">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
-            Post not found
+        <Center>
+          <h1>
+           Post not found
           </h1>
-          <p className="leading-7">
-            Sorry, that post doesn&rsquo;t exist, or it has been deleted.
-          </p>
+        <Space h="xl"/>
 
-          <Button className="mt-2" onClick={() => router.push("/")}>
+          <Button onClick={() => router.push("/")}>
             Back to Home
           </Button>
-        </section>
+        </Center>
       </>
     );
   }
@@ -88,7 +83,8 @@ const PostPage = () => {
     <>
     
 
-      <section className="w-full container flex max-w-[720px] flex-col items-center gap-4 text-center h-screen">
+      <Container>
+        <Center>
         {!!publication?.data && activeProfile.data && (
           <Post
             post={publication?.data as PostType | Comment}
@@ -96,21 +92,12 @@ const PostPage = () => {
             activeProfile={activeProfile?.data}
           />
         )}
-
-        <div className="flex flex-row items-center border border-solid p-4 w-full rounded-md">
-          <MediaRenderer
-            src={
-              // @ts-ignore
-              activeProfile?.data?.picture?.original?.url || "/user.png" || ""
-            }
-            alt={`${
-              activeProfile?.data?.name || activeProfile?.data?.handle || ""
-            }'s profile picture`}
-            height="40px"
-            width="40px"
-            className="rounded-full mr-4"
-          />
+        </Center>
+        <Space h="md"/>
+        <Center>
+          
           <Input
+          variant="filled" radius="xl"
             type="text"
             placeholder="Enter your comment"
             className="border-0 h-full m-0 w-full"
@@ -118,7 +105,7 @@ const PostPage = () => {
             onChange={(e) => setComment(e.target.value)}
           />
           <Button
-            className="ml-3"
+            
             onClick={async () => {
               try {
                 if (!publication?.data) return;
@@ -155,7 +142,8 @@ const PostPage = () => {
           >
             Comment
           </Button>
-        </div>
+        </Center>
+
 
         {!publication?.loading &&
           publication?.data &&
@@ -193,7 +181,7 @@ const PostPage = () => {
               </InfiniteScroll>
             </>
           )}
-      </section>
+      </Container>
     </>
   );
 };

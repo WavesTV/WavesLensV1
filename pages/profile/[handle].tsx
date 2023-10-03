@@ -1,6 +1,5 @@
-import { Nav } from "@/components/Navbar";
+
 import Post from "@/components/Post";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
   Post as PostType,
@@ -19,6 +18,7 @@ import { MediaRenderer } from "@thirdweb-dev/react";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import FollowButton from "@/components/FollowButton";
+import { Center, Space, Button } from "@mantine/core";
 
 const ProfilePage = () => {
   // Get the post ID from the URL
@@ -42,28 +42,23 @@ const ProfilePage = () => {
 
   if (profile?.error) {
     return (
-      <>
-       
-
-        <section className="w-full container flex max-w-[720px] flex-col items-center gap-4 text-center h-screen">
-          <h1 className="scroll-m-20 text-4xl font-extrabold tracking-tight lg:text-5xl">
+     <>
+        <Center>
+          <h1>
             Profile not found
           </h1>
-          <p className="leading-7">
-            Sorry, that profile doesn&rsquo;t exist, or it has been deleted.
-          </p>
-
-          <Button className="mt-2" onClick={() => router.push("/feed")}>
-            Back to Feed
+          <Space h="lg"/>
+          <Button onClick={() => router.push("/")}>
+            Back to Home
           </Button>
-        </section>
+        </Center>
       </>
     );
   }
 
   return (
     <>
-      <Nav />
+   
       <div className="w-full container flex max-w-[64rem] flex-col items-center gap-4 h-screen">
         <div className="w-full md:w-[620px]">
           {/* Cover photo */}
