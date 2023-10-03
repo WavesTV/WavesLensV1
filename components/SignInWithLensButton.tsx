@@ -33,7 +33,8 @@ export default function SignInWithLensButton() {
       <Button
         variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
         onClick={() => {
-          switchChain(CHAIN.chainId);
+          switchChain(137);
+          
         }}
       >
         Switch to {CHAIN.name}

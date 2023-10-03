@@ -119,7 +119,7 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
   
             <Group visibleFrom="sm">
             <ColorSchemeToggle/>
-            {walletInfo?.data && activeProfile?.data ? (
+            {walletInfo?.data && activeProfile?.data && (
             <>
              <Menu
                             trigger="hover"
@@ -154,10 +154,6 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
             </Menu>
             </>
                
-          ): (
-            <>
-            </>
-
           )}
             </Group>
   
@@ -242,6 +238,7 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
           
 
           <Group align="center" grow pb="xl" px="md">
+             {walletInfo?.data && activeProfile?.data && (
           <Menu
                          
                             shadow="md"
@@ -268,6 +265,7 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
                               </Menu.Item>
             </Menu.Dropdown>
             </Menu>
+             )}
           </Group>
         </ScrollArea>
       </Drawer>

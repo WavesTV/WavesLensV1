@@ -1,6 +1,7 @@
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { ThirdwebProvider, useSDK, useSigner } from "@thirdweb-dev/react";
+import { Polygon, Mumbai } from "@thirdweb-dev/chains";
 import { CHAIN, IS_DEV_ENV } from "../const/chains";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
@@ -99,7 +100,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <LivepeerConfig client={livepeerClient}>
             <MantineProvider>
               <ThirdwebProvider
-          activeChain={CHAIN}
+          activeChain={Polygon}
           authConfig={{
             domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
             authUrl: "/api/auth",
