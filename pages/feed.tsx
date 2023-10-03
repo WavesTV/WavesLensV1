@@ -100,11 +100,11 @@ const Feed: NextPage = () => {
                 hasMore={publicFeed?.hasMore}
                 loader={
                   <>
-                    {Array.from({ length: 10 }).map((_, i) => (
+                   
                          <Group justify="center">
               <Loader size="sm" />
                     </Group>
-                    ))}
+                   
                   </>
                 }
                 endMessage={
@@ -151,11 +151,11 @@ const Feed: NextPage = () => {
                 hasMore={personalizedFeed?.hasMore}
                 loader={
                   <>
-                    {Array.from({ length: 10 }).map((_, i) => (
+                    
                        <Group justify="center">
               <Loader size="sm" />
             </Group>
-                    ))}
+                  
                   </>
                 }
                 endMessage={

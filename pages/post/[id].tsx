@@ -162,15 +162,11 @@ const PostPage = () => {
                 hasMore={comments?.hasMore}
                 loader={
                   <>
-                    {Array.from({
-                      length:
-                        (publication.data as PostType | Comment)?.stats
-                          ?.totalAmountOfComments || 4,
-                    }).map((_, i) => (
+                    
                          <Group justify="center">
               <Loader size="sm" />
             </Group>
-                    ))}
+                   
                   </>
                 }
               >

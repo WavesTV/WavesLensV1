@@ -4,18 +4,14 @@ import {
   Post as PostType,
   useProfile,
   ProfileId,
-  useFollow,
   useActiveProfile,
-  useUnfollow,
   usePublications,
   PublicationTypes,
-  FollowPolicyType,
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
-import Link from "next/link";
 import FollowButton from "@/components/FollowButton";
-import { Center, Space, Button, Card, Group, Avatar, Text, Loader  } from "@mantine/core";
+import { Center, Space, Button, Card, Group, Avatar, Text, Loader, Image, Container  } from "@mantine/core";
 import styles from "@/styles/ProfileCard.module.css";
 
 const ProfilePage = () => {
@@ -145,23 +141,15 @@ const ProfilePage = () => {
 
          <Space h="xl"/>
 
-      <div className="w-full container flex max-w-[64rem] flex-col items-center gap-4 h-screen">
-        <div className="w-full md:w-[620px]">
-          {/* Cover photo */}
-          
-
-          {/* Follow button has position beneath cover image and parallel to the profile picture */}
-          <div className="relative flex justify-end h-0">
-            
-          </div>
+      <Container>
 
           {/* Loading */}
-          {publications?.loading &&
-            Array.from({ length: 10 }).map((_, i) => (
+          {publications?.loading && (
+          
               <Center>
                   <Loader color="blue" size="sm" />
               </Center>
-            ))}
+            )}
           {/* Loaded */}
           {!publications?.loading && publications?.data && (
             <InfiniteScroll
@@ -171,11 +159,11 @@ const ProfilePage = () => {
               className="mt-4"
               loader={
                 <>
-                  {Array.from({ length: 10 }).map((_, i) => (
+               
                        <Group justify="center">
               <Loader size="sm" />
             </Group>
-                  ))}
+          
                 </>
               }
             >
@@ -191,8 +179,8 @@ const ProfilePage = () => {
                 ))}
             </InfiniteScroll>
           )}
-        </div>
-      </div>
+     
+      </Container>
     </>
   );
 };
