@@ -19,9 +19,7 @@ export default function SignInWithLensButton() {
   if (!address) {
     return (
       <ConnectWallet
-        style={{
-          width: "100%",
-        }}
+        
         auth={{
           loginOptional: true,
         }}

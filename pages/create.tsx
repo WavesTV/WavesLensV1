@@ -11,19 +11,19 @@ import {
   useCreatePost,
 } from "@lens-protocol/react-web";
 import { useSDK } from "@thirdweb-dev/react";
-import { useToast } from "@/components/ui/use-toast";
 import fileToMimeType from "@/lib/fileToMimeType";
 import fileToContentFocus from "@/lib/fileToContentFocus";
 import useUpload from "@/lib/useUpload";
 import { useRouter } from "next/router";
 import { Avatar, Paper, Text, Button, Textarea, Space, Group, Container, Checkbox , ActionIcon, FileInput, Center} from "@mantine/core";
 import SignInWithLensButton from "@/components/SignInWithLensButton";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 const Create = () => {
   const router = useRouter();
   const sdk = useSDK();
   const upload = useUpload();
-  const { toast } = useToast();
 
   // Form state
   const [file, setFile] = useState<File | null>(null);
@@ -132,21 +132,25 @@ const createUnencrypted = useCreatePost({
       if (result?.isFailure()) {
         throw new Error(result.error.message);
       } else {
-        toast({
-          title: "Post created!",
-          description: "Allow a few seconds for your post to appear.",
-        });
+        notifications.show({
+      title: "Success",
+      icon: <IconCheck size="1.1rem" />,
+      color: "green",
+      message: "Allow a few seconds for your post to appear.",
+    });
+
 
         router.push(`/profile/${activeProfile.data.handle}`);
       }
     } catch (error) {
       console.error(error);
-      toast({
-        title: "Error creating post.",
-        description:
-          "Something went wrong creating your post. Please try again later.",
-        variant: "destructive",
-      });
+      notifications.show({
+      title: "Error creating post.",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: "Something went wrong creating your post. Please try again later.",
+    });
+
     }
   }
 

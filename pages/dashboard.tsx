@@ -71,7 +71,7 @@ const activeProfile = useActiveProfile();
           />
       
 {/* Profile Handle */}
-<Group justify="center" className={styles.profileHandle}>
+<Group justify="center">
           @{activeProfile?.data?.handle || "anonuser"}
         </Group>
         {/* Profile Name */}
@@ -148,7 +148,7 @@ const activeProfile = useActiveProfile();
           />
       
 {/* Profile Handle */}
-<Group justify="center" className={styles.profileHandle}>
+<Group justify="center">
           @{activeProfile?.data?.handle || "anonuser"}
         </Group>
         {/* Profile Name */}

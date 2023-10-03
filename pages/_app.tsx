@@ -15,7 +15,6 @@ import { JsonRpcProvider } from "@ethersproject/providers";
 // core styles are required for all packages
 import '@mantine/core/styles.css';
 import NetworkSwitchModal from "@/components/NetworkSwitchModal";
-import { Toaster } from "@/components/ui/toaster";
 import { useTypedDataSignerWrapper } from "@/lib/typedDataSigner";
 import { useRouter } from "next/router";
 import { ActionIcon, AppShell, Container, Group, MantineProvider, Tooltip } from '@mantine/core';
@@ -27,6 +26,7 @@ import {
   createReactClient,
   studioProvider,
 } from "@livepeer/react";
+import { Notifications } from "@mantine/notifications";
 
 const livepeerClient = createReactClient({
   provider: studioProvider({
@@ -158,7 +158,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   
           
             <Component {...pageProps} />
-            <Toaster />
+            <Notifications/>
            
         </AppShell.Main>
    </AppShell>

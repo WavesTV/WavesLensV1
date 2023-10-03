@@ -15,11 +15,13 @@ import {
   ProfileOwnedByMe,
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
-import { useToast } from "@/components/ui/use-toast";
+
 import { Skeleton } from "./ui/skeleton";
 
 import { Paper, ActionIcon, Group, Tooltip, Avatar, Space, UnstyledButton, Text, Spoiler, Image} from "@mantine/core";
-import { IconHeart, IconHeartFilled, IconMessageCircle, IconMessageShare, IconScriptMinus, IconScriptPlus, IconStack3 } from "@tabler/icons-react";
+import { IconCheck, IconHeart, IconHeartFilled, IconMessageCircle, IconMessageShare, IconScriptMinus, IconScriptPlus, IconStack3, IconX } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
+import { GiMirrorMirror } from "react-icons/gi";
 
 
 type Props = {
@@ -33,7 +35,7 @@ const reactionType = ReactionTypes.Upvote;
 
 export default function Post({ post, className, activeProfile }: Props) {
   const router = useRouter();
-  const { toast } = useToast();
+
 
   const mirror = useCreateMirror({
     publisher: activeProfile,
@@ -305,39 +307,32 @@ export default function Post({ post, className, activeProfile }: Props) {
                     await mirror?.execute({
                       publication: postToUse,
                     });
-                    toast({
-                      title: "Post mirrored",
-                      description: `Successfully mirrored ${
+                    notifications.show({
+      title: "Post mirrored",
+      icon: <IconCheck size="1.1rem" />,
+      color: "green",
+      message: `Successfully mirrored ${
                         postToUse.profile.name || postToUse.profile.handle
                       }'s post.`,
-                    });
+    });
+                    
                   } catch (error) {
                     console.error(error);
-                    toast({
-                      variant: "destructive",
-                      title: "Failed to mirror post",
-                      description: `This user has disabled mirroring for this post.`,
-                    });
+                    
+                    notifications.show({
+      title: "Error",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `This user has disabled mirroring for this post.`,
+    });
                   }
                 }}
               >
-                <Icons.mirror
-                  className={
-                    postToUse.isMirroredByMe
-                      ? "text-green-400 text-sm"
-                      : "text-muted-foreground text-sm"
-                  }
-                />
-                <p
-                  className={
-                    postToUse.isMirroredByMe
-                      ? "text-green-400 text-sm"
-                      : "text-muted-foreground text-sm"
-                  }
-                >
-                  {postToUse?.stats?.totalAmountOfMirrors}
-                </p>
+                <GiMirrorMirror size={18}/>
               </ActionIcon>
+               <Text size="xs" c="dimmed">
+                  {postToUse?.stats?.totalAmountOfMirrors}
+                </Text>
 
               {/* Hearts */}
               <ActionIcon
@@ -379,33 +374,39 @@ export default function Post({ post, className, activeProfile }: Props) {
                   try {
                     switch (postToUse.collectPolicy.state) {
                       case CollectState.COLLECT_TIME_EXPIRED:
-                        toast({
-                          variant: "destructive",
-                          title: "Post cannot be collected!",
-                          description: `The collection time has expired for this post.`,
-                        });
+                        notifications.show({
+      title: "Error: Post cannot be collected!",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `The collection time has expired for this post.`,
+    });
+                     
 
                       case CollectState.COLLECT_LIMIT_REACHED:
-                        toast({
-                          variant: "destructive",
-                          title: "Post cannot be collected!",
-                          description: `The collection limit has been reached for this post.`,
-                        });
+                        notifications.show({
+      title: "Error: Post cannot be collected!",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `The collection limit has been reached for this post.`,
+    });
+
 
                       case CollectState.NOT_A_FOLLOWER:
-                        toast({
-                          variant: "destructive",
-                          title: "Post cannot be collected!",
-                          description: `You need to follow ${post.profile.name} to collect this post.`,
-                        });
-
+                        notifications.show({
+      title: "Error: Post cannot be collected!",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `You need to follow ${post.profile.name} to collect this post.`,
+    });
+                    
                       case CollectState.CANNOT_BE_COLLECTED:
-                        toast({
-                          variant: "destructive",
-                          title: "Post cannot be collected!",
-                          description: `The creator of this post has disabled collections.`,
-                        });
-
+                         notifications.show({
+      title: "Error: Post cannot be collected!",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `The creator of this post has disabled collections.`,
+    });
+            
                       case CollectState.CAN_BE_COLLECTED:
                         try {
                           const result = await collect?.execute();
@@ -413,21 +414,23 @@ export default function Post({ post, className, activeProfile }: Props) {
                           if (result?.isFailure()) {
                             throw new Error(result.error.message);
                           }
-
-                          toast({
-                            title: "Collected Post!",
-                            description: `You have collected ${
-                              postToUse.profile.name || postToUse.profile.handle
-                            }'s post`,
-                          });
+                          notifications.show({
+      title: "Success!",
+      icon: <IconCheck size="1.1rem" />,
+      color: "green",
+      message: `You have collected ${postToUse.profile.name || postToUse.profile.handle}'s post`,
+    });
+  
                         } catch (error) {
                           console.error(error);
                           // TODO: Handle "InsufficientFundsError"
-                          toast({
-                            variant: "destructive",
-                            title: "Post cannot be collected!",
-                            description: `Something went wrong collecting this post. Please try again later.`,
-                          });
+                           notifications.show({
+      title: "Error: Post cannot be collected!",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `Something went wrong collecting this post. Please try again later.`,
+    });
+                       
                         }
                     }
                   } catch (error) {

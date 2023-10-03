@@ -54,8 +54,9 @@ export default function NetworkSwitchModal() {
           </Group>
          
  <Space h="xl"/>
-        
+        <Center>
           <SignInWithLensButton />
+          </Center>
         </DialogHeader>
        
         </Paper>

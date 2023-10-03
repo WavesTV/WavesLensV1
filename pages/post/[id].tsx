@@ -16,9 +16,10 @@ import {
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { useToast } from "@/components/ui/use-toast";
 import useUpload from "@/lib/useUpload";
-import { Input, Button, Space, Center, Container } from "@mantine/core";
+import { Input, Button, Space, Center, Container, Group, Loader } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
+import { IconCheck, IconX } from "@tabler/icons-react";
 
 
 
@@ -28,7 +29,6 @@ const PostPage = () => {
   const { id } = router.query;
 
   const upload = useUpload();
-  const { toast } = useToast();
 
   const [comment, setComment] = useState<string>("");
 
@@ -128,15 +128,21 @@ const PostPage = () => {
                 }
 
                 setComment("");
-                toast({
-                  title: "Comment created.",
-                });
+                notifications.show({
+      title: "Success",
+      icon: <IconCheck size="1.1rem" />,
+      color: "green",
+      message: "Comment created.",
+    });
+                
               } catch (error) {
-                toast({
-                  variant: "destructive",
-                  title: "Failed to create comment",
-                  description: `Something went wrong creating your comment. Please try again.`,
-                });
+                notifications.show({
+      title: "Error",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `Something went wrong creating your comment. Please try again.`,
+    });
+               
               }
             }}
           >
@@ -161,10 +167,9 @@ const PostPage = () => {
                         (publication.data as PostType | Comment)?.stats
                           ?.totalAmountOfComments || 4,
                     }).map((_, i) => (
-                      <Skeleton
-                        className="h-[88px] animate-pulse bg-muted mt-3 w-full"
-                        key={i}
-                      />
+                         <Group justify="center">
+              <Loader size="sm" />
+            </Group>
                     ))}
                   </>
                 }

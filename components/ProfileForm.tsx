@@ -12,7 +12,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { toast } from "@/components/ui/use-toast";
+
 import { Input } from "./ui/input";
 import {
   FollowPolicyType,
@@ -29,6 +29,8 @@ import { useState } from "react";
 import { Separator } from "./ui/separator";
 import { Checkbox } from "./ui/checkbox";
 import Link from "next/link";
+import { IconUserPlus, IconX } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 
 const FormSchema = z.object({
   name: z.string().min(3).max(20).optional(),
@@ -157,18 +159,24 @@ export default function ProfileForm({ profile }: Props) {
           throw new Error(followerUpdateResult.error.message);
         }
       }
-
-      toast({
-        title: "Profile updated Successfully.",
-      });
+      notifications.show({
+      title: "Success",
+      icon: <IconUserPlus size="1.1rem" />,
+      color: "green",
+      message: "Profile updated Successfully.",
+    });
+     
 
       router.push(`/profile/${profile.handle}`);
     } catch (error) {
       console.error(error);
-      toast({
-        variant: "destructive",
-        title: "Something went wrong. Please try again later.",
-      });
+       notifications.show({
+      title: "Error",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: "Something went wrong. Please try again later.",
+    });
+     
     }
   }
 

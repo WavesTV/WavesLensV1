@@ -8,9 +8,10 @@ import {
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import React from "react";
-import { useToast } from "./ui/use-toast";
-import { Button } from "./ui/button";
+import { Button, Center, Text } from "@mantine/core";
 import { useSDK } from "@thirdweb-dev/react";
+import { notifications } from "@mantine/notifications";
+import { IconUserPlus, IconUserX, IconX } from "@tabler/icons-react";
 
 type Props = {
   followee: Profile;
@@ -20,7 +21,6 @@ type Props = {
 export default function FollowButton({ followee, follower }: Props) {
   const router = useRouter();
   const sdk = useSDK();
-  const { toast } = useToast();
   const approveModule = useApproveModule();
 
   const follow = useFollow({
@@ -40,21 +40,25 @@ export default function FollowButton({ followee, follower }: Props) {
     }
 
     if (!followee.followStatus?.canFollow && !followee.isFollowedByMe) {
-      toast({
-        title: `You can't follow this profile.`,
-        description:
-          "You may have already followed this profile, or it may be private.",
-        variant: "destructive",
-      });
+      notifications.show({
+      title: "Error: You can't follow this profile.",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: "You may have already followed this profile, or it may be private.",
+    });
       return;
     }
 
     try {
       if (followee?.isFollowedByMe && followee.followStatus?.canUnfollow) {
         await unfollow?.execute();
-        toast({
-          title: `Unfollowed ${followee?.name || followee?.handle}`,
-        });
+        notifications.show({
+        title: "Unfollowed!",
+        icon: <IconUserX size="1.1rem" />,
+        color: "red",
+        message: `Unfollowed ${followee?.name || followee?.handle}`,
+    });
+        
       } else {
         // If charge, approve funds first
         if (followee.followPolicy.type === FollowPolicyType.CHARGE) {
@@ -84,30 +88,37 @@ export default function FollowButton({ followee, follower }: Props) {
         console.log(result);
 
         if (result.isFailure()) {
-          toast({
-            title: `Failed to follow ${followee?.name || followee?.handle}`,
-            description: result.error.message,
-            variant: "destructive",
-          });
+          notifications.show({
+        title: "Error",
+        icon: <IconX size="1.1rem" />,
+        color: "red",
+        message: `Failed to follow ${followee?.name || followee?.handle}`,
+    });
           return;
         }
-
-        toast({
-          title: `Followed ${followee?.name || followee?.handle}`,
-        });
+        notifications.show({
+      title: "Success",
+      icon: <IconUserPlus size="1.1rem" />,
+      color: "green",
+      message: `Followed ${followee?.name || followee?.handle}`,
+    });
+        
       }
     } catch (error) {
       console.error(error);
-      toast({
-        title: `Something went wrong. Please try again later.`,
-        variant: "destructive",
-      });
+      notifications.show({
+        title: "Error",
+        icon: <IconX size="1.1rem" />,
+        color: "red",
+        message: `Something went wrong!`,
+    });
     }
   }
 
   return (
     <div className="flex flex-col items-center justify-center absolute top-0 right-0 gap-2">
-      <Button className="mt-4" onClick={handleFollow}>
+      <Button fullWidth variant="gradient"
+      gradient={{ from: 'blue', to: 'cyan', deg: 90 }} onClick={handleFollow}>
         {followee?.ownedByMe
           ? "Edit Profile"
           : followee?.isFollowedByMe
@@ -117,12 +128,15 @@ export default function FollowButton({ followee, follower }: Props) {
 
       {!followee?.ownedByMe &&
         (followee?.followPolicy.type === FollowPolicyType.CHARGE ? (
-          <p className="text-sm text-muted-foreground">
+          <Center>
+          <Text fw={500} size="xl">
             {followee.followPolicy.amount.toNumber().toString()} $
             {followee.followPolicy.amount.asset.symbol} to follow
-          </p>
+          </Text>
+          </Center>
         ) : (
-          <p className="text-sm text-muted-foreground">Free to follow!</p>
+          <>
+          </>
         ))}
     </div>
   );

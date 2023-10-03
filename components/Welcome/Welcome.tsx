@@ -124,17 +124,6 @@ export function Welcome() {
             Sign Up
           </Button>
 
-          <Button
-          
-            component="a"
-            href="https://github.com/waves-streaming/Lens-Waves-v1"
-            size="md"
-            variant="default"
-        leftSection={<BsGithub size={23} />}
-            
-          >
-            GitHub
-          </Button>
         </Group>
     </Container>
   );

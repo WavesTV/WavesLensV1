@@ -30,7 +30,8 @@ import classes from './MantineHeader.module.css';
 import Link from 'next/link';
 import { GiWaveCrest } from 'react-icons/gi';
 import { ColorSchemeToggle } from '../../ColorSchemeToggle';
-
+import SignInWithLensButton from '@/components/SignInWithLensButton';
+import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-protocol/react-web";
 
 
 
@@ -41,8 +42,9 @@ import { ColorSchemeToggle } from '../../ColorSchemeToggle';
     const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
     const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
     const theme = useMantineTheme();
-
-    
+    const walletInfo = useActiveWallet();
+    const activeProfile = useActiveProfile();
+    const { execute: logout, isPending } = useWalletLogout();
     
   
 
@@ -117,7 +119,46 @@ import { ColorSchemeToggle } from '../../ColorSchemeToggle';
   
             <Group visibleFrom="sm">
             <ColorSchemeToggle/>
-       
+            {walletInfo?.data && activeProfile?.data ? (
+            <>
+             <Menu
+                            trigger="hover"
+                            openDelay={100}
+                            closeDelay={400}
+                            shadow="md"
+                            width={200}
+                            zIndex={1000000}
+                          >
+                            <Menu.Target>
+            <Avatar
+            // @ts-ignore
+             src={
+                    // @ts-ignore
+                    activeProfile?.data?.picture?.original?.url || "/user.png"
+                  }
+            
+              size={60}
+              radius={80}
+              mx="auto"
+          />
+            </Menu.Target>
+            <Menu.Dropdown>
+
+                        <Menu.Item
+                                leftSection={<IconLogout size={17} />}
+                                disabled={isPending} onClick={logout}
+                              >
+                                Logout
+                              </Menu.Item>
+            </Menu.Dropdown>
+            </Menu>
+            </>
+               
+          ): (
+            <>
+            </>
+
+          )}
             </Group>
   
             <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -201,7 +242,32 @@ import { ColorSchemeToggle } from '../../ColorSchemeToggle';
           
 
           <Group align="center" grow pb="xl" px="md">
-      
+          <Menu
+                         
+                            shadow="md"
+                            width={200}
+                            zIndex={1000000}
+                          >
+                            <Menu.Target>
+                              <Button
+                                leftSection={<GiWaveCrest size="1rem" />}
+                                variant="gradient"
+                                gradient={{ from: "cyan", to: "indigo" }}
+                              >
+                                {activeProfile?.data?.handle}
+                              </Button>
+        
+            </Menu.Target>
+            <Menu.Dropdown>
+
+                        <Menu.Item
+                                leftSection={<IconLogout size={17} />}
+                                disabled={isPending} onClick={logout}
+                              >
+                                Logout
+                              </Menu.Item>
+            </Menu.Dropdown>
+            </Menu>
           </Group>
         </ScrollArea>
       </Drawer>

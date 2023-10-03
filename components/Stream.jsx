@@ -41,7 +41,7 @@ import { GrLaunch } from 'react-icons/gr';
 import { VscKey } from 'react-icons/vsc';
 import { BiUserCircle } from 'react-icons/bi';
 import { TiInfoLargeOutline } from 'react-icons/ti';
-import { useActiveProfile, useActiveWallet } from "@lens-protocol/react-web";
+import { useActiveProfile, useUpdateProfileDetails } from "@lens-protocol/react-web";
 import classes from "../styles/ProfileCard.module.css";
 
 export const Stream = () => {
@@ -114,7 +114,7 @@ export const Stream = () => {
   const [twitchStreamKey, setTwitchStreamKey] = useState("");
   const [twitchUsername, setTwitchUsername] = useState("");
   const [twitchInput, setTwitchInput] = useState("");
-  const { mutate: twitchMultistream,  error, isSuccess, status: twitchStatus } = useUpdateStream({
+  const { mutate: twitchMultistream, isSuccess, status: twitchStatus } = useUpdateStream({
   streamId,
   multistream: {
     targets: [
@@ -179,6 +179,13 @@ export const Stream = () => {
        const handleEnableKickMultistream = async () => {
         kickMultistream?.()
        };
+
+
+const updatedProfileMetadata = {
+  WavesPlaybackId: stream.playbackId,
+};
+
+const { execute, error, isPending } = useUpdateProfileDetails({ metadata: updatedProfileMetadata });
 
 
 
@@ -342,7 +349,7 @@ export const Stream = () => {
                           fullWidth
                           className={classes.button}
                           onClick={() => {
-                            attachStreamToDesoProfile();
+                            execute();
                             loaded
                               ? setLoaded(false)
                               : !interval.active && interval.start();

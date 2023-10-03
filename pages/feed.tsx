@@ -101,10 +101,9 @@ const Feed: NextPage = () => {
                 loader={
                   <>
                     {Array.from({ length: 10 }).map((_, i) => (
-                      <Skeleton
-                        className="h-[88px] animate-pulse bg-muted mt-3 w-full"
-                        key={i}
-                      />
+                         <Group justify="center">
+              <Loader size="sm" />
+                    </Group>
                     ))}
                   </>
                 }
@@ -153,10 +152,9 @@ const Feed: NextPage = () => {
                 loader={
                   <>
                     {Array.from({ length: 10 }).map((_, i) => (
-                      <Skeleton
-                        className="h-[88px] animate-pulse bg-muted mt-3 w-full"
-                        key={i}
-                      />
+                       <Group justify="center">
+              <Loader size="sm" />
+            </Group>
                     ))}
                   </>
                 }

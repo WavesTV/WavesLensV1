@@ -1,6 +1,5 @@
 
 import Post from "@/components/Post";
-import { Skeleton } from "@/components/ui/skeleton";
 import {
   Post as PostType,
   useProfile,
@@ -14,18 +13,17 @@ import {
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { MediaRenderer } from "@thirdweb-dev/react";
-import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import FollowButton from "@/components/FollowButton";
-import { Center, Space, Button } from "@mantine/core";
+import { Center, Space, Button, Card, Group, Avatar, Text, Loader  } from "@mantine/core";
+import styles from "@/styles/ProfileCard.module.css";
 
 const ProfilePage = () => {
   // Get the post ID from the URL
   const router = useRouter();
   const { handle } = router.query;
 
-  const { toast } = useToast();
+ 
 
   const activeProfile = useActiveProfile();
 
@@ -56,91 +54,113 @@ const ProfilePage = () => {
     );
   }
 
+  const replaceURLs = (text: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const atSymbolRegex = /(\S*@+\S*)/g;
+
+    return text
+      .replace(urlRegex, (url: string) => `<a href="${url}" target="_blank">${url}</a>`)
+      .replace(atSymbolRegex, (match: string) => ` ${match} `);
+  };
+
   return (
     <>
-   
-      <div className="w-full container flex max-w-[64rem] flex-col items-center gap-4 h-screen">
-        <div className="w-full md:w-[620px]">
-          {/* Cover photo */}
-          <MediaRenderer
-            alt={`${profile?.data?.handle}'s cover photo`}
+      <Card shadow="sm" padding="lg" radius="md" withBorder>
+       <Card.Section>
+        {/* @ts-ignore */}
+          <Image
+           // @ts-ignore
+                       alt={`${profile?.data?.handle}'s cover photo`}
             // @ts-ignore, image is there
-            src={profile?.data?.coverPicture?.original?.url || "/cover.jpg"}
-            width="100%"
-            height="200px"
+            src={profile?.data?.coverPicture?.original?.url}
+            height={200}
+            fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
+          />
+        </Card.Section>
+        
+        
+    
+          <Avatar
+              alt={`${profile?.data?.handle}'s profile picture`}
+            // @ts-ignore, image is there
+            src={profile?.data?.picture?.original?.url || "/user.png"}
+            className={styles.avatar}
+            size={80}
+        radius={80}
+        mx="auto"
+        mt={-30}
+          />
+      
+{/* Profile Handle */}
+<Group justify="center">
+          @{profile?.data?.handle}
+        </Group>
+        {/* Profile Name */}
+        <Group justify="center" className={styles.profileName}>
+          <Text c="dimmed" fw={500}>{profile?.data?.name}</Text>
+        </Group>
+        
+    
+      <Space h="xl"/>
+      <Center>
+        <Text
+        
+            fz="sm"
             style={{
-              objectFit: "cover",
+              maxWidth: "100%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              
+            }}
+             dangerouslySetInnerHTML={{
+              __html:
+              profile && profile.data && profile.data.bio 
+                  ? replaceURLs(profile.data.bio.replace(/\n/g, "<br> "))
+                  : "",
             }}
           />
+          </Center>
+      <Space h="xl"/>
+      <Group justify="center">
 
-          {/* Follow button has position beneath cover image and parallel to the profile picture */}
-          <div className="relative flex justify-end h-0">
-            {profile.data && activeProfile.data && (
+      
+      <Text fw={500} fz="sm">
+          {profile?.data?.stats.totalFollowers}{" Followers"}
+        </Text>
+       
+          <Text fw={500} fz="sm">
+           {profile?.data?.stats.totalFollowing}{" Following"}
+        </Text>
+        </Group>
+
+        <Space h="md"/>
+        {profile.data && activeProfile.data && (
               <FollowButton
                 followee={profile.data}
                 follower={activeProfile.data}
               />
             )}
-          </div>
+           <Space h="md"/>  
+        </Card>
 
-          {/* Profile picture */}
-          <MediaRenderer
-            alt={`${profile?.data?.handle}'s profile picture`}
-            // @ts-ignore, image is there
-            src={profile?.data?.picture?.original?.url || "/user.png"}
-            width="128px"
-            height="128px"
-            style={{
-              objectFit: "cover",
-            }}
-            className="rounded-full border-4 shadow-sm -mt-16 ml-4"
-          />
+         <Space h="xl"/>
 
-          {/* Profile name */}
-          <h1 className="text-xl font-semibold w-auto mt-4">
-            {profile?.data?.name}
-          </h1>
+      <div className="w-full container flex max-w-[64rem] flex-col items-center gap-4 h-screen">
+        <div className="w-full md:w-[620px]">
+          {/* Cover photo */}
+          
 
-          {/* Handle */}
-          <p className="text-sm text-muted-foreground">
-            @{profile?.data?.handle}
-          </p>
-
-          {/* Bio */}
-          <p className="leading-7 mt-1">{profile?.data?.bio}</p>
-
-          <div className="flex items-center mt-4">
-            {/* Followers */}
-            <Link
-              href={`/profile/${profile?.data?.handle}/followers`}
-              className="leading-7"
-            >
-              <span className="font-semibold">
-                {profile?.data?.stats.totalFollowers}
-              </span>
-              <span className="text-muted-foreground"> Followers</span>
-            </Link>
-
-            {/* Following */}
-            <Link
-              href={`/profile/${profile?.data?.handle}/following`}
-              className="leading-7  ml-4"
-            >
-              <span className="font-semibold">
-                {profile?.data?.stats.totalFollowing}
-              </span>
-
-              <span className="text-muted-foreground"> Following</span>
-            </Link>
+          {/* Follow button has position beneath cover image and parallel to the profile picture */}
+          <div className="relative flex justify-end h-0">
+            
           </div>
 
           {/* Loading */}
           {publications?.loading &&
             Array.from({ length: 10 }).map((_, i) => (
-              <Skeleton
-                className="h-[88px] animate-pulse bg-muted mt-3 w-full"
-                key={i}
-              />
+              <Center>
+                  <Loader color="blue" size="sm" />
+              </Center>
             ))}
           {/* Loaded */}
           {!publications?.loading && publications?.data && (
@@ -152,10 +172,9 @@ const ProfilePage = () => {
               loader={
                 <>
                   {Array.from({ length: 10 }).map((_, i) => (
-                    <Skeleton
-                      className="h-[88px] animate-pulse bg-muted mt-3 w-full"
-                      key={i}
-                    />
+                       <Group justify="center">
+              <Loader size="sm" />
+            </Group>
                   ))}
                 </>
               }
