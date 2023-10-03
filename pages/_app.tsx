@@ -99,7 +99,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <LivepeerConfig client={livepeerClient}>
             <MantineProvider>
               <ThirdwebProvider
-          activeChain={CHAIN}
+          activeChain={"polygon"}
           authConfig={{
             domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
             authUrl: "/api/auth",
