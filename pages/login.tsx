@@ -59,27 +59,35 @@ console.log("activeProfile" + activeProfile)
          <Space h="lg"/>
         <Group justify="center">
           {/* Wallet connected, has profile on Lens. */}
-          {walletInfo?.data && activeProfile?.data && (
+          {walletInfo?.data && activeProfile?.data ? (
+  // Render content when both walletInfo and activeProfile data are available
+  <>
+    <Center>
+      <Text size="xl" fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>
+        Welcome to Waves
+      </Text>
+    </Center>
+    <Space h="md" />
+    <Center>
+      <Tooltip label="Go to your dashboard">
+        <Button component={Link} href="/dashboard">
+          <Text size="lg" fw={900} fs="italic">
+            Get Started with your first stream
+          </Text>
+        </Button>
+      </Tooltip>
+    </Center>
+  </>
+) : (
+  // Render content when either walletInfo or activeProfile data is missing
+  <>
 
-            
-            <>
-            
-            <Center>
-              <Text size="xl" fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>Welcome to Waves</Text>
-              </Center>
-             <Space h="md" />
-                <Center>
+    <Center>
+      <SignInWithLensButton />
+    </Center>
+  </>
+)}
 
-                  <Tooltip label="Go to your dashboard">
-            <Button component={Link} href='/dashboard'>
-                <Text size="lg" fw={900} fs="italic">Get Started with your first stream</Text>
-            </Button>
-            </Tooltip>
-              </Center>
-              </>
-          
-               
-          )}
 
           
         </Group>
