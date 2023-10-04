@@ -20,7 +20,7 @@ import SignInWithLensButton from "@/components/SignInWithLensButton";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
 
-const Create = () => {
+export const Create = () => {
   const router = useRouter();
   const sdk = useSDK();
   const upload = useUpload();
