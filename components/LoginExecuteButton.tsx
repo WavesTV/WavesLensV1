@@ -6,6 +6,7 @@ import { Button } from "@mantine/core";
 export default function LoginExecuteButton() {
   const loginFunction = useWalletLogin();
   const address = useAddress();
+console.log("address" + address)
 
   if (!address)
     return (

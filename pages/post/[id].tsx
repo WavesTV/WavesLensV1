@@ -49,6 +49,18 @@ const PostPage = () => {
     upload: (data: unknown) => upload(data),
   });
 
+    if (!activeProfile || activeProfile.data === null) {
+    return (
+      <>
+
+        <Center>
+          <Button onClick={() => router.push("/login")}>
+            Login to view post
+          </Button>
+        </Center>
+      </>
+    );
+  }
   if (publication?.loading) {
     return (
       <>

@@ -7,7 +7,9 @@ import {
     Container
   } from "@mantine/core";
 import { useActiveWallet } from "@lens-protocol/react-web";
-import Login from "./login";
+import {
+  ConnectWallet,
+} from "@thirdweb-dev/react";
 
 
 export default function Wallet() {
@@ -28,7 +30,23 @@ const walletInfo = useActiveWallet();
       />
 
 <Space h="lg"/>
-    
+    {walletInfo?.data && (
+            <>
+
+              <Center>
+        
+       <ConnectWallet
+      theme="dark"
+      auth={{
+        loginOptional: true,
+      }}
+    />
+     
+              </Center>
+
+              
+            </>
+          )}
       <Space h="lg"/>
         <Center>
             <iframe

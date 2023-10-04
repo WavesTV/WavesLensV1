@@ -76,10 +76,7 @@ const Feed: NextPage = () => {
       <Tabs.Panel value="first"> <Space h="xl"/>
 
       
-   {walletInfo?.data && !activeProfile?.data &&
-             (
-                  <></>
-              )}
+
     {/* Public feed loading */}
             {
               publicFeed?.loading &&
@@ -107,8 +104,7 @@ const Feed: NextPage = () => {
                    <Space h={100}/>
                 }
               >
-                {activeProfile.data &&
-                  activeProfile.data !== null &&
+                {
                   // @ts-ignore post type
                   publicFeed?.data?.map((post: PostType) => (
                     <Post

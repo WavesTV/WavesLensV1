@@ -1,5 +1,5 @@
 
-import React, { useEffect, useMemo, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import { Icons } from "./icons";
 import formatDate from "@/lib/formatDate";
 import Link from "next/link";
@@ -13,16 +13,18 @@ import {
   CollectState,
   useEncryptedPublication,
   ProfileOwnedByMe,
+  useActiveProfile
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 
 import { Skeleton } from "./ui/skeleton";
 
-import { Paper, ActionIcon, Group, Tooltip, Avatar, Space, UnstyledButton, Text, Spoiler, Image} from "@mantine/core";
+import { Paper, ActionIcon, Group, Tooltip, Avatar, Space, UnstyledButton, Text, Spoiler, Image, Center} from "@mantine/core";
 import { IconCheck, IconHeart, IconHeartFilled, IconMessageCircle, IconMessageShare, IconScriptMinus, IconScriptPlus, IconStack3, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 import { GiMirrorMirror } from "react-icons/gi";
-
+import { MediaRenderer } from "@thirdweb-dev/react";
+import { Player } from "@livepeer/react";
 
 type Props = {
   post: Post | Comment;
@@ -47,8 +49,10 @@ export default function Post({ post, className, activeProfile }: Props) {
   });
 
   const react = useReaction({
-    profileId: activeProfile.id,
+    profileId: activeProfile?.id,
   });
+
+
 
   const [hasDecrypted, setHasDecrypted] = useState<boolean>(false);
 
@@ -73,7 +77,7 @@ export default function Post({ post, className, activeProfile }: Props) {
     }
   }, [hasDecrypted, encryptedPublication, post]);
 
-  const hasReaction = useMemo(() => {
+    const hasReaction = useMemo(() => {
     return react?.hasReaction({
       publication: postToUse,
       reactionType,
@@ -144,7 +148,8 @@ export default function Post({ post, className, activeProfile }: Props) {
   return (
     <>
       <Paper shadow="xl" radius="md" withBorder p="xl">
-      <Group justify="apart">
+        <Group grow>
+      <Group justify="left">
          {postToUse.isGated && (
                   <Tooltip label={hasDecrypted
                         ? "Only followers can see this content."
@@ -159,23 +164,11 @@ export default function Post({ post, className, activeProfile }: Props) {
                       />
                   </Tooltip>
             )}
-         
+            </Group>
+         <Group justify="right">
              <Text c="dimmed" size="xs" fw={500}>{formatDate(postToUse.createdAt)} ago</Text>
-      
-                  <Tooltip label="Go to Post">
-                    <ActionIcon
-                      color="blue"
-                      size="sm"
-                      variant="light"
-                      onClick={() => {
-                        router.push(`/post/${postToUse.id}`);
-                      }}
-                    >
-                      <IconMessageShare />
-                    </ActionIcon>
-                  </Tooltip>
           </Group>
-
+</Group>
       <UnstyledButton component={Link} href={`/profile/${postToUse.profile.handle}`}>
         <Group justify="center">
         <Avatar
@@ -193,7 +186,7 @@ export default function Post({ post, className, activeProfile }: Props) {
       </UnstyledButton>
       <Space h="xl" />
        
-           <Group justify="center">
+           <Center>
       <Spoiler
                   maxHeight={222}
                   showLabel={
@@ -235,7 +228,12 @@ export default function Post({ post, className, activeProfile }: Props) {
               !encryptedPublication?.isPending && (
                 <Text
                 size="md"
-               
+               style={{
+              maxWidth: "100%",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              textAlign: "center",
+            }}
                 dangerouslySetInnerHTML={{
                   // @ts-ignore
                         __html: replaceURLs(postToUse.metadata.content.replace(/\n/g, "<br> ")),
@@ -244,40 +242,42 @@ export default function Post({ post, className, activeProfile }: Props) {
 
               )
             )}
-                
+             
          </div>
              
                 </Spoiler>
-                </Group>
+                </Center>
                 <Space h="md"/>  
        
 
            
 
             {postMedia && (
-              <Group justify="center">
-                    <UnstyledButton
-                      
-                    >
-                      <Image
-                         src={postMedia}
-                        alt={`A post by ${
-                    postToUse.profile.name || postToUse.profile.handle
-                  }`}
+          <Center>
+          <Image
+                        src={postToUse?.metadata?.media?.[0]?.small?.url}
                         radius="md"
-                       
+                        h='auto'
+                        w="auto"
                         fit="contain"
                       />
-                    </UnstyledButton>
-                  </Group>
-                
+                     </Center>
             )}
 
+        {postToUse.metadata.mainContentFocus === "VIDEO" && (
+          <Center>
+          <Player
+                        src={postToUse?.metadata?.media?.[0]?.optimized?.url}
+
+                      />
+                     </Center>
+            )}
             <Space h="xl" />
 
             {/* Post metadata */}
             <Group justify="center">
               {/* Comments - Take user to the post */}
+                <Tooltip position="bottom" label="Comment">
               <ActionIcon
                 variant="subtle"
                       radius="md"
@@ -290,51 +290,62 @@ export default function Post({ post, className, activeProfile }: Props) {
                 <IconMessageCircle size={18} stroke={1.5} />
                 
               </ActionIcon>
+              </Tooltip>
                 <Text size="xs" c="dimmed">
                   {postToUse?.stats?.commentsCount}
                   </Text>
 
 
               {/* Mirrors */}
-              <ActionIcon
-               variant="subtle"
-               radius="md"
-                size={36}
-               
-                onClick={async (e) => {
-                  try {
-                    e.stopPropagation();
-                    await mirror?.execute({
-                      publication: postToUse,
-                    });
-                    notifications.show({
-      title: "Post mirrored",
-      icon: <IconCheck size="1.1rem" />,
-      color: "green",
-      message: `Successfully mirrored ${
-                        postToUse.profile.name || postToUse.profile.handle
-                      }'s post.`,
-    });
-                    
-                  } catch (error) {
-                    console.error(error);
-                    
-                    notifications.show({
-      title: "Error",
-      icon: <IconX size="1.1rem" />,
-      color: "red",
-      message: `This user has disabled mirroring for this post.`,
-    });
-                  }
-                }}
-              >
+              <Tooltip position="bottom" label="Mirror">
+          <ActionIcon
+  variant="subtle"
+  radius="md"
+  size={36}
+  onClick={async (e) => {
+    try {
+      e.stopPropagation();
+      if (activeProfile) { // Check if activeProfile.data is truthy
+        await mirror?.execute({
+          publication: postToUse,
+        });
+        notifications.show({
+          title: "Post mirrored",
+          icon: <IconCheck size="1.1rem" />,
+          color: "green",
+          message: `Successfully mirrored ${
+            postToUse.profile.name || postToUse.profile.handle
+          }'s post.`,
+        });
+      } else {
+        // Handle the case when activeProfile.data is falsy (button disabled)
+        notifications.show({
+          title: "Error",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: `Login to mirror this post!`,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      notifications.show({
+          title: "Error",
+          icon: <IconX size="1.1rem" />,
+          color: "red",
+          message: `Something Happened: ${error}`,
+        });
+    }
+  }}
+>
                 <GiMirrorMirror size={18}/>
               </ActionIcon>
+              </Tooltip>
                <Text size="xs" c="dimmed">
                   {postToUse?.stats?.totalAmountOfMirrors}
                 </Text>
 
               {/* Hearts */}
+                    <Tooltip position="bottom" label="Heart">
               <ActionIcon
                variant="subtle"
                       radius="md"
@@ -343,6 +354,16 @@ export default function Post({ post, className, activeProfile }: Props) {
                 onClick={(e) => {
                   e.stopPropagation();
                   try {
+                    if (!activeProfile) {
+        notifications.show({
+      title: "Error",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `Login to like this post!`,
+    });
+        return; // Return early to prevent further execution
+      }
+
                     handleReaction();
                   } catch (error) {
                     console.error(error);
@@ -359,10 +380,11 @@ export default function Post({ post, className, activeProfile }: Props) {
                
                    
               </ActionIcon>
+              </Tooltip>
                 <Text size="xs" c="dimmed">
                   {postToUse?.stats?.totalUpvotes}
                   </Text>
-
+ <Tooltip position="bottom" label="Collect">
               <ActionIcon
                       
                       variant="subtle"
@@ -372,6 +394,16 @@ export default function Post({ post, className, activeProfile }: Props) {
                 onClick={async (e) => {
                   e.stopPropagation();
                   try {
+                    if (!activeProfile) {
+        notifications.show({
+      title: "Error",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `Login to collect this post!`,
+    });
+        return; // Return early to prevent further execution
+      }
+
                     switch (postToUse.collectPolicy.state) {
                       case CollectState.COLLECT_TIME_EXPIRED:
                         notifications.show({
@@ -443,6 +475,7 @@ export default function Post({ post, className, activeProfile }: Props) {
                       stroke={1.5}
                       />  
               </ActionIcon>
+             </Tooltip>
               <Text size="xs" c="dimmed">
                   {postToUse?.stats?.totalAmountOfCollects}
               </Text>
@@ -450,6 +483,7 @@ export default function Post({ post, className, activeProfile }: Props) {
          
        
       </Paper>
+      <Space h="md"/>
     </>
   );
 }

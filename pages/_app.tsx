@@ -28,7 +28,7 @@ import {
   studioProvider,
 } from "@livepeer/react";
 import { Notifications } from "@mantine/notifications";
-
+import '@mantine/notifications/styles.css';
 const livepeerClient = createReactClient({
   provider: studioProvider({
     apiKey: "bbf760d8-7fe5-45f9-91df-9e333d949d34",
@@ -51,29 +51,20 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const signerWrapped = useTypedDataSignerWrapper(signer, sdk);
 
-  if (!signer && router.pathname !== "/") {
-    return (
-      <>
-        <NetworkSwitchModal />
-      </>
-    );
-  }
 
   return (
     <LensProvider
-      config={{
-        environment: IS_DEV_ENV ? development : production,
-        bindings: {
-          getSigner: async () => signerWrapped as RequiredSigner,
-          getProvider: async () =>
-            IS_DEV_ENV
-              ? new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
-              : new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
-        },
-        // @ts-ignore: TODO
-        appId: "waves",
-      }}
-    >
+  config={{
+    environment: production, // Hardcoded to production
+    bindings: {
+      getSigner: async () => signerWrapped as RequiredSigner,
+      getProvider: async () =>
+        new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
+    },
+    // @ts-ignore: TODO
+    appId: "waves",
+  }}
+>
       {children}
     </LensProvider>
   );
@@ -157,9 +148,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     ) : null}
    
   
-          
+           <Notifications/>
             <Component {...pageProps} />
-            <Notifications/>
+           
            
         </AppShell.Main>
    </AppShell>

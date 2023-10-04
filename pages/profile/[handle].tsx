@@ -11,7 +11,7 @@ import {
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FollowButton from "@/components/FollowButton";
-import { Center, Space, Button, Card, Group, Avatar, Text, Loader, Image, Container  } from "@mantine/core";
+import { Center, Space, Button, Card, Group, Avatar, Text, Loader, Image, Container, Paper  } from "@mantine/core";
 import styles from "../../styles/ProfileCard.module.css";
 
 const ProfilePage = () => {
@@ -61,6 +61,7 @@ const ProfilePage = () => {
 
   return (
     <>
+    <Container size="responsive" ml={44}>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
        <Card.Section>
         {/* @ts-ignore */}
@@ -98,7 +99,7 @@ const ProfilePage = () => {
         
     
       <Space h="xl"/>
-      <Center>
+       <Paper shadow="sm" p="lg" radius="md" withBorder>
         <Text
         
             fz="sm"
@@ -106,7 +107,7 @@ const ProfilePage = () => {
               maxWidth: "100%",
               overflow: "hidden",
               textOverflow: "ellipsis",
-              
+              textAlign: "center",
             }}
              dangerouslySetInnerHTML={{
               __html:
@@ -115,7 +116,7 @@ const ProfilePage = () => {
                   : "",
             }}
           />
-          </Center>
+          </Paper>
       <Space h="xl"/>
       <Group justify="center">
 
@@ -123,7 +124,7 @@ const ProfilePage = () => {
       <Text fw={500} fz="sm">
           {profile?.data?.stats.totalFollowers}{" Followers"}
         </Text>
-       
+       |
           <Text fw={500} fz="sm">
            {profile?.data?.stats.totalFollowing}{" Following"}
         </Text>
@@ -136,19 +137,16 @@ const ProfilePage = () => {
                 follower={activeProfile.data}
               />
             )}
-           <Space h="md"/>  
+           
         </Card>
-
-         <Space h="xl"/>
-
+        </Container>
+<Space h="xl"/>
       <Container>
 
           {/* Loading */}
           {publications?.loading && (
           
-              <Center>
-                  <Loader color="blue" size="sm" />
-              </Center>
+              <></>
             )}
           {/* Loaded */}
           {!publications?.loading && publications?.data && (
@@ -160,15 +158,11 @@ const ProfilePage = () => {
               loader={
                 <>
                
-                       <Group justify="center">
-              <Loader size="sm" />
-            </Group>
-          
+                  
                 </>
               }
             >
-              {activeProfile &&
-                activeProfile.data &&
+              {
                 // @ts-ignore post type
                 publications?.data?.map((post: PostType) => (
                   <Post

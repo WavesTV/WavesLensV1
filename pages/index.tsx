@@ -70,7 +70,9 @@ disabled
        
       </Container>
     <Space h='xl'/>
+    <Container>
     <Feed />
+    </Container>
     </>
   );
 };

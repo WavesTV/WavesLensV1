@@ -4,37 +4,28 @@ import {
   useAddress,
   useNetworkMismatch,
   useSwitchChain,
+  
 } from "@thirdweb-dev/react";
 import React from "react";
 import { Button } from "@mantine/core";
 import { CHAIN } from "../const/chains";
 import LoginExecuteButton from "./LoginExecuteButton";
+import { Polygon, Mumbai } from "@thirdweb-dev/chains";
 
 export default function SignInWithLensButton() {
   const address = useAddress();
   const wrongNetwork = useNetworkMismatch();
   const switchChain = useSwitchChain();
   const walletInfo = useActiveWallet();
+console.log("wrongNetwork" + wrongNetwork)
 
-  if (!address) {
-    return (
-      <ConnectWallet
-        
-        auth={{
-          loginOptional: true,
-        }}
-        theme="dark"
-      />
-    );
-  }
 
   if (wrongNetwork) {
     return (
       <Button
         variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
         onClick={() => {
-          switchChain(137);
-          
+          switchChain(Polygon.chainId); 
         }}
       >
         Switch to {CHAIN.name}

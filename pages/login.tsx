@@ -3,14 +3,26 @@ import { NextPage } from "next";
 import Link from "next/link";
 import React from "react";
 import SignInWithLensButton from "@/components/SignInWithLensButton";
-import { useActiveProfile, useActiveWallet } from "@lens-protocol/react-web";
+import { useActiveProfile, useActiveWallet, useWalletLogin } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import { Center, Container, Paper, Text, Button, ActionIcon, UnstyledButton, Space, Group, Tooltip } from "@mantine/core";
-
+import {
+  ConnectWallet,
+  useAddress,
+  useNetworkMismatch,
+  useSwitchChain,
+} from "@thirdweb-dev/react";
+import LoginExecuteButton from "@/components/LoginExecuteButton";
 const Login: NextPage = () => {
+  const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
   const router = useRouter();
   const walletInfo = useActiveWallet();
   const activeProfile = useActiveProfile();
+
+const address = useAddress();
+console.log(walletInfo)
+console.log("activeProfile" + activeProfile)
+
 
   return (
     <>
@@ -24,27 +36,17 @@ const Login: NextPage = () => {
         {/* Wallet connected, but no Lens profile */}
           {walletInfo?.data && !activeProfile?.data && (
             <>
-            
+          
               
-              <Center>
-              <Text c="dimmed" fw={500}>
-                Waves requires you to have a Lens Profile NFT.{" "}
-                <Link
-                  href="https://lens.xyz/"
-                  target="_blank"
-                  className="underline"
-                >
-                  Learn more
-                </Link>
-                .
-              </Text>
-            </Center>
-<Space h="md" />
-            <Center>
-              <Text c="dimmed" fw={500}>
-  You don&apos;t have a Lens Profile yet. 😞
-</Text>
+         <Center>
+              <Text size="md" fw={500}>Sorry, you dont have a Lens Profile.</Text>
+              </Center>
+             <Space h="md" />
 
+              <Center>
+        
+      <SignInWithLensButton/>
+     
               </Center>
 
               
@@ -52,17 +54,7 @@ const Login: NextPage = () => {
           )}
               <Space h="md" />
             
-                {walletInfo?.data && activeProfile?.data ? (
-                  <Center>
-                  <Button variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }} onClick={() => router.push("/")}>
-                    Continue to Waves
-                  </Button>
-                  </Center>
-                ) : (
-                  <Center>
-                  <SignInWithLensButton />
-                  </Center>
-                )}
+                
             
          <Space h="lg"/>
         <Group justify="center">
@@ -79,9 +71,9 @@ const Login: NextPage = () => {
                 <Center>
 
                   <Tooltip label="Go to your dashboard">
-            <UnstyledButton component={Link} href='/dashboard'>
-                <Text size="lg" fw={900} fs="italic">Get Started with your first stream!</Text>
-            </UnstyledButton>
+            <Button component={Link} href='/dashboard'>
+                <Text size="lg" fw={900} fs="italic">Get Started with your first stream</Text>
+            </Button>
             </Tooltip>
               </Center>
               </>

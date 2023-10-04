@@ -107,7 +107,7 @@ const activeProfile = useActiveProfile();
       <Text fw={500} fz="sm">
           {activeProfile?.data?.stats.totalFollowers} {" Followers"}
         </Text>
-       
+    |
           <Text fw={500} fz="sm">
            {activeProfile?.data?.stats.totalFollowing}{" Following"}
         </Text>
@@ -165,7 +165,7 @@ const activeProfile = useActiveProfile();
       <Text fw={500} fz="sm">
           1 {" Followers"}
         </Text>
-       
+       |
           <Text fw={500} fz="sm">
           1 {" Following"}
         </Text>
