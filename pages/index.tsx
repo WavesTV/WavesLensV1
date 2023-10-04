@@ -19,7 +19,7 @@ const Home: NextPage = () => {
 
         
                 {walletInfo?.data && activeProfile?.data ? (
-                   <Create/>
+                   <></>
                 ) : (
                   <Paper shadow="xl" withBorder p="xl">
        
