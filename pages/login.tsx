@@ -13,16 +13,17 @@ import {
   useSwitchChain,
 } from "@thirdweb-dev/react";
 import LoginExecuteButton from "@/components/LoginExecuteButton";
+import { Polygon, Mumbai } from "@thirdweb-dev/chains";
+
 const Login: NextPage = () => {
   const { execute: login, error: loginError, isPending: isLoginPending } = useWalletLogin();
   const router = useRouter();
-  const walletInfo = useActiveWallet();
+  const { data: wallet, loading } = useActiveWallet();
   const activeProfile = useActiveProfile();
 
-const address = useAddress();
-console.log(walletInfo)
-console.log("activeProfile" + activeProfile)
 
+
+   
 
   return (
     <>
@@ -33,33 +34,9 @@ console.log("activeProfile" + activeProfile)
             </Center>
             
            <Space h="md" />
-        {/* Wallet connected, but no Lens profile */}
-          {walletInfo?.data && !activeProfile?.data && (
-            <>
-          
-              
-         <Center>
-              <Text size="md" fw={500}>Sorry, you dont have a Lens Profile.</Text>
-              </Center>
-             <Space h="md" />
-
-              <Center>
-        
-      <SignInWithLensButton/>
-     
-              </Center>
-
-              
-            </>
-          )}
-              <Space h="md" />
-            
-                
-            
-         <Space h="lg"/>
-        <Group justify="center">
+           <Group justify="center">
           {/* Wallet connected, has profile on Lens. */}
-          {walletInfo?.data && activeProfile?.data ? (
+          {wallet && activeProfile?.data ? (
   // Render content when both walletInfo and activeProfile data are available
   <>
     <Center>
@@ -81,16 +58,52 @@ console.log("activeProfile" + activeProfile)
 ) : (
   // Render content when either walletInfo or activeProfile data is missing
   <>
-
     <Center>
-      <SignInWithLensButton />
-    </Center>
+        
+      <SignInWithLensButton/>
+     
+              </Center>
+
+   
   </>
 )}
 
 
           
         </Group>
+        
+        {/* Wallet connected, but no Lens profile */}
+          {wallet && !activeProfile?.data && (
+            <>
+<Space h="md" />
+        <Center>
+          <Text size="md" fw={500}>You don&rsquo;t have a Lens profile yet. 😞</Text>
+        </Center>
+             <Space h="md" />
+
+     <Center>
+         Waves requires you to have a Lens profile NFT.{" "}
+              
+    </Center>
+     <Space h="md" />
+     
+     <Center>
+                <Link
+                  href="https://lens.xyz/"
+                  target="_blank"
+                  className="underline"
+                >
+                  Learn more
+                </Link>
+               </Center>
+            </>
+          )}
+              <Space h="md" />
+            
+                
+            
+         <Space h="lg"/>
+        
       </Paper>
       </Container>
     </>

@@ -17,15 +17,27 @@ export default function SignInWithLensButton() {
   const wrongNetwork = useNetworkMismatch();
   const switchChain = useSwitchChain();
   const walletInfo = useActiveWallet();
-console.log("wrongNetwork" + wrongNetwork)
 
+
+ if (!address) {
+    return (
+      <ConnectWallet
+        style={{
+          width: "100%",
+        }}
+        auth={{
+          loginOptional: true,
+        }}
+        theme="dark"
+      />
+    );
+  }
 
   if (wrongNetwork) {
     return (
       <Button
-        variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
         onClick={() => {
-          switchChain(Polygon.chainId); 
+          switchChain(CHAIN.chainId);
         }}
       >
         Switch to {CHAIN.name}

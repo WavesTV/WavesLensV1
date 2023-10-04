@@ -50,12 +50,18 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
   const signer = useSigner();
   const router = useRouter();
   const signerWrapped = useTypedDataSignerWrapper(signer, sdk);
-
+if (!signer && router.pathname !== "/") {
+    return (
+      <>
+        <NetworkSwitchModal />
+      </>
+    );
+  }
 
   return (
     <LensProvider
   config={{
-    environment: production, // Hardcoded to production
+    environment: production,
     bindings: {
       getSigner: async () => signerWrapped as RequiredSigner,
       getProvider: async () =>
@@ -91,7 +97,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <LivepeerConfig client={livepeerClient}>
             <MantineProvider>
               <ThirdwebProvider
-          activeChain={Polygon}
+          activeChain={CHAIN}
           authConfig={{
             domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
             authUrl: "/api/auth",

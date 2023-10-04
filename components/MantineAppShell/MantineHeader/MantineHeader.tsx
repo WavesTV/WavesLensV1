@@ -25,6 +25,7 @@ import {
     IconLogout,
     IconReceipt2,
     IconSwitchHorizontal,
+    IconLayoutDashboard,
   } from '@tabler/icons-react';
 import classes from './MantineHeader.module.css';
 import Link from 'next/link';
@@ -56,11 +57,14 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
       <Box>
         <header className={classes.header}>
           <Group justify="space-between" h="100%">
+             <UnstyledButton component={Link} href="/">
           <Group>
+           
           <Text size="xl" fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>Waves</Text>
 <Badge variant="filled" color="blue" radius="sm" className={classes.betaTag}>BETA</Badge>
+
 </Group>
-  
+  </UnstyledButton>
             <Group h="100%" visibleFrom="sm">
             <Tooltip label="Home" withArrow  position="bottom" offset={3}>
           <ActionIcon
@@ -74,7 +78,7 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
       <IconHome2 />
     </ActionIcon>
     </Tooltip>
-    <Tooltip label="Profile" withArrow  position="bottom" offset={3}>
+    <Tooltip label="Dashboard" withArrow  position="bottom" offset={3}>
     <ActionIcon
     component={Link}
     href="/dashboard"
@@ -83,7 +87,7 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
       aria-label="Gradient action icon"
       gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
     >
-      <IconUser />
+      <IconLayoutDashboard />
     </ActionIcon>
     </Tooltip>
     <Tooltip label="Wallet" withArrow  position="bottom" offset={3}>
@@ -193,7 +197,7 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
               Home
             </Link>
             <Space h='md'/>
-            <Link   href="/user" className={classes.link} onClick={closeDrawer}> 
+            <Link   href="/dashboard" className={classes.link} onClick={closeDrawer}> 
             <ActionIcon
    
       variant="gradient"
@@ -201,10 +205,10 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
       aria-label="Gradient action icon"
       gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
     >
-      <IconUser/>
+      <IconLayoutDashboard/>
     </ActionIcon>
     <Space w='md'/>
-              Profile
+              Dashboard
             </Link>
             <Space h='md'/>
             <Link href="/wallet" className={classes.link} onClick={closeDrawer}> 

@@ -1,4 +1,4 @@
-import { useWalletLogin } from "@lens-protocol/react-web";
+import { useWalletLogin, useActiveWallet } from "@lens-protocol/react-web";
 import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
 import React from "react";
 import { Button } from "@mantine/core";
@@ -6,7 +6,6 @@ import { Button } from "@mantine/core";
 export default function LoginExecuteButton() {
   const loginFunction = useWalletLogin();
   const address = useAddress();
-console.log("address" + address)
 
   if (!address)
     return (
@@ -19,7 +18,6 @@ console.log("address" + address)
 
   return (
     <Button
-    variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}
       onClick={() => {
         loginFunction?.execute({
           address: address,

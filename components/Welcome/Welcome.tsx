@@ -97,8 +97,8 @@ export function Welcome() {
       </Center>
       <Container size={560} p={0}>
       <Center>
-        <Text fw={700} c="dimmed" size="md">
-          Decentralized Live Streaming
+        <Text fw={700} size="md">
+          Twitch Meets Twitter
         </Text>
       </Center>
       </Container>
