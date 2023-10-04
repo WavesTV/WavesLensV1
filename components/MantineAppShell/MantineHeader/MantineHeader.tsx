@@ -33,6 +33,7 @@ import { GiWaveCrest } from 'react-icons/gi';
 import { ColorSchemeToggle } from '../../ColorSchemeToggle';
 import SignInWithLensButton from '@/components/SignInWithLensButton';
 import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-protocol/react-web";
+import { ConnectWallet } from '@thirdweb-dev/react';
 
 
 
@@ -123,6 +124,8 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
   
             <Group visibleFrom="sm">
             <ColorSchemeToggle/>
+
+            {/* Wallet + Active Lens Profile */}
             {walletInfo?.data && activeProfile?.data && (
             <>
              <Menu
@@ -159,6 +162,22 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
             </>
                
           )}
+          {/* No Wallet + No Lens Profile */}
+          {!walletInfo?.data && !activeProfile?.data && (
+            <>
+            <Button component={Link} href="/login">Login</Button>
+            </>
+          )}
+
+          {/*Wallet + No Lens Profile */}
+          {walletInfo?.data && !activeProfile?.data && (
+              <ConnectWallet
+        auth={{
+          loginOptional: true,
+        }}
+      />
+
+             )}
             </Group>
   
             <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
@@ -242,7 +261,7 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
           
 
           <Group align="center" grow pb="xl" px="md">
-             {walletInfo?.data && activeProfile?.data && (
+             {walletInfo?.data && activeProfile?.data ? (
           <Menu
                          
                             shadow="md"
@@ -269,7 +288,12 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
                               </Menu.Item>
             </Menu.Dropdown>
             </Menu>
+             ):(
+            <>
+            <Button component={Link} href="/login">Login</Button>
+            </>
              )}
+             
           </Group>
         </ScrollArea>
       </Drawer>

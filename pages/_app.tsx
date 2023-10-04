@@ -61,12 +61,15 @@ if (!signer && router.pathname !== "/") {
   return (
     <LensProvider
   config={{
-    environment: production,
+    environment: IS_DEV_ENV ? production : development,
     bindings: {
       getSigner: async () => signerWrapped as RequiredSigner,
+      
       getProvider: async () =>
-        new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
-    },
+            IS_DEV_ENV
+              ? new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
+              : new JsonRpcProvider("https://mumbai.rpc.thirdweb.com"),
+        },
     // @ts-ignore: TODO
     appId: "waves",
   }}
