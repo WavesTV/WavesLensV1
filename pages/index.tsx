@@ -5,9 +5,9 @@ import {
   useActiveWallet,
 } from "@lens-protocol/react-web";
 import Feed from "./feed";
-import Create from "./create";
 import { Avatar, Paper, Text, Button, Textarea, Space, Group, Container, Checkbox , ActionIcon, FileInput, Center} from "@mantine/core";
 import { GiMirrorMirror } from "react-icons/gi";
+
 const Home: NextPage = () => {
  const walletInfo = useActiveWallet();
   const activeProfile = useActiveProfile();
