@@ -61,14 +61,14 @@ if (!signer && router.pathname !== "/") {
   return (
     <LensProvider
   config={{
-    environment: IS_DEV_ENV ? production : development,
+    environment: production,
     bindings: {
       getSigner: async () => signerWrapped as RequiredSigner,
       
       getProvider: async () =>
             IS_DEV_ENV
               ? new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
-              : new JsonRpcProvider("https://mumbai.rpc.thirdweb.com"),
+              : new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
         },
     // @ts-ignore: TODO
     appId: "waves",
@@ -100,9 +100,9 @@ function MyApp({ Component, pageProps }: AppProps) {
         <LivepeerConfig client={livepeerClient}>
             <MantineProvider>
               <ThirdwebProvider
-          activeChain={CHAIN}
+          activeChain={Polygon}
           authConfig={{
-            domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
+            domain: "waves-lensv1.vercel.app",
             authUrl: "/api/auth",
           }}
           clientId="4a312a420d5955a7b84f3ef3dd754864"
