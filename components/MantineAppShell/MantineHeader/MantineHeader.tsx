@@ -169,15 +169,7 @@ import { ConnectWallet } from '@thirdweb-dev/react';
             </>
           )}
 
-          {/*Wallet + No Lens Profile */}
-          {walletInfo?.data && !activeProfile?.data && (
-              <ConnectWallet
-        auth={{
-          loginOptional: true,
-        }}
-      />
 
-             )}
             </Group>
   
             <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
