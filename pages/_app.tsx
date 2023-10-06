@@ -59,21 +59,20 @@ if (!signer && router.pathname !== "/") {
   }
 
   return (
-    <LensProvider
-  config={{
-    environment: production,
-    bindings: {
-      getSigner: async () => signerWrapped as RequiredSigner,
-      
-      getProvider: async () =>
+ <LensProvider
+      config={{
+        environment: IS_DEV_ENV ? development : production,
+        bindings: {
+          getSigner: async () => signerWrapped as RequiredSigner,
+          getProvider: async () =>
             IS_DEV_ENV
-              ? new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
+              ? new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
               : new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
         },
-    // @ts-ignore: TODO
-    appId: "waves",
-  }}
->
+        // @ts-ignore: TODO
+        appId: "waves",
+      }}
+    >
       {children}
     </LensProvider>
   );
@@ -100,7 +99,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <LivepeerConfig client={livepeerClient}>
             <MantineProvider>
               <ThirdwebProvider
-          activeChain={Polygon}
+          activeChain={CHAIN}
           authConfig={{
             domain: "waves-lensv1.vercel.app",
             authUrl: "/api/auth",
