@@ -102,7 +102,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               <ThirdwebProvider
           activeChain={CHAIN}
           authConfig={{
-            domain: "waves-lensv1.vercel.app",
+            domain: "https://waves-lensv1.vercel.app",
             authUrl: "/api/auth",
           }}
           clientId="4a312a420d5955a7b84f3ef3dd754864"
