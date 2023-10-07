@@ -12,4 +12,4 @@ export const IS_DEV_ENV = process.env.NODE_ENV === "production";
 const DEVELOPMENT_CHAIN = Polygon; // e.g. Mumbai used for local development
 const PRODUCTION_CHAIN = Polygon; // e.g. Polygon used for production
 
-export const CHAIN = IS_DEV_ENV ? DEVELOPMENT_CHAIN : PRODUCTION_CHAIN;
+export const CHAIN = PRODUCTION_CHAIN;
