@@ -7,8 +7,8 @@ export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
   domain: "waves-lensv1.vercel.app",
 
   // Use the private key from the environment or generate a random one
-  wallet: process.env.THIRDWEB_AUTH_PRIVATE_KEY
-    ? new PrivateKeyWallet(process.env.THIRDWEB_AUTH_PRIVATE_KEY)
+  wallet: "uI4kVapLEYRj_LF7RTreiPdi5hcb3doHLTFrsJRPPkOsv9ETkgzDZKpeUA32_SXMeE4eq5fJxrS8IcYBfA9PBA"
+    ? new PrivateKeyWallet("uI4kVapLEYRj_LF7RTreiPdi5hcb3doHLTFrsJRPPkOsv9ETkgzDZKpeUA32_SXMeE4eq5fJxrS8IcYBfA9PBA")
     : new EthersWallet(ethers.Wallet.createRandom()),
 });
 

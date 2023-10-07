@@ -96,8 +96,9 @@ function MyApp({ Component, pageProps }: AppProps) {
           fontHeading.variable
         )}
       >
+            
         <LivepeerConfig client={livepeerClient}>
-          
+           <MantineProvider>
               <ThirdwebProvider
           activeChain={CHAIN}
           authConfig={{
@@ -107,7 +108,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           clientId="4a312a420d5955a7b84f3ef3dd754864"
         >
           <LensThirdwebProvider>
-              <MantineProvider>
+         
               <AppShell
                   padding="md"
                   header={{ height: 60 }}
@@ -163,11 +164,12 @@ function MyApp({ Component, pageProps }: AppProps) {
            
         </AppShell.Main>
    </AppShell>
-            </MantineProvider>
-</LensThirdwebProvider>
+           
+          </LensThirdwebProvider>
         </ThirdwebProvider>
-            
+        </MantineProvider>
       </LivepeerConfig>    
+       
       </main>
     </>
   );
