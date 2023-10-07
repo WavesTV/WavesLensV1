@@ -66,7 +66,7 @@ if (!signer && router.pathname !== "/") {
           getSigner: async () => signerWrapped as RequiredSigner,
           getProvider: async () =>
             IS_DEV_ENV
-              ? new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
+              ? new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
               : new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
         },
         // @ts-ignore: TODO
