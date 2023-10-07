@@ -61,7 +61,7 @@ if (!signer && router.pathname !== "/") {
   return (
  <LensProvider
       config={{
-        environment: IS_DEV_ENV ? development : production,
+        environment: production,
         bindings: {
           getSigner: async () => signerWrapped as RequiredSigner,
           getProvider: async () =>
