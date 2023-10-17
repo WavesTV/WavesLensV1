@@ -4,11 +4,11 @@ import { ethers } from "ethers";
 
 export const { ThirdwebAuthHandler, getUser } = ThirdwebAuth({
   // Use the domain from the environment or default to evmkit.com
-  domain: "https://waves-lensv1.vercel.app",
+  domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
 
   // Use the private key from the environment or generate a random one
-  wallet: "uI4kVapLEYRj_LF7RTreiPdi5hcb3doHLTFrsJRPPkOsv9ETkgzDZKpeUA32_SXMeE4eq5fJxrS8IcYBfA9PBA"
-    ? new PrivateKeyWallet("uI4kVapLEYRj_LF7RTreiPdi5hcb3doHLTFrsJRPPkOsv9ETkgzDZKpeUA32_SXMeE4eq5fJxrS8IcYBfA9PBA")
+  wallet: process.env.THIRDWEB_AUTH_PRIVATE_KEY
+    ? new PrivateKeyWallet(process.env.THIRDWEB_AUTH_PRIVATE_KEY)
     : new EthersWallet(ethers.Wallet.createRandom()),
 });
 
