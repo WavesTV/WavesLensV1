@@ -2,7 +2,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { ThirdwebProvider, useSDK, useSigner } from "@thirdweb-dev/react";
 import { Polygon, Mumbai } from "@thirdweb-dev/chains";
-import { CHAIN, IS_DEV_ENV } from "../const/chains";
+import { CHAIN } from "../const/chains";
 import { cn } from "@/lib/utils";
 import { Inter as FontSans } from "next/font/google";
 import localFont from "next/font/local";
@@ -61,13 +61,11 @@ if (!signer && router.pathname !== "/") {
   return (
  <LensProvider
        config={{
-        environment: IS_DEV_ENV ? development : production,
+        environment: production,
         bindings: {
           getSigner: async () => signerWrapped as RequiredSigner,
           getProvider: async () =>
-            IS_DEV_ENV
-              ? new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
-              : new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
+          new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
         },
         // @ts-ignore: TODO
         appId: "waves",
