@@ -60,13 +60,13 @@ if (!signer && router.pathname !== "/") {
 
   return (
  <LensProvider
-      config={{
-        environment: production,
+       config={{
+        environment: IS_DEV_ENV ? development : production,
         bindings: {
           getSigner: async () => signerWrapped as RequiredSigner,
           getProvider: async () =>
             IS_DEV_ENV
-              ? new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
+              ? new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
               : new JsonRpcProvider("https://polygon.rpc.thirdweb.com"),
         },
         // @ts-ignore: TODO
@@ -102,10 +102,11 @@ function MyApp({ Component, pageProps }: AppProps) {
               <ThirdwebProvider
           activeChain={CHAIN}
           authConfig={{
-            domain: "https://waves-lensv1.vercel.app",
+            domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
             authUrl: "/api/auth",
           }}
-          clientId="4a312a420d5955a7b84f3ef3dd754864"
+          clientId={process.env.NEXT_PUBLIC_THIRDWEB_API_KEY || ""}
+          
         >
           <LensThirdwebProvider>
          
