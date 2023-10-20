@@ -156,7 +156,7 @@ function MyApp({ Component, pageProps }: AppProps) {
    <a href="https://thirdweb.com/"
               target="_blank"
               rel="noreferrer"><Image
-      radius="md"
+      radius={111}
      src="https://th.bing.com/th/id/OIP.mGsGlWc1zp3rKl79vSYsrgAAAA?w=150&h=75&c=7&r=0&o=5&pid=1.7"
     /></a>
    </Tooltip>
@@ -168,7 +168,7 @@ function MyApp({ Component, pageProps }: AppProps) {
    <a href="https://www.lens.xyz/"
               target="_blank"
               rel="noreferrer"><Image
-      radius="md"
+       radius={111}
       h={125}
      w={125}
          src="https://th.bing.com/th/id/OIP.DcM6w_tNnGR1KYPxIcVK3wAAAA?w=165&h=180&c=7&r=0&o=5&pid=1.7"
@@ -183,7 +183,7 @@ function MyApp({ Component, pageProps }: AppProps) {
    <a href="https://livepeer.org/"
               target="_blank"
               rel="noreferrer"><Image
-      radius="md"
+       radius={111}
       h={125}
      w={125}
       src="https://th.bing.com/th/id/OIP.B07_Bdo5Xrxzzpc1lLuleAAAAA?w=144&h=150&c=7&r=0&o=5&pid=1.7"
@@ -201,7 +201,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       <Divider my="sm" />
             <Space h="md"/>
 
-         <Center>    <Text>Founder:</Text><Space w="xs"/><Tooltip label="Visit Jarrod's Twitter"><Text fw={700} component="a"  target="_blank"
+         <Center>    <Text>Founder:</Text><Space w="xs"/><Tooltip label="Visit Jarrod's Twitter"><Text fw={700} component="a" target="_blank"
               rel="noreferrer" href="https://twitter.com/jarrodwattsdev">Jarrod Watt</Text></Tooltip> 
           </Center>
     <Tooltip label="Visit BackMe">
