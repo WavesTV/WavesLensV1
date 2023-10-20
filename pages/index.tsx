@@ -1,22 +1,50 @@
 import type { NextPage } from "next";
-import { Welcome } from "@/components/Welcome/Welcome";
+
 import {
   useActiveProfile,
   useActiveWallet,
 } from "@lens-protocol/react-web";
 import Feed from "./feed";
 import { Avatar, Paper, Text, Button, Textarea, Space, Group, Container, Checkbox , ActionIcon, FileInput, Center} from "@mantine/core";
-import { GiMirrorMirror } from "react-icons/gi";
+import Link from "next/link";
+import { GiBigWave  } from "react-icons/gi";
+import { GiWaveSurfer } from "react-icons/gi";
 
 const Home: NextPage = () => {
  const walletInfo = useActiveWallet();
   const activeProfile = useActiveProfile();
+
+
   return (
     <>
-   
-    <Welcome />
-  <Container>
 
+<Center>
+        
+      <Text fz={66} fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 176 }}>Waves</Text>
+      </Center>
+      <Container size={560} p={0}>
+      <Center>
+        <Text fw={700} size="md">
+          Twitch Meets Twitter
+        </Text>
+      </Center>
+      
+<Space h="xl"/>
+<Group grow>
+   <Button
+   component={Link}
+            size="md"
+           href="/login"
+            variant="gradient"
+            gradient={{ from: 'blue', to: 'cyan' }}
+            leftSection={<GiWaveSurfer size={23} />}
+          >
+            Sign Up
+          </Button>
+
+        </Group>
+      <Space h="xl"/>
+   
         
                 {walletInfo?.data && activeProfile?.data ? (
                    <></>

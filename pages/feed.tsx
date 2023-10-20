@@ -80,12 +80,10 @@ const Feed: NextPage = () => {
     {/* Public feed loading */}
             {
               publicFeed?.loading &&
-              Array.from({ length: 10 }).map((_, i) => (
-                <Skeleton
-                  className="h-[88px] animate-pulse bg-muted mt-3 w-full"
-                  key={i}
-                />
-              ))}
+              <Group justify="center">
+              <Loader color="blue" />
+              </Group>
+              }
 
             {/* Public feed has loaded */}
             {!publicFeed?.loading && publicFeed?.data && (
@@ -96,8 +94,8 @@ const Feed: NextPage = () => {
                 loader={
                   <>
                    
-          
-                   
+          <Loader color="blue" />
+                    
                   </>
                 }
                 endMessage={

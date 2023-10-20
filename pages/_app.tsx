@@ -18,8 +18,10 @@ import '@mantine/core/styles.css';
 import NetworkSwitchModal from "@/components/NetworkSwitchModal";
 import { useTypedDataSignerWrapper } from "@/lib/typedDataSigner";
 import { useRouter } from "next/router";
-import { ActionIcon, AppShell, Container, Group, MantineProvider, Tooltip } from '@mantine/core';
+import { ActionIcon, AppShell, Center, Text, Image, MantineProvider, Space, Tooltip, Divider, Paper } from '@mantine/core';
 import { RiArrowRightDoubleLine, RiArrowLeftDoubleLine } from 'react-icons/ri';
+import { ImPlus } from 'react-icons/im';
+import { siteConfig } from "../config/site";
 import { useDisclosure } from '@mantine/hooks';
 import { MantineHeader } from '@/components/MantineAppShell/MantineHeader/MantineHeader';
 import {
@@ -65,7 +67,7 @@ if (!signer && router.pathname !== "/") {
         bindings: {
           getSigner: async () => signerWrapped as RequiredSigner,
           getProvider: async () =>
-          new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
+          new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
         },
         // @ts-ignore: TODO
         appId: "waves",
@@ -141,7 +143,32 @@ function MyApp({ Component, pageProps }: AppProps) {
     
     </AppShell.Navbar>
     <AppShell.Aside>
+      <Space h="md"/>
+       
+      <Text fw={700} ta="center"fs="italic">Powered By</Text>
+      <Divider my="sm" />
+            <Space h="md"/>
+       <Center>
+  <Image
+      radius="md"
+     h={125}
+     w={125}
+      src="https://th.bing.com/th/id/OIP.DcM6w_tNnGR1KYPxIcVK3wAAAA?w=165&h=180&c=7&r=0&o=5&pid=1.7"
+    />
+    
+    <Space w="xs"/>
+     <Center> <ImPlus/> </Center>
+   <Space w="xs"/>
   
+  <Image
+      radius="md"
+     h={125}
+     w={125}
+      src="https://th.bing.com/th?id=OIP.VrEEEUl6ksfE3xqJrmmsUgAAAA&w=212&h=152&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
+    />
+    </Center>
+   
+   
  </AppShell.Aside>
  
       <AppShell.Main >
