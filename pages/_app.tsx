@@ -18,7 +18,7 @@ import '@mantine/core/styles.css';
 import NetworkSwitchModal from "@/components/NetworkSwitchModal";
 import { useTypedDataSignerWrapper } from "@/lib/typedDataSigner";
 import { useRouter } from "next/router";
-import { ActionIcon, AppShell, Center, Text, Image, MantineProvider, Space, Tooltip, Divider, Paper } from '@mantine/core';
+import { ActionIcon, AppShell, Center, Text, Image, MantineProvider, Space, Tooltip, Divider, Paper, Group, List, ThemeIcon } from '@mantine/core';
 import { RiArrowRightDoubleLine, RiArrowLeftDoubleLine } from 'react-icons/ri';
 import { ImPlus } from 'react-icons/im';
 import { siteConfig } from "../config/site";
@@ -31,6 +31,7 @@ import {
 } from "@livepeer/react";
 import { Notifications } from "@mantine/notifications";
 import '@mantine/notifications/styles.css';
+import { IconCircleCheck } from "@tabler/icons-react";
 const livepeerClient = createReactClient({
   provider: studioProvider({
     apiKey: "bbf760d8-7fe5-45f9-91df-9e333d949d34",
@@ -143,77 +144,35 @@ function MyApp({ Component, pageProps }: AppProps) {
     
     </AppShell.Navbar>
     <AppShell.Aside>
-      <Space h="md"/>
-       
-      
-            <Paper shadow="xl" radius="xl" withBorder p="xl">
-              <Text fw={700} ta="center"fs="italic">Powered By</Text>
-      <Divider my="sm" />
-            <Space h="md"/>
+<Space h="md"/>
 <Center>
-         
-    <Tooltip label="Visit ThirdWeb">
-   <a href="https://thirdweb.com/"
-              target="_blank"
-              rel="noreferrer"><Image
-      radius={111}
-     src="https://th.bing.com/th/id/OIP.mGsGlWc1zp3rKl79vSYsrgAAAA?w=150&h=75&c=7&r=0&o=5&pid=1.7"
-    /></a>
-   </Tooltip>
-    </Center>
-     <Space h="md"/>
-       <Center>
-
-      <Tooltip label="Visit Lens Protocol">
-   <a href="https://www.lens.xyz/"
-              target="_blank"
-              rel="noreferrer"><Image
-       radius={111}
-      h={125}
-     w={125}
-         src="https://th.bing.com/th/id/OIP.DcM6w_tNnGR1KYPxIcVK3wAAAA?w=165&h=180&c=7&r=0&o=5&pid=1.7"
-    /></a>
-   </Tooltip>
-    <Space w="xs"/>
-     <Center> <ImPlus/> </Center>
-   <Space w="xs"/>
-  
-
-    <Tooltip label="Visit Livepeer">
-   <a href="https://livepeer.org/"
-              target="_blank"
-              rel="noreferrer"><Image
-       radius={111}
-      h={125}
-     w={125}
-      src="https://th.bing.com/th/id/OIP.B07_Bdo5Xrxzzpc1lLuleAAAAA?w=144&h=150&c=7&r=0&o=5&pid=1.7"
-    /></a>
-   </Tooltip>
-    </Center>
-    
-    </Paper>
-    <Space h="md"/>
-       
-    
-    
-       <Paper shadow="xl" radius="xl" withBorder p="xl">
-          <Text fw={700} ta="center"fs="italic">Forked From</Text>
+   
+  <Paper shadow="xl" radius="xl" withBorder p="xl">
+      <Text fw={700} ta="center" fs="italic">Powered By</Text>
       <Divider my="sm" />
-            <Space h="md"/>
-
-         <Center>    <Text>Founder:</Text><Space w="xs"/><Tooltip label="Visit Jarrod's Twitter"><Text fw={700} component="a" target="_blank"
-              rel="noreferrer" href="https://twitter.com/jarrodwattsdev">Jarrod Watt</Text></Tooltip> 
-          </Center>
-    <Tooltip label="Visit BackMe">
-   <a href="https://www.backme.dev/"
-              target="_blank"
-              rel="noreferrer"><Image
-      radius="md"
+<Space h="md"/>
      
-      src="https://github.com/jarrodwatts/backme/blob/565114d37a973ff471c21c1faf06361dc9ddb1bf/public/logo.png?raw=true"
-    /></a>
-   </Tooltip>
-    </Paper>
+      <List
+      spacing="xs"
+      size="sm"
+      center
+      icon={
+        <ThemeIcon color="blue" size={24} radius="xl">
+          <IconCircleCheck size="1rem" />
+        </ThemeIcon>
+      }
+    >
+      <List.Item><Text fw={700} ta="center" component="a" href="https://www.lens.xyz/" target="_blank" rel="noreferrer">Lens Protocol</Text></List.Item>
+      <List.Item><Text fw={700} ta="center" component="a" href="https://livepeer.org/" target="_blank" rel="noreferrer">Livepeer Video</Text></List.Item>
+      <List.Item><Text fw={700} ta="center" component="a" href="https://thirdweb.com/" target="_blank" rel="noreferrer">ThirdWeb</Text></List.Item>
+      <List.Item><Text fw={700} ta="center" component="a" href="https://www.backme.dev/" target="_blank" rel="noreferrer">BackMe</Text></List.Item>
+    
+    </List>
+     
+      </Paper>
+   
+</Center>
+<Space h="md"/>
  </AppShell.Aside>
  
       <AppShell.Main >
