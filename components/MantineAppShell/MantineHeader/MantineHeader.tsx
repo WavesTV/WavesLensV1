@@ -29,7 +29,9 @@ import {
   } from '@tabler/icons-react';
 import classes from './MantineHeader.module.css';
 import Link from 'next/link';
+
 import { GiWaveCrest } from 'react-icons/gi';
+import { PiSealQuestion } from 'react-icons/pi';
 import { ColorSchemeToggle } from '../../ColorSchemeToggle';
 import SignInWithLensButton from '@/components/SignInWithLensButton';
 import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-protocol/react-web";
@@ -117,7 +119,25 @@ import { ConnectWallet } from '@thirdweb-dev/react';
       <IconBellRinging/>
      
    
-        
+  
+    </ActionIcon>
+    </Tooltip>
+
+    <Tooltip label="Why Waves" withArrow  position="bottom" offset={3}>
+    <ActionIcon
+    component={Link}
+    href="/why"
+      variant="gradient"
+      size="xl"
+      aria-label="Gradient action icon"
+      gradient={{ from: 'blue', to: 'cyan', deg: 270 }}
+    
+    >
+     
+      <PiSealQuestion size="1.7rem"/>
+     
+   
+  
     </ActionIcon>
     </Tooltip>
             </Group>
@@ -248,6 +268,20 @@ import { ConnectWallet } from '@thirdweb-dev/react';
     </ActionIcon>
     <Space w='md'/>
               Notifications
+            </Link>
+            <Space h='md'/>
+            <Link href="/why" className={classes.link} onClick={closeDrawer}> 
+            <ActionIcon
+   
+      variant="gradient"
+      size="xl"
+      aria-label="Gradient action icon"
+      gradient={{ from: 'blue', to: 'cyan', deg: 270 }}
+    >
+      <PiSealQuestion size="1.7rem"/>
+    </ActionIcon>
+    <Space w='md'/>
+              Why Waves
             </Link>
             <Space h='md'/>
           
