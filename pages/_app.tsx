@@ -145,30 +145,75 @@ function MyApp({ Component, pageProps }: AppProps) {
     <AppShell.Aside>
       <Space h="md"/>
        
-      <Text fw={700} ta="center"fs="italic">Powered By</Text>
+      
+            <Paper shadow="xl" radius="xl" withBorder p="xl">
+              <Text fw={700} ta="center"fs="italic">Powered By</Text>
       <Divider my="sm" />
             <Space h="md"/>
+<Center>
+         
+    <Tooltip label="Visit ThirdWeb">
+   <a href="https://thirdweb.com/"
+              target="_blank"
+              rel="noreferrer"><Image
+      radius={111}
+     src="https://th.bing.com/th/id/OIP.mGsGlWc1zp3rKl79vSYsrgAAAA?w=150&h=75&c=7&r=0&o=5&pid=1.7"
+    /></a>
+   </Tooltip>
+    </Center>
+     <Space h="md"/>
        <Center>
-  <Image
-      radius="md"
-     h={125}
+
+      <Tooltip label="Visit Lens Protocol">
+   <a href="https://www.lens.xyz/"
+              target="_blank"
+              rel="noreferrer"><Image
+       radius={111}
+      h={125}
      w={125}
-      src="https://th.bing.com/th/id/OIP.DcM6w_tNnGR1KYPxIcVK3wAAAA?w=165&h=180&c=7&r=0&o=5&pid=1.7"
-    />
-    
+         src="https://th.bing.com/th/id/OIP.DcM6w_tNnGR1KYPxIcVK3wAAAA?w=165&h=180&c=7&r=0&o=5&pid=1.7"
+    /></a>
+   </Tooltip>
     <Space w="xs"/>
      <Center> <ImPlus/> </Center>
    <Space w="xs"/>
   
-  <Image
-      radius="md"
-     h={125}
+
+    <Tooltip label="Visit Livepeer">
+   <a href="https://livepeer.org/"
+              target="_blank"
+              rel="noreferrer"><Image
+       radius={111}
+      h={125}
      w={125}
-      src="https://th.bing.com/th?id=OIP.VrEEEUl6ksfE3xqJrmmsUgAAAA&w=212&h=152&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
-    />
+      src="https://th.bing.com/th/id/OIP.B07_Bdo5Xrxzzpc1lLuleAAAAA?w=144&h=150&c=7&r=0&o=5&pid=1.7"
+    /></a>
+   </Tooltip>
     </Center>
-   
-   
+    
+    </Paper>
+    <Space h="md"/>
+       
+    
+    
+       <Paper shadow="xl" radius="xl" withBorder p="xl">
+          <Text fw={700} ta="center"fs="italic">Forked From</Text>
+      <Divider my="sm" />
+            <Space h="md"/>
+
+         <Center>    <Text>Founder:</Text><Space w="xs"/><Tooltip label="Visit Jarrod's Twitter"><Text fw={700} component="a" target="_blank"
+              rel="noreferrer" href="https://twitter.com/jarrodwattsdev">Jarrod Watt</Text></Tooltip> 
+          </Center>
+    <Tooltip label="Visit BackMe">
+   <a href="https://www.backme.dev/"
+              target="_blank"
+              rel="noreferrer"><Image
+      radius="md"
+     
+      src="https://github.com/jarrodwatts/backme/blob/565114d37a973ff471c21c1faf06361dc9ddb1bf/public/logo.png?raw=true"
+    /></a>
+   </Tooltip>
+    </Paper>
  </AppShell.Aside>
  
       <AppShell.Main >
