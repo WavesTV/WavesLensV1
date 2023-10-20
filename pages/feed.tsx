@@ -43,36 +43,32 @@ const Feed: NextPage = () => {
 
   return (
     <>
-      <Tabs value={activeTab} onChange={setActiveTab} variant="outline" radius="md" defaultValue="first">
-        <Container>
-      <Tabs.List justify="center">
+      <Tabs variant="unstyled" defaultValue="first" classNames={classes}>
+    
+      <Tabs.List grow>
         <Tabs.Tab
         value="first"
+         leftSection={<BsFire style={{ width: rem(16), height: rem(16) }} />}
         >
-          <Center>
-              <BsFire size="1.4rem" />
-            </Center>
-            <Text fz="sm">Popular</Text>
+          
+            <Text fz="sm">Hot</Text>
         </Tabs.Tab>
         <Tabs.Tab
         value="second"
+         leftSection={<GiWaveCrest style={{ width: rem(16), height: rem(16) }} />}
         >
-          <Center>
-              <GiWaveCrest size="1.4rem" />
-            </Center>
+     
             <Text fz="sm">Waves</Text>
         </Tabs.Tab>
         <Tabs.Tab
         value="third"
-
+        leftSection={<FaUsers style={{ width: rem(16), height: rem(16) }} />}
         >
-           <Center>
-              <FaUsers size="1.4rem" />
-            </Center>
+          
             <Text fz="sm">Following</Text>
         </Tabs.Tab>
       </Tabs.List>
-</Container>
+
       <Tabs.Panel value="first"> <Space h="xl"/>
 
       
