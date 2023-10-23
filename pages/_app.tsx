@@ -53,13 +53,7 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
   const signer = useSigner();
   const router = useRouter();
   const signerWrapped = useTypedDataSignerWrapper(signer, sdk);
-if (!signer && router.pathname !== "/") {
-    return (
-      <>
-        <NetworkSwitchModal />
-      </>
-    );
-  }
+
 
   return (
  <LensProvider
