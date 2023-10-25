@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
-import { Button } from "@/components/ui/button";
+
 import {
   Form,
   FormControl,
@@ -13,7 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 
-import { Input } from "./ui/input";
+
 import {
   FollowPolicyType,
   ProfileOwnedByMe,
@@ -27,10 +27,11 @@ import useUpload from "@/lib/useUpload";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { Separator } from "./ui/separator";
-import { Checkbox } from "./ui/checkbox";
+
 import Link from "next/link";
 import { IconUserPlus, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
+import { Center, Paper, Space, Divider, Text, Button, Input, Container, Checkbox, Group } from "@mantine/core";
 
 const FormSchema = z.object({
   name: z.string().min(3).max(20).optional(),
@@ -113,7 +114,7 @@ export default function ProfileForm({ profile }: Props) {
           name: data.name || profile.name || "",
           bio: data.bio || profile.bio || "",
           // @ts-ignore
-          coverPicture: coverPicture || profile.coverPicture.original.url || "",
+          coverPicture: coverPicture || profile?.coverPicture?.original?.url || "",
         });
 
         if (updateProfileResult?.isFailure()) {
@@ -181,31 +182,43 @@ export default function ProfileForm({ profile }: Props) {
   }
 
   return (
+    <Container>
+    <Paper shadow="md" radius="md" withBorder p="xl">
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          Profile Information
-        </h3>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+       
+          <Text ta="center" fw={700} size="xl">Edit Profile</Text>
+        
+        <Divider my="sm" />
+        <Space h="xl"/>
 
+
+          
         <FormField
-          control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Display Name</FormLabel>
-              <FormControl>
-                <Input placeholder="Mario" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>
+                      <Text ta="left" fw={700} size="sm">Display Name</Text>
+                      </FormLabel>
+                      <Space h="xs"/>
+                      <FormControl>
+                        <Input placeholder="Your Mom" {...field} />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+        <Space h="xl"/>
         <FormField
           control={form.control}
           name="bio"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Bio</FormLabel>
+              <FormLabel><Text ta="left" fw={700} size="sm">Bio</Text></FormLabel>
+              <Space h="xs"/>
               <FormControl>
                 <Input
                   placeholder="A short Italian plumber that likes to jump on turtles."
@@ -216,12 +229,15 @@ export default function ProfileForm({ profile }: Props) {
             </FormItem>
           )}
         />
+        <Space h="xl"/>
+
         <FormField
           control={form.control}
           name="profilePicture"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Profile Picture</FormLabel>
+              <FormLabel><Text ta="left" fw={700} size="sm">Profile Picture</Text></FormLabel>
+              <Space h="xs"/>
               <FormControl>
                 <Input
                   {...field}
@@ -239,15 +255,18 @@ export default function ProfileForm({ profile }: Props) {
             </FormItem>
           )}
         />
+        <Space h="xl"/>
         <FormField
           control={form.control}
           name="coverPicture"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Cover Picture</FormLabel>
+              <FormLabel><Text ta="left" fw={700} size="sm">Cover Picture</Text></FormLabel>
+              <Space h="xs"/>
               <FormControl>
                 <Input
                   {...field}
+                
                   type="file"
                   accept="image/*"
                   multiple={false}
@@ -262,46 +281,41 @@ export default function ProfileForm({ profile }: Props) {
             </FormItem>
           )}
         />
-
-        <Separator />
-
-        <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
-          Subscription Settings
-        </h3>
+<Space h="xl"/>
+        <Text ta="center" fw={700} size="xl">Subscription Settings</Text>
+        
+        <Divider my="sm" />
+        <Space h="xl"/>
 
         <FormField
           control={form.control}
           name="followPolicy.type"
           render={({ field }) => (
-            <FormItem className="flex flex-row items-center space-x-2">
+            <FormItem>
               <FormControl>
                 <Checkbox
-                  {...field}
-                  checked={newFollowerPolicy === FollowPolicyType.CHARGE}
-                  onCheckedChange={(checked) => {
-                    if (checked) {
-                      field.value = FollowPolicyType.CHARGE;
-                      setNewFollowerPolicy(FollowPolicyType.CHARGE);
-                    } else {
-                      field.value = FollowPolicyType.ANYONE;
-                      setNewFollowerPolicy(FollowPolicyType.ANYONE);
-                    }
-                  }}
-                />
+  label="Enable paid subscriptions"
+  size="md"
+  {...field}
+  checked={newFollowerPolicy === FollowPolicyType.CHARGE}
+  onChange={(checked) => {
+    if (checked) {
+      field.value = FollowPolicyType.CHARGE;
+      setNewFollowerPolicy(FollowPolicyType.CHARGE);
+    } else {
+      field.value = FollowPolicyType.ANYONE;
+      setNewFollowerPolicy(FollowPolicyType.ANYONE);
+    }
+  }}
+/>
+
               </FormControl>
-              <FormLabel
-                style={{
-                  margin: 0,
-                  marginLeft: 12,
-                }}
-              >
-                Enable paid subscriptions
-              </FormLabel>
+              
               <FormMessage />
             </FormItem>
           )}
         />
-
+<Space h="xl"/>
         <FormField
           control={form.control}
           name="followPolicy.price"
@@ -338,11 +352,13 @@ export default function ProfileForm({ profile }: Props) {
             </FormItem>
           )}
         />
-
-        <div className="flex flex-row items-center justify-between">
+<Space h="xl"/>
+        <Group justify="right">
           <Button type="submit">Submit</Button>
-        </div>
+        </Group>
       </form>
     </Form>
+    </Paper>
+    </Container>
   );
 }

@@ -275,7 +275,7 @@ export default function Post({ post, className, activeProfile }: Props) {
             <Space h="xl" />
 
             {/* Post metadata */}
-            <Group justify="center">
+            <Group justify="center" style={{ whiteSpace: 'nowrap' }}>
               {/* Comments - Take user to the post */}
                 <Tooltip position="bottom" label="Comment">
               <ActionIcon
@@ -365,6 +365,14 @@ export default function Post({ post, className, activeProfile }: Props) {
       }
 
                     handleReaction();
+                    notifications.show({
+          title: "Liked!",
+          icon: <IconHeartFilled size="1.1rem" />,
+          color: "blue",
+          message: `You Liked ${
+            postToUse.profile.handle || "Anon"
+          }'s post. Keep it going!`,
+        });
                   } catch (error) {
                     console.error(error);
                   }

@@ -139,8 +139,6 @@ const createUnencrypted = useCreatePost({
       message: "Allow a few seconds for your post to appear.",
     });
 
-
-        router.push(`/profile/${activeProfile.data.handle}`);
       }
     } catch (error) {
       console.error(error);
@@ -197,7 +195,7 @@ const createUnencrypted = useCreatePost({
             Create Post
           </Button>
 <Checkbox
-      defaultChecked
+      
       label="Followers Only"
       description="Only your followers will be able to see this post."
       id="followers-only"
@@ -247,7 +245,7 @@ const createUnencrypted = useCreatePost({
             Create Post
           </Button>
 <Checkbox
-      defaultChecked
+      
       label="Followers Only"
       description="Only your followers will be able to see this post."
       id="followers-only"

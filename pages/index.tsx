@@ -1,14 +1,13 @@
 import type { NextPage } from "next";
-
 import {
   useActiveProfile,
   useActiveWallet,
 } from "@lens-protocol/react-web";
 import Feed from "./feed";
-import { Avatar, Paper, Text, Button, Textarea, Space, Group, Container, Checkbox , ActionIcon, FileInput, Center} from "@mantine/core";
+import { Avatar, Paper, Text, Button, Textarea, Space, Group, Container, Checkbox , Center} from "@mantine/core";
 import Link from "next/link";
-import { GiBigWave  } from "react-icons/gi";
 import { GiWaveSurfer } from "react-icons/gi";
+import { Create } from "@/components/create";
 
 const Home: NextPage = () => {
  const walletInfo = useActiveWallet();
@@ -17,12 +16,18 @@ const Home: NextPage = () => {
 
   return (
     <>
+<Container size={560} p={0}>
 
-<Center>
+        
+                {walletInfo?.data && activeProfile?.data ? (
+                   <><Create /></>
+                ) : (
+                  <>
+                  <Center>
         
       <Text fz={66} fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 176 }}>Waves</Text>
       </Center>
-      <Container size={560} p={0}>
+      
       <Center>
         <Text fw={700} size="md">
           Twitch Meets Twitter
@@ -45,10 +50,6 @@ const Home: NextPage = () => {
         </Group>
       <Space h="xl"/>
    
-        
-                {walletInfo?.data && activeProfile?.data ? (
-                   <></>
-                ) : (
                   <Paper shadow="xl" withBorder p="xl">
        
         <Group>
@@ -94,6 +95,8 @@ disabled
           
     </Group>    
       </Paper>
+                  </>
+                  
                 )}
        
       </Container>

@@ -34,7 +34,7 @@ import '@mantine/notifications/styles.css';
 import { IconCircleCheck } from "@tabler/icons-react";
 const livepeerClient = createReactClient({
   provider: studioProvider({
-    apiKey: "bbf760d8-7fe5-45f9-91df-9e333d949d34",
+    apiKey: process.env.NEXT_PUBLIC_LIVEPEER_KEY || ""
   }),
 });
 const fontSans = FontSans({
@@ -53,7 +53,13 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
   const signer = useSigner();
   const router = useRouter();
   const signerWrapped = useTypedDataSignerWrapper(signer, sdk);
-
+if (!signer && router.pathname !== "/") {
+    return (
+      <>
+        <NetworkSwitchModal />
+      </>
+    );
+  }
 
   return (
  <LensProvider
@@ -62,7 +68,7 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
         bindings: {
           getSigner: async () => signerWrapped as RequiredSigner,
           getProvider: async () =>
-          new JsonRpcProvider("https://mumbai.rpc.thirdweb.com")
+          new JsonRpcProvider("https://polygon.rpc.thirdweb.com")
         },
         // @ts-ignore: TODO
         appId: "waves",
