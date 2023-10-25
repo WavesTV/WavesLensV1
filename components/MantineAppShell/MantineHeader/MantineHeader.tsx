@@ -20,22 +20,17 @@ import { useDisclosure } from '@mantine/hooks';
 import {
     IconBellRinging,
     IconHome2,
-    IconUser,
     IconWallet,
     IconLogout,
-    IconReceipt2,
-    IconSwitchHorizontal,
     IconLayoutDashboard,
   } from '@tabler/icons-react';
 import classes from './MantineHeader.module.css';
 import Link from 'next/link';
-
 import { GiWaveCrest } from 'react-icons/gi';
 import { PiSealQuestion } from 'react-icons/pi';
 import { ColorSchemeToggle } from '../../ColorSchemeToggle';
-import SignInWithLensButton from '@/components/SignInWithLensButton';
 import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-protocol/react-web";
-import { ConnectWallet } from '@thirdweb-dev/react';
+
 
 
 
@@ -161,11 +156,11 @@ import { ConnectWallet } from '@thirdweb-dev/react';
             // @ts-ignore
              src={
                     // @ts-ignore
-                    activeProfile?.data?.picture?.original?.url || "/user.png"
+                    activeProfile?.data?.picture?.original?.url || ""
                   }
             
-              size={60}
-              radius={80}
+              size="md"
+              radius="md"
               mx="auto"
           />
             </Menu.Target>

@@ -1,5 +1,5 @@
 
-import { Button, Space, Center } from "@mantine/core";
+import { Button, Space, Center, Loader } from "@mantine/core";
 import { useActiveProfile } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import ProfileForm from "@/components/ProfileForm";
@@ -28,17 +28,13 @@ const ProfilePage = () => {
 
   return (
     <>
-
-      <Container>
-        <Center>
           {activeProfile?.loading ? (
-            <Skeleton className="h-96" />
+            <Loader color="blue"/>
           ) : (
             activeProfile &&
             activeProfile.data && <ProfileForm profile={activeProfile?.data} />
           )}
-        </Center>
-      </Container>
+      
     </>
   );
 };

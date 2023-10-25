@@ -106,16 +106,16 @@ const PostPage = () => {
         )}
         </Center>
         <Space h="md"/>
-        <Center>
+        <Group justify="center">
           
           <Input
-          variant="filled" radius="xl"
+            size="md" radius="xl"
             type="text"
-            placeholder="Enter your comment"
-            className="border-0 h-full m-0 w-full"
+            placeholder="Say some cool shit!"
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
+          
           <Button
             
             onClick={async () => {
@@ -160,9 +160,10 @@ const PostPage = () => {
           >
             Comment
           </Button>
-        </Center>
+         
+        </Group>
 
-
+ <Space h="md"/>
         {!publication?.loading &&
           publication?.data &&
           !comments?.loading &&

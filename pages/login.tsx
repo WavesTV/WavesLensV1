@@ -1,11 +1,11 @@
 
 import { NextPage } from "next";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import SignInWithLensButton from "@/components/SignInWithLensButton";
 import { useActiveProfile, useActiveWallet, useWalletLogin } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
-import { Center, Container, Paper, Text, Button, ActionIcon, UnstyledButton, Space, Group, Tooltip } from "@mantine/core";
+import { Center, Container, Paper, Text, Loader, ActionIcon, UnstyledButton, Space, Group, Tooltip } from "@mantine/core";
 import {
   ConnectWallet,
   useAddress,
@@ -22,7 +22,13 @@ const Login: NextPage = () => {
   const activeProfile = useActiveProfile();
 
 
-
+useEffect(() => {
+  // Use the useRouter hook to programmatically navigate to the dashboard
+  
+  if (wallet && activeProfile?.data) {
+    router.push('/dashboard');
+  }
+}, [wallet, activeProfile]);
    
 
   return (
@@ -30,7 +36,7 @@ const Login: NextPage = () => {
      <Container>
     <Paper shadow="xl" radius="xl" withBorder p="xl">
         <Center>
-            <Text size="xl" fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>Waves</Text>
+            <Text size="xl" fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>Welcome to Waves</Text>
             </Center>
             
            <Space h="md" />
@@ -39,21 +45,7 @@ const Login: NextPage = () => {
           {wallet && activeProfile?.data ? (
   // Render content when both walletInfo and activeProfile data are available
   <>
-    <Center>
-      <Text size="xl" fw={900} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 90 }}>
-        Welcome to Waves
-      </Text>
-    </Center>
-    <Space h="md" />
-    <Center>
-      <Tooltip label="Go to your dashboard">
-        <Button component={Link} href="/dashboard">
-          <Text size="lg" fw={900} fs="italic">
-            Get Started with your first stream
-          </Text>
-        </Button>
-      </Tooltip>
-    </Center>
+  <Loader size={28} />
   </>
 ) : (
   // Render content when either walletInfo or activeProfile data is missing

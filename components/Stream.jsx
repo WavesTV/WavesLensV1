@@ -2,10 +2,8 @@ import {
   Player,
   useCreateStream,
   useUpdateStream,
-  Broadcast,
-  useStreamSession 
 } from "@livepeer/react";
-import { useMemo, useState, useContext, useEffect, useRef } from "react";
+import { useMemo, useState, useRef } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import {
   Title,
@@ -20,36 +18,31 @@ import {
   Tabs,
   Tooltip,
   Card,
-  Badge,
+  rgba,
   Loader,
   Text,
-  useStyles,
   Progress,
   Divider, 
   Accordion, 
-  useMantineTheme, rem, Collapse, UnstyledButton, ActionIcon, PasswordInput, Switch, HoverCard, Overlay,
-  Image
+  Collapse, useMantineTheme, ActionIcon, PasswordInput, HoverCard, Container
 } from "@mantine/core";
 import { TwitchPlayer, TwitchChat } from "react-twitch-embed";
-import { IconCopy,IconRocket,  IconCheck, IconScreenShare, IconAt, IconBrandYoutube, IconBrandTwitch, IconKey, IconUser } from "@tabler/icons-react";
+import { IconCopy, IconRocket, IconCheck, IconScreenShare, IconKey } from "@tabler/icons-react";
 import { useInterval } from "@mantine/hooks";
 import { RiKickLine } from 'react-icons/ri';
 import { RiYoutubeLine } from 'react-icons/ri';
 import { BsTwitch } from 'react-icons/bs';
 import { AiOutlineLink } from 'react-icons/ai';
-import { GrLaunch } from 'react-icons/gr';
 import { VscKey } from 'react-icons/vsc';
 import { BiUserCircle } from 'react-icons/bi';
 import { TiInfoLargeOutline } from 'react-icons/ti';
 import { useActiveProfile, useUpdateProfileDetails } from "@lens-protocol/react-web";
-import classes from "../styles/ProfileCard.module.css";
+import classes from "../styles/LaunchButton.module.css";
 
 export const Stream = () => {
- 
+  const theme = useMantineTheme();
   const activeProfile = useActiveProfile();
   const [streamName, setStreamName] = useState("");
-  const [isFollowingWaves, setisFollowingWaves] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const [disable, { toggle }] = useDisclosure(false);
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
@@ -182,7 +175,7 @@ export const Stream = () => {
 
 
 const updatedProfileMetadata = {
-  WavesPlaybackId: stream.playbackId,
+  WavesPlaybackId: stream?.playbackId,
 };
 
 const { execute, error, isPending } = useUpdateProfileDetails({ metadata: updatedProfileMetadata });
@@ -191,7 +184,7 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
 
   return (
     <Paper shadow="sm" p="lg" withBorder>
-       
+      
        <HoverCard width={280} closeDelay={700} shadow="md">
         <HoverCard.Target>
         <ActionIcon radius="xl" size="sm" variant="outline">
@@ -199,19 +192,11 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
       </ActionIcon >
         </HoverCard.Target>
         <HoverCard.Dropdown>
-          <Text fw={500} size="sm">
-            Before you start streaming select what type of Stream you want.
-          </Text>
-          <Space h="xs" />
-          <Text fw={500} size="sm">
-            Streaming via your Webcam is the easiest way to go Live. Once you have created a Stream name just allow access to you Camera/Audio. No 3rd party software is required. It is also Mobile Friendly! 
-          </Text>
-          <Space h="xs" />
-          <Text fw={500} size="sm">
-            Streaming via OBS Studio or Streamlabs is great for Gamers and more experienced Streamers. You&apos;ll be given a 1-time use Stream Key/URL to go Live!
-          </Text>
+          <Text fw={500} size="xs">Be sure to install OBS Studio or Stream Labs</Text>
+         
         </HoverCard.Dropdown>
       </HoverCard>
+
       <Space h="md" />
       <Tabs
         variant="pills"
@@ -223,11 +208,7 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
         
         
         <Tabs.List justify="center">
-       
           <Tabs.Tab value="first">Stream via OBS/StreamLabs</Tabs.Tab>
-          <Tabs.Tab value="second">
-            Stream via Webcam (Mobile Friendly)
-          </Tabs.Tab>
         </Tabs.List>
       
         <Space h="md" />
@@ -252,6 +233,7 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
             <>
               {streamName ? (
                 <>
+                <Container>
                               <Card shadow="sm" p="lg" radius="md" withBorder>
                               <HoverCard width={280} closeDelay={700} shadow="md">
         <HoverCard.Target>
@@ -261,11 +243,11 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
         </HoverCard.Target>
         <HoverCard.Dropdown>
           <Text fw={500} size="sm">
-            Now that you have created your stream, copy & paste your Stream URL/Key into OBS Studio or Streamlabs to go Live. 
+            This is a one time use Stream Key. Paste in the Stream URL and Key to your Studio.
           </Text>
           <Space h="xs" />
           <Text  fw={500}  size="sm">
-            Once your stream is Active, Launch your Wave to your Lens Account to bring your broadcast to the blockchain!
+            
           </Text>
         </HoverCard.Dropdown>
       </HoverCard>
@@ -342,43 +324,36 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
                             </Button>
                           )}
                         </CopyButton>
-
-                        <Button
-                        rightIcon={<IconRocket size="1rem" />}
-                        
-                          fullWidth
-                          className={classes.button}
-                          onClick={() => {
-                            execute();
-                            loaded
-                              ? setLoaded(false)
-                              : !interval.active && interval.start();
-                          }}
-                          color={loaded ? "teal" : "blue"}
-                        >
-                          <div className={classes.label}>
-                            {progress !== 0
+<Button
+      rightSection={<IconRocket size="1rem" />}
+      fullWidth
+      className={classes.button}
+      onClick={() => (loaded ? setLoaded(false) : !interval.active && interval.start())}
+      color={loaded ? 'teal' : theme.primaryColor}
+    >
+      <div className={classes.label}>
+        {progress !== 0
                               ? "Launching"
                               : loaded
                               ? "Launched"
-                              : "Launch Wave to Deso"}
-                          </div>
-                          {progress !== 0 && (
-                            <Progress
-                              value={progress}
-                              className={classes.progress}
-                              color={theme.fn.rgba(
-                                theme.colors[theme.primaryColor][2],
-                                0.35
-                              )}
-                              radius="sm"
-                            />
-                          )}
-                        </Button>
+                              : "Launch Wave"}
+      </div>
+      {progress !== 0 && (
+        <Progress
+          value={progress}
+          className={classes.progress}
+          color={rgba(theme.colors.blue[2], 0.35)}
+          radius="sm"
+        />
+      )}
+    </Button>
+                    
                       </Group>
+                      
                       <Space h="md" />
                       
                     </Card>
+                    </Container>
                     <Space h="md" />
                   <Group justify="center" >
          <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} fullWidth radius="xl" size="md" onClick={toggleMulti}> <Text fw={700} fz="lg">Multistream</Text></Button>
@@ -588,7 +563,7 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
           <Space h="md" />
           <Group>
             <CopyButton
-              value={`https://waves-lens.vercel.app/wave/${activeProfile?.data?.handle }`}
+              value={`https://waves-lensv1.vercel.app/profile/${activeProfile?.data?.handle }`}
               timeout={2000}
             >
               {({ copied, copy }) => (
@@ -617,181 +592,7 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
            
           </Group>
         </Tabs.Panel>
-        <Tabs.Panel value="second">
-          {" "}
-          <Space h="md" />
-          <Center>
-            <Text fz="lg" fw={777} c="dimmed" truncate>
-              Start Streaming
-            </Text>
-          </Center>
-          <Space h="md" />
-          <Textarea
-            placeholder="Enter Stream Title"
-            variant="filled"
-            radius="md"
-            disabled={disable}
-            onChange={(e) => setStreamName(e.target.value)}
-          />
-          <Space h="xl" />
-          {status === "success" && (
-            <>
-              {streamName ? (
-                <>
-              
-                  <Center>
-                    <Card shadow="sm" p="lg" radius="md" withBorder>
-                    <HoverCard width={280} closeDelay={700} shadow="md">
-        <HoverCard.Target>
-        <ActionIcon radius="xl"  size="sm" variant="outline">
-      <TiInfoLargeOutline />
-      </ActionIcon >
-        </HoverCard.Target>
-        <HoverCard.Dropdown>
-          <Text fw={500} size="sm">
-            You will be asked to allow Camera/Audio Access for you device. 
-          </Text>
-          <Space h="xs" />
-          <Text fw={500} size="sm">
-            Now just Launch your Wave to DeSo!
-          </Text>
-         
-        </HoverCard.Dropdown>
-      </HoverCard>
-      <Space h="xs" />
-                    <Group justify="center">
-                    <Title order={1}><Text radius="sm" fw={700} fz="lg" >
-                          {streamName}
-                        </Text> </Title>
-                      </Group>
-                     
-                      <Divider my="sm" />
-                 
-      
-                      <Group justify="center">
-                        <Button
-                          fullWidth
-                          className={classes.button}
-                          onClick={() => {
-                            attachStreamToDesoProfile();
-                            loaded
-                              ? setLoaded(false)
-                              : !interval.active && interval.start();
-                          }}
-                          color={loaded ? "teal" : "blue"}
-                        >
-                          <div className={classes.label}>
-                            {progress !== 0
-                              ? "Launching"
-                              : loaded
-                              ? "Launched"
-                              : "Launch Wave to Deso"}
-                          </div>
-                          {progress !== 0 && (
-                            <Progress
-                              value={progress}
-                              className={classes.progress}
-                              color={theme.fn.rgba(
-                                theme.colors[theme.primaryColor][2],
-                                0.35
-                              )}
-                              radius="sm"
-                            />
-                          )}
-                        </Button>
-                      </Group>
-                      <Space h="md" />
-                      
-                    </Card>
-                    <Space h="xl" />
-                  </Center>
-                  <Space h="md" />
-                  <Group justify="center">
-                    <Broadcast
-                      title={stream?.name}
-                      streamKey={stream.streamKey}
-                      
-                      muted
-                    />
-                  </Group>
-
-                  <Space h="md" />
-                  <Group justify="center">
-                    <Button
-                      fullWidth
-                      color="red"
-                      radius="xl"
-                      onClick={handleEndStream}
-                    >
-                      End Wave
-                    </Button>
-                  </Group>
-                </>
-              ) : (
-                <Group justify="center">
-                  <p>Wave suspended. Refresh to create a new Wave.</p>
-                </Group>
-              )}
-            </>
-          )}
-          {status === "loading" && (
-            <Group justify="center">
-              <Loader size="sm" />
-            </Group>
-          )}
-          {status === "error" && (
-            <Group justify="center">
-              <p>Error occurred while creating your wave.</p>
-            </Group>
-          )}
-          <Space h="md" />
-          {!stream && (
-            <Group justify="center">
-              <Button
-                radius="xl"
-                onClick={() => {
-                  toggle();
-
-                  createStream?.(); // Create the stream and store the result
-                }}
-                disabled={isLoading || !createStream}
-              >
-                Create Wave
-              </Button>
-            </Group>
-          )}
-          <Space h="md" />
-          <Group>
-            <CopyButton
-              value={`https://waves-2.vercel.app/wave/${activeProfile?.data?.handle}` || null}
-              timeout={2000}
-            >
-              {({ copied, copy }) => (
-                <Button
-                  size="xs"
-                  color={copied ? "teal" : "blue"}
-                  onClick={copy}
-                >
-                  {copied ? (
-                    <>
-                      <Tooltip label="Copied Wave">
-                        <IconCheck size={16} />
-                      </Tooltip>
-                    </>
-                  ) : (
-                    <>
-                      <Tooltip label="Share your Wave">
-                        <IconScreenShare size={16} />
-                      </Tooltip>
-                    </>
-                  )}
-                </Button>
-              )}
-            </CopyButton>
-
-    
-          </Group>
-        </Tabs.Panel>
+       
       </Tabs>
     </Paper>
   );

@@ -10,7 +10,6 @@ import {
   useActiveWallet
 } from "@lens-protocol/react-web";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { Skeleton } from "../components/ui/skeleton";
 import Post from "@/components/Post";
 import { useState } from "react";
 import { BsFire } from "react-icons/bs";
@@ -18,9 +17,6 @@ import { GiWaveCrest } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
 import { Container, Space, Tabs, rem, Text, Loader, Group, Center } from "@mantine/core";
 import classes from "../styles/Tabs.module.css";
-import SignInWithLensButton from "@/components/SignInWithLensButton";
-import Link from "next/link";
-import Login from "./login";
 
 const Feed: NextPage = () => {
   const [activeTab, setActiveTab] = useState<string | null>('first');
@@ -121,10 +117,7 @@ const Feed: NextPage = () => {
 
             {personalizedFeed?.loading &&
               Array.from({ length: 10 }).map((_, i) => (
-                <Skeleton
-                  className="h-[88px] animate-pulse bg-muted mt-3 w-full"
-                  key={i}
-                />
+                <Loader color="blue"/>
               ))}
 
             {/* Public feed has loaded */}
@@ -134,12 +127,8 @@ const Feed: NextPage = () => {
                 next={() => personalizedFeed?.next()}
                 hasMore={personalizedFeed?.hasMore}
                 loader={
-                  <>
-                    
-                     
-              
-         
-                  
+                  <>                   
+                <Loader color="blue" />    
                   </>
                 }
                 endMessage={
