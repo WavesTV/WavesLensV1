@@ -116,9 +116,9 @@ const Feed: NextPage = () => {
               )}
 
             {personalizedFeed?.loading &&
-              Array.from({ length: 10 }).map((_, i) => (
+            
                 <Loader color="blue"/>
-              ))}
+              }
 
             {/* Public feed has loaded */}
             {!personalizedFeed?.loading && personalizedFeed?.data && (
