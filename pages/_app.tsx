@@ -46,7 +46,7 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
   const signer = useSigner();
   const router = useRouter();
   const signerWrapped = useTypedDataSignerWrapper(signer, sdk);
-if (!signer && router.pathname !== "/" && router.pathname !== "/why" && router.pathname !== "/profile") {
+if (!signer && !/^\/(why|profile(\/|$))/.test(router.pathname)) {
     return (
       <>
         <NetworkSwitchModal />
