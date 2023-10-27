@@ -28,8 +28,8 @@ const Feed: NextPage = () => {
   const hotFeed = useExplorePublications({
     limit: 25,
     publicationTypes: [PublicationTypes.Post],
-    sortCriteria: PublicationSortCriteria.CuratedProfiles,
-    
+    sortCriteria: PublicationSortCriteria.TopCommented,
+    sources: [appId('hey')], 
   });
 
   const wavesFeed = useExplorePublications({
