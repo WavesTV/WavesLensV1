@@ -2,6 +2,7 @@ import { Welcome } from "@/components/Welcome/Welcome";
 import { Text, Space, Grid, Paper, Container, Center } from "@mantine/core";
 import { ImArrowDown2 } from "react-icons/im";
 import { Fade } from 'react-awesome-reveal';
+import { HowItWorks } from "@/components/HowItWorks/HowItWorks";
 export default function Why() {
 
 return(
@@ -9,7 +10,9 @@ return(
 <div>
     <Welcome />
     </div>
-    <Space h="md"/>
+
+    <HowItWorks />
+    <Space h="xl"/>
  <Text ta="center" fz={50} fw={800} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 176 }}>Roadmap</Text>
   <Space h="md"/>
     <Container> 

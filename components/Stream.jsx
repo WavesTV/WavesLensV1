@@ -26,8 +26,9 @@ import {
   Accordion, 
   Collapse, useMantineTheme, ActionIcon, PasswordInput, HoverCard, Container
 } from "@mantine/core";
+import { notifications } from "@mantine/notifications";
 import { TwitchPlayer, TwitchChat } from "react-twitch-embed";
-import { IconCopy, IconRocket, IconCheck, IconScreenShare, IconKey } from "@tabler/icons-react";
+import { IconCopy, IconRocket, IconCheck, IconScreenShare, IconKey, IconX} from "@tabler/icons-react";
 import { useInterval } from "@mantine/hooks";
 import { RiKickLine } from 'react-icons/ri';
 import { RiYoutubeLine } from 'react-icons/ri';
@@ -36,8 +37,17 @@ import { AiOutlineLink } from 'react-icons/ai';
 import { VscKey } from 'react-icons/vsc';
 import { BiUserCircle } from 'react-icons/bi';
 import { TiInfoLargeOutline } from 'react-icons/ti';
-import { useActiveProfile, useUpdateProfileDetails } from "@lens-protocol/react-web";
+import { CollectPolicyType,
+  ContentFocus,
+  DecryptionCriteriaType,
+  MediaObject,
+  ReferencePolicyType,
+  useActiveProfile,
+  VideoType,
+  useUpdateProfileDetails,
+  useCreatePost,} from "@lens-protocol/react-web";
 import classes from "../styles/LaunchButton.module.css";
+import useUpload from "@/lib/useUpload";
 
 export const Stream = () => {
   const theme = useMantineTheme();
@@ -49,14 +59,73 @@ export const Stream = () => {
   const [activeTab, setActiveTab] = useState("first");
   const [openedMulti, { toggle: toggleMulti }] = useDisclosure(true);
   const embed = useRef(); // We use a ref instead of state to avoid rerenders.
-  
+  const upload = useUpload();
+  const [postSuccess, setPostSuccess] = useState(false);
+const { execute: create, error: postE, isPending: postPending } = useCreatePost({
+  publisher: activeProfile?.data,
+  upload: async (data) => upload(data),
+});
+
 
   const handleReady = (e) => {
     embed.current = e;
   };
 
- 
 
+
+async function createPost() {
+let result;
+    try {
+      result = await create(
+{
+      locale: "en-us",
+      content: `${stream?.name}\nTo Subscribe and ensure the best viewing experience, visit: \nhttps://waves-lensv1.vercel.app/profile/${activeProfile?.data?.handle}`,
+      contentFocus: ContentFocus.VIDEO,
+      media: [
+        {
+          url: `https://lvpr.tv/?v=${stream?.playbackId}`,
+          mimeType: VideoType.MP4
+        }
+
+      ],
+      collect: {
+        type: CollectPolicyType.NO_COLLECT,
+      },
+      reference: {
+        type: ReferencePolicyType.ANYONE,
+      },
+    })
+        
+
+      if (result?.isFailure()) {
+              notifications.show({
+      title: "Error creating post.",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `${result.error.message}. Please try again later.`,
+      });
+        throw new Error(result.error.message);
+      } else {
+        notifications.show({
+      title: "Success",
+      icon: <IconCheck size="1.1rem" />,
+      color: "green",
+      message: "Allow a few seconds for your post to appear.",
+    });
+// After successful post creation, set postSuccess to true
+      setPostSuccess(true);
+      }
+    } catch (error) {
+      console.error(error);
+      notifications.show({
+      title: "Error creating post.",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: "Something went wrong creating your post. Please try again later.",
+    });
+
+    }
+  }
   const interval = useInterval(
     () =>
       setProgress((current) => {
@@ -68,7 +137,7 @@ export const Stream = () => {
         setLoaded(true);
         return 0;
       }),
-    20
+    75
   );
 
   // Allowing user to create streams via livepeers useCreateStream hook
@@ -131,7 +200,7 @@ export const Stream = () => {
 
  const [ytStreamKey, setYTStreamKey] = useState("");
  const [ytStreamURL, setYTStreamURL] = useState("");
-  const { mutate: youtubeMultistream, status: ytmulti,  } = useUpdateStream({
+  const { mutate: youtubeMultistream, status: ytmulti } = useUpdateStream({
     streamId,
     multistream: {
       targets: [
@@ -172,15 +241,6 @@ export const Stream = () => {
        const handleEnableKickMultistream = async () => {
         kickMultistream?.()
        };
-
-
-const updatedProfileMetadata = {
-  WavesPlaybackId: stream?.playbackId,
-};
-
-const { execute, error, isPending } = useUpdateProfileDetails({ metadata: updatedProfileMetadata });
-
-
 
   return (
     <Paper shadow="sm" p="lg" withBorder>
@@ -328,8 +388,14 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
       rightSection={<IconRocket size="1rem" />}
       fullWidth
       className={classes.button}
-      onClick={() => (loaded ? setLoaded(false) : !interval.active && interval.start())}
+       onClick={() => {
+                           createPost();
+                            loaded
+                              ? setLoaded(false)
+                              : !interval.active && interval.start();
+                          }}
       color={loaded ? 'teal' : theme.primaryColor}
+      disabled={interval.active || postSuccess} 
     >
       <div className={classes.label}>
         {progress !== 0
@@ -410,7 +476,7 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
       <Space h="md" />
       <Group justify="right">
         <Button
-          rightIcon={<IconRocket size="1rem" />}
+          rightSection={<IconRocket size="1rem" />}
           variant="light"
           size="xs"
           onClick={handleEnableYTMultistream}
@@ -447,14 +513,14 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
       <Space h="md" />
       <Group justify="right">
         <Button
-          rightIcon={<IconRocket size="1rem" />}
+          rightSection={<IconRocket size="1rem" />}
           variant="light"
           size="xs"
           onClick={handleEnableTwitchMultistream}
         >
           Launch
         </Button>
-        {error && <div>{error.message}</div>}
+        
         </Group>
 
         {twitchUsername &&
@@ -494,7 +560,7 @@ const { execute, error, isPending } = useUpdateProfileDetails({ metadata: update
       onChange={(e) => setKickStreamKey(e.target.value)}
     />  <Space h="md" />
     <Group justify='right'>
-     <Button        onClick={handleEnableKickMultistream}  rightIcon={<IconRocket size="1rem" />} variant="light" size="xs">
+     <Button        onClick={handleEnableKickMultistream}  rightSection={<IconRocket size="1rem" />} variant="light" size="xs">
       Launch
     </Button>
     </Group>

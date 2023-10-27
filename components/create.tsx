@@ -130,6 +130,12 @@ const createUnencrypted = useCreatePost({
       }
 
       if (result?.isFailure()) {
+              notifications.show({
+      title: "Error creating post.",
+      icon: <IconX size="1.1rem" />,
+      color: "red",
+      message: `${result.error.message}. Please try again later.`,
+      });
         throw new Error(result.error.message);
       } else {
         notifications.show({
