@@ -5,7 +5,7 @@ import { useProfile, useProfileFollowing } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { MediaRenderer } from "@thirdweb-dev/react";
-import { Center, Space } from "@mantine/core";
+import { Center, Container, Paper, Space } from "@mantine/core";
 
 const FollowingPage = () => {
   // Get the post ID from the URL
@@ -24,15 +24,21 @@ const FollowingPage = () => {
   if (profile?.error) {
     return (
       <>
+      <Container>
+ <Paper shadow="xl" radius="md" withBorder p="xl">
         <Center>
           <h1>
             Profile not found
           </h1>
           <Space h="lg"/>
+          </Center>
+          <Center>
           <Button onClick={() => router.push("/")}>
-            Back to Home
+            Back Home
           </Button>
         </Center>
+        </Paper>
+        </Container>
       </>
     );
   }

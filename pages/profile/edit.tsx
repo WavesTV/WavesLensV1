@@ -1,5 +1,5 @@
 
-import { Button, Space, Center, Loader } from "@mantine/core";
+import { Button, Space, Center, Loader, Paper } from "@mantine/core";
 import { useActiveProfile } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import ProfileForm from "@/components/ProfileForm";
@@ -13,15 +13,21 @@ const ProfilePage = () => {
   if (activeProfile?.error) {
     return (
       <>
+       <Container>
+ <Paper shadow="xl" radius="md" withBorder p="xl">
         <Center>
           <h1>
             Profile not found
           </h1>
           <Space h="lg"/>
+          </Center>
+          <Center>
           <Button onClick={() => router.push("/")}>
-            Back to Home
+            Back Home
           </Button>
         </Center>
+        </Paper>
+        </Container>
       </>
     );
   }
