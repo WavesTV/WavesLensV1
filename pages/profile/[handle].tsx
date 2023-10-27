@@ -37,15 +37,21 @@ const ProfilePage = () => {
   if (profile?.error) {
     return (
      <>
+      <Container>
+ <Paper shadow="xl" radius="md" withBorder p="xl">
         <Center>
           <h1>
             Profile not found
           </h1>
           <Space h="lg"/>
+          </Center>
+          <Center>
           <Button onClick={() => router.push("/")}>
-            Back to Home
+            Back Home
           </Button>
         </Center>
+        </Paper>
+        </Container>
       </>
     );
   }
@@ -61,7 +67,7 @@ const ProfilePage = () => {
 
   return (
     <>
-    <Container size="responsive" ml={44}>
+    <Container size="responsive">
       <Card shadow="sm" padding="lg" radius="md" withBorder>
        <Card.Section>
         {/* @ts-ignore */}
@@ -88,15 +94,17 @@ const ProfilePage = () => {
         mt={-30}
           />
       
-{/* Profile Handle */}
-<Group justify="center">
-          @{profile?.data?.handle}
-        </Group>
+
+
         {/* Profile Name */}
         <Group justify="center" className={styles.profileName}>
-          <Text c="dimmed" fw={500}>{profile?.data?.name}</Text>
+          <Text fw={500}>{profile?.data?.name}</Text>
         </Group>
-        
+
+        {/* Profile Handle */}
+        <Group justify="center">
+          @{profile?.data?.handle}
+        </Group>
     
       <Space h="xl"/>
        <Paper shadow="sm" p="lg" radius="md" withBorder>

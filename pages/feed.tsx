@@ -7,7 +7,8 @@ import {
   PublicationSortCriteria,
   useFeed,
   FeedEventItemType,
-  useActiveWallet
+  useActiveWallet,
+  appId
 } from "@lens-protocol/react-web";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@/components/Post";
@@ -15,28 +16,37 @@ import { useState } from "react";
 import { BsFire } from "react-icons/bs";
 import { GiWaveCrest } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
-import { Container, Space, Tabs, rem, Text, Loader, Group, Center } from "@mantine/core";
+import { Container, Space, Tabs, rem, Text, Loader, Group, Center, Button } from "@mantine/core";
 import classes from "../styles/Tabs.module.css";
+import { useRouter } from "next/router";
 
 const Feed: NextPage = () => {
-  const [activeTab, setActiveTab] = useState<string | null>('first');
+  const router = useRouter();
   const activeProfile = useActiveProfile();
- const walletInfo = useActiveWallet();
+  const walletInfo = useActiveWallet();
 
-  const publicFeed = useExplorePublications({
+  const hotFeed = useExplorePublications({
     limit: 25,
     publicationTypes: [PublicationTypes.Post],
-    sortCriteria: PublicationSortCriteria.TopCollected,
+    sortCriteria: PublicationSortCriteria.CuratedProfiles,
+    
   });
 
-  console.log(publicFeed.data)
+  const wavesFeed = useExplorePublications({
+    sources: [appId('waves')], 
+    limit: 25,
+    publicationTypes: [PublicationTypes.Post],
+    sortCriteria: PublicationSortCriteria.Latest,
+    
+  });
+  
   const personalizedFeed = useFeed({
     // @ts-ignore: TODO, non-signed in state
     profileId: activeProfile?.data?.id,
     limit: 25,
     restrictEventTypesTo: [FeedEventItemType.Post],
   });
-
+console.log(personalizedFeed.data)
   return (
     <>
       <Tabs variant="unstyled" defaultValue="first" classNames={classes}>
@@ -44,24 +54,26 @@ const Feed: NextPage = () => {
       <Tabs.List grow>
         <Tabs.Tab
         value="first"
-         leftSection={<BsFire style={{ width: rem(16), height: rem(16) }} />}
-        >
-          
-            <Text fz="sm">Hot</Text>
-        </Tabs.Tab>
-        <Tabs.Tab
-        value="second"
          leftSection={<GiWaveCrest style={{ width: rem(16), height: rem(16) }} />}
         >
-     
+          
             <Text fz="sm">Waves</Text>
         </Tabs.Tab>
+        
         <Tabs.Tab
-        value="third"
+        value="second"
         leftSection={<FaUsers style={{ width: rem(16), height: rem(16) }} />}
         >
           
             <Text fz="sm">Following</Text>
+        </Tabs.Tab>
+
+          <Tabs.Tab
+          value="third"
+          leftSection={<BsFire style={{ width: rem(16), height: rem(16) }} />}
+        >
+          
+            <Text fz="sm">Hot</Text>
         </Tabs.Tab>
       </Tabs.List>
 
@@ -71,22 +83,24 @@ const Feed: NextPage = () => {
 
     {/* Public feed loading */}
             {
-              publicFeed?.loading &&
+              wavesFeed?.loading &&
               <Group justify="center">
               <Loader color="blue" />
               </Group>
               }
 
             {/* Public feed has loaded */}
-            {!publicFeed?.loading && publicFeed?.data && (
+            {!wavesFeed?.loading && wavesFeed?.data && (
               <InfiniteScroll
-                dataLength={publicFeed?.data?.length || 0}
-                next={() => publicFeed?.next()}
-                hasMore={publicFeed?.hasMore}
+                dataLength={wavesFeed?.data?.length || 0}
+                next={() => wavesFeed?.next()}
+                hasMore={wavesFeed?.hasMore}
                 loader={
                   <>
                    
-          <Loader color="blue" />
+          <Group justify="center">
+              <Loader color="blue" />
+              </Group>
                     
                   </>
                 }
@@ -96,7 +110,7 @@ const Feed: NextPage = () => {
               >
                 {
                   // @ts-ignore post type
-                  publicFeed?.data?.map((post: PostType) => (
+                  wavesFeed?.data?.map((post: PostType) => (
                     <Post
                       key={post.id}
                       post={post}
@@ -105,19 +119,27 @@ const Feed: NextPage = () => {
                   ))}
               </InfiniteScroll>
             )}</Tabs.Panel>
-    <Tabs.Panel value="second"><Space h="xl"/> <Center><Text>Coming Soon</Text></Center><Space h={100}/></Tabs.Panel>
-    <Tabs.Panel value="third"> 
-    <Space h="xl"/>   {/* Public feed loading */}
+    
+    <Tabs.Panel value="second"> 
+    <Space h="xl"/>   
+    {/* Public feed loading */}
 
       {/* Wallet connected, but no Lens profile */}
-           {walletInfo?.data && !activeProfile?.data &&
+           {!walletInfo?.data && !activeProfile?.data &&
              (
-                 <></>
+                 <>
+                 <Center>
+                  <Button onClick={() => router.push('/login')}>Sign In To View</Button>
+                 </Center>
+                 
+                 </>
               )}
 
             {personalizedFeed?.loading &&
             
-                <Loader color="blue"/>
+                <Group justify="center">
+              <Loader color="blue" />
+              </Group>
               }
 
             {/* Public feed has loaded */}
@@ -128,7 +150,9 @@ const Feed: NextPage = () => {
                 hasMore={personalizedFeed?.hasMore}
                 loader={
                   <>                   
-                <Loader color="blue" />    
+                <Group justify="center">
+              <Loader color="blue" />
+              </Group> 
                   </>
                 }
                 endMessage={
@@ -145,6 +169,51 @@ const Feed: NextPage = () => {
                   ))}
               </InfiniteScroll>
             )}<Space h={100}/>
+        </Tabs.Panel>
+
+        <Tabs.Panel value="third">
+          <Space h="xl"/>
+
+      
+
+    {/* Public feed loading */}
+            {
+              hotFeed?.loading &&
+              <Group justify="center">
+              <Loader color="blue" />
+              </Group>
+              }
+
+            {/* Public feed has loaded */}
+            {!hotFeed?.loading && hotFeed?.data && (
+              <InfiniteScroll
+                dataLength={hotFeed?.data?.length || 0}
+                next={() => hotFeed?.next()}
+                hasMore={hotFeed?.hasMore}
+                loader={
+                  <>
+                   
+          <Group justify="center">
+              <Loader color="blue" />
+              </Group>
+                    
+                  </>
+                }
+                endMessage={
+                   <Space h={100}/>
+                }
+              >
+                {
+                  // @ts-ignore post type
+                  hotFeed?.data?.map((post: PostType) => (
+                    <Post
+                      key={post.id}
+                      post={post}
+                      activeProfile={activeProfile.data!}
+                    />
+                  ))}
+              </InfiniteScroll>
+            )}            
         </Tabs.Panel>
     </Tabs>
     

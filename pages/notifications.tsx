@@ -6,9 +6,28 @@ import {
     Divider, 
     Container
   } from "@mantine/core";
+import {
+  useActiveProfile,
+  useNotifications 
+} from "@lens-protocol/react-web";
 
 export default function Notifications() {
+  const activeProfile = useActiveProfile();
+ 
+const {
+            data,
+            loading,
+            hasMore,
+            next,
+          } = useNotifications({
+            profileId: activeProfile?.data?.id,
+            limit: 10,
+          });
+          console.log(data)
 
+        
+  
+  
     return(
         <>
         <Divider
