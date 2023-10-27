@@ -83,7 +83,7 @@ let result;
       contentFocus: ContentFocus.VIDEO,
       media: [
         {
-          url: `https://lvpr.tv/?v=${stream?.playbackId}`,
+          url: `https://lvpr.tv?v=${stream?.playbackId}&lowLatency=true`,
           mimeType: VideoType.MP4
         }
 
