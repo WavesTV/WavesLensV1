@@ -111,7 +111,7 @@ const ProfilePage = () => {
       {"titannode.lens" === profile?.data?.handle ? (
   <Paper>
     <Space h="xl" />
-    <Player style={{ width: '100%' }} playbackId="4f33lcebx1uac9tb" title="Titan Node Stream" />
+    <Player playbackId="4f33lcebx1uac9tb" title="Titan Node Stream" />
   </Paper>
 ) : null}
 <Space h="xl"/>
