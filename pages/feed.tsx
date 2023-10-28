@@ -16,7 +16,7 @@ import { useState } from "react";
 import { BsFire } from "react-icons/bs";
 import { GiWaveCrest } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
-import { Container, Space, Tabs, rem, Text, Loader, Group, Center, Button, ActionIcon, Avatar, Paper } from "@mantine/core";
+import { Container, Space, Tabs, rem, Text, Loader, Group, Center, Button, ActionIcon, Avatar, Paper, UnstyledButton } from "@mantine/core";
 import classes from "../styles/Tabs.module.css";
 import { useRouter } from "next/router";
 import { Player } from '@livepeer/react';
@@ -101,9 +101,9 @@ console.log(personalizedFeed.data)
               withBorder
             >
               <Center>
-                <ActionIcon
+                 <UnstyledButton
                   onClick={() => router.push('/profile/titannode.lens')} 
-                  variant="transparent"
+                  
                 >
                   <Avatar
                     radius="xl"
@@ -114,7 +114,7 @@ console.log(personalizedFeed.data)
                   <Text fw={600} size="sm">
                     Titan Node
                   </Text>
-                </ActionIcon>
+                </UnstyledButton>
               </Center>
               <Space h="xl" />
               <Player
