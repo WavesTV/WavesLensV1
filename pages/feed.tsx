@@ -118,7 +118,7 @@ console.log(personalizedFeed.data)
               </Center>
               <Space h="xl" />
               <Player
-             style={{ width: '100%' }}
+            
                 playbackId="4f33lcebx1uac9tb"
                 title="Titan Node Stream"
                 
