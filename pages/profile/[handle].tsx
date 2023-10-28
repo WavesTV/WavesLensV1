@@ -11,8 +11,9 @@ import {
 import { useRouter } from "next/router";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FollowButton from "@/components/FollowButton";
-import { Center, Space, Button, Card, Group, Avatar, Text, Loader, Image, Container, Paper  } from "@mantine/core";
+import { Center, Space, Button, Card, Group, Avatar, Text, Loader, Image, Container, Paper,ActionIcon  } from "@mantine/core";
 import styles from "../../styles/ProfileCard.module.css";
+import { Player } from '@livepeer/react';
 
 const ProfilePage = () => {
   // Get the post ID from the URL
@@ -107,6 +108,26 @@ const ProfilePage = () => {
         </Group>
     
       <Space h="xl"/>
+      {"titannode.lens" === profile?.data?.handle ? (
+  <Paper m="md" shadow="lg" radius="md" p="xl" withBorder>
+    <Center>
+      <ActionIcon onClick={() => router.push('/profile/titannode.lens')} variant="transparent">
+        <Avatar
+          radius="xl"
+          size="lg"
+          src="https://ik.imagekit.io/lens/media-snapshot/4a06ebbbd900102ba392ff8f63f4b1562ccf999a865ebc7bf8b26efdfcb14532.png"
+        />
+        <Space w="xs" />
+        <Text fw={600} size="sm">
+          Titan Node
+        </Text>
+      </ActionIcon>
+    </Center>
+    <Space h="xl" />
+    <Player style={{ width: '100%' }} playbackId="4f33lcebx1uac9tb" title="Titan Node Stream" />
+  </Paper>
+) : null}
+<Space h="xl"/>
        <Paper shadow="sm" p="lg" radius="md" withBorder>
         <Text
         
