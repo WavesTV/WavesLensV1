@@ -158,7 +158,7 @@ return (
 <Space h="md"/>
 <Search />
 <Space h="md"/>
-<Center>
+
    
   <Paper shadow="xl" radius="xl" withBorder p="xl">
       <Text fw={700} ta="center" fs="italic">Powered By</Text>
@@ -184,7 +184,7 @@ return (
      
       </Paper>
    
-</Center>
+
 <Space h="md"/>
  </AppShell.Aside>
  
