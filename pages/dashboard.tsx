@@ -8,7 +8,8 @@ import {
     Group,
     Avatar,
     Card,
-    Button
+    Button,
+    Container
   } from "@mantine/core";
 import { useActiveProfile, useActiveWallet } from "@lens-protocol/react-web";
 import styles from "../styles/ProfileCard.module.css";
@@ -146,15 +147,15 @@ const activeProfile = useActiveProfile();
         mx="auto"
         mt={-30}
           />
-      
+      {/* Profile Name */}
+        <Group justify="center" className={styles.profileName}>
+          <Text fw={500}>{activeProfile?.data?.name || "Anon User"}</Text>
+        </Group>
 {/* Profile Handle */}
 <Group justify="center">
           @{activeProfile?.data?.handle || "anonuser"}
         </Group>
-        {/* Profile Name */}
-        <Group justify="center" className={styles.profileName}>
-          <Text c="dimmed" fw={500}>{activeProfile?.data?.name || "Anon User"}</Text>
-        </Group>
+        
         
 <Space h="md"/>
      
@@ -172,12 +173,13 @@ const activeProfile = useActiveProfile();
         </Group>
 
         <Space h="md"/>
-        <Group grow> 
+        <Container size="md">
+      
         <Button component={Link} href="/login">
-            Sign in with Lens to Stream!
+            Sign In to Stream
         </Button>
-        </Group>
-
+        
+        </Container>
         </Card>
 
                 )}

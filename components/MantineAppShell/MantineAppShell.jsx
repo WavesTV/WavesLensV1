@@ -160,13 +160,14 @@ return (
 <Space h="md"/>
 
    
-  <Paper shadow="xl" radius="xl" withBorder p="xl">
+  <Paper shadow="xl" radius="xl" withBorder p="xl" ml={8} mr={8}>
       <Text fw={700} ta="center" fs="italic">Powered By</Text>
       <Divider my="sm" />
 <Space h="md"/>
      
       <List
       spacing="xs"
+      withPadding
       size="sm"
       center
       icon={

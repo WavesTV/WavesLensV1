@@ -24,7 +24,7 @@ export default function LoginExecuteButton() {
         });
       }}
     >
-      Sign in with Lens
+      Sign In
     </Button>
   );
 }

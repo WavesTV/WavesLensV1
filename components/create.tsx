@@ -19,6 +19,7 @@ import { Avatar, Paper, Text, Button, Textarea, Space, Group, Container, Checkbo
 import SignInWithLensButton from "@/components/SignInWithLensButton";
 import { notifications } from "@mantine/notifications";
 import { IconCheck, IconX } from "@tabler/icons-react";
+import { BiTimer } from 'react-icons/bi';
 
 export function Create() {
   const router = useRouter();
@@ -197,8 +198,20 @@ const createUnencrypted = useCreatePost({
 
 <Group justify="apart">
 <Button variant="gradient"
-      gradient={{ from: 'blue', to: 'cyan', deg: 205 }} onClick={handleCreatePost}>
-            Create Post
+      gradient={{ from: 'blue', to: 'cyan', deg: 205 }} onClick={() => {
+  handleCreatePost(); // Trigger the createpost function
+
+  
+    notifications.show({
+      title: "Please Wait!",
+      icon: <BiTimer size="1.1rem" />,
+      color: "blue",
+      message: "Allow a few seconds for your post to process.",
+    });
+  
+}}
+>
+            Create
           </Button>
 <Checkbox
       
@@ -248,7 +261,7 @@ const createUnencrypted = useCreatePost({
 <Group justify="apart">
 <Button disabled variant="gradient"
       gradient={{ from: 'blue', to: 'cyan', deg: 205}} >
-            Create Post
+            Create
           </Button>
 <Checkbox
       
