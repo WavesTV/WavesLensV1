@@ -278,7 +278,7 @@ export default function Post({ post, className, activeProfile }: Props) {
       src={postToUse.metadata.animatedUrl}
       width="100%"
       height="600"
-      frameborder="0"
+      
       maxWidth="100%"
 
                       />
