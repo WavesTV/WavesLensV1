@@ -76,26 +76,18 @@ const { execute: create, error: postE, isPending: postPending } = useCreatePost(
 async function createPost() {
 let result;
     try {
-      result = await create(
-{
+    const result = await create({
       locale: "en-us",
-      content: `${stream?.name}\nTo Subscribe and ensure the best viewing experience, visit: \nhttps://waves-lensv1.vercel.app/profile/${activeProfile?.data?.handle}`,
-      contentFocus: ContentFocus.VIDEO,
-      media: [
-        {
-          url: `https://lvpr.tv?v=${stream?.playbackId}&lowLatency=true`,
-          mimeType: VideoType.MP4
-        }
-
-      ],
+      content: `${stream?.name}\nTo subscribe and ensure the best viewing experience, visit: \nhttps://waves-lensv1.vercel.app/profile/${activeProfile?.data?.handle}`,
+      contentFocus: ContentFocus.EMBED,
+      animationUrl: `https://lvpr.tv/?v=${stream?.playbackId}`,
       collect: {
         type: CollectPolicyType.NO_COLLECT,
       },
       reference: {
         type: ReferencePolicyType.ANYONE,
       },
-    })
-        
+    });
 
       if (result?.isFailure()) {
               notifications.show({
