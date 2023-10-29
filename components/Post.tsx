@@ -17,7 +17,7 @@ import {
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import { Skeleton } from "./ui/skeleton";
-import ReactPlayer from 'react-player';
+
 import { Paper, ActionIcon, Group, Tooltip, Avatar, Space, UnstyledButton, Text, Spoiler, Image, Center} from "@mantine/core";
 import { IconCheck, IconHeart, IconHeartFilled, IconMessageCircle, IconMessageShare, IconScriptMinus, IconScriptPlus, IconStack3, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
