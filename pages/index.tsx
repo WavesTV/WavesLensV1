@@ -79,7 +79,7 @@ const Home: NextPage = () => {
 <Group justify="apart">
 <Button disabled variant="gradient"
       gradient={{ from: 'blue', to: 'cyan', deg: 205}} >
-            Create Post
+            Create
           </Button>
 <Checkbox
       defaultChecked

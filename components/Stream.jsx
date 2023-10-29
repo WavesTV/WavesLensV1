@@ -24,7 +24,9 @@ import {
   Progress,
   Divider, 
   Accordion, 
-  Collapse, useMantineTheme, ActionIcon, PasswordInput, HoverCard, Container
+  Collapse, useMantineTheme, ActionIcon, PasswordInput, HoverCard, Container,
+  Checkbox,
+  Blockquote
 } from "@mantine/core";
 import { notifications } from "@mantine/notifications";
 import { TwitchPlayer, TwitchChat } from "react-twitch-embed";
@@ -35,7 +37,7 @@ import { RiYoutubeLine } from 'react-icons/ri';
 import { BsTwitch } from 'react-icons/bs';
 import { AiOutlineLink } from 'react-icons/ai';
 import { VscKey } from 'react-icons/vsc';
-import { BiUserCircle } from 'react-icons/bi';
+import { BiTimer, BiUserCircle } from 'react-icons/bi';
 import { TiInfoLargeOutline } from 'react-icons/ti';
 import { CollectPolicyType,
   ContentFocus,
@@ -45,9 +47,12 @@ import { CollectPolicyType,
   useActiveProfile,
   VideoType,
   useUpdateProfileDetails,
-  useCreatePost,} from "@lens-protocol/react-web";
+  useCreatePost,
+  useCreateEncryptedPost
+} from "@lens-protocol/react-web";
 import classes from "../styles/LaunchButton.module.css";
 import useUpload from "@/lib/useUpload";
+import { BsExclamationCircle } from 'react-icons/bs';
 
 export const Stream = () => {
   const theme = useMantineTheme();
@@ -57,12 +62,20 @@ export const Stream = () => {
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("first");
-  const [openedMulti, { toggle: toggleMulti }] = useDisclosure(true);
+  const [openedMulti, { toggle: toggleMulti }] = useDisclosure(false);
   const embed = useRef(); // We use a ref instead of state to avoid rerenders.
   const upload = useUpload();
   const [postSuccess, setPostSuccess] = useState(false);
-const { execute: create, error: postE, isPending: postPending } = useCreatePost({
-  publisher: activeProfile?.data,
+  const [isFollowersOnly, setIsFollowersOnly] = useState(false);
+
+// Check if the user is signed in before creating posts
+const createEncrypted = useCreateEncryptedPost({
+  publisher: activeProfile?.data, // Pass null or some default value if the user is not signed in
+  upload: async (data) => upload(data),
+});
+
+const createUnencrypted = useCreatePost({
+  publisher: activeProfile?.data, // Pass null or some default value if the user is not signed in
   upload: async (data) => upload(data),
 });
 
@@ -76,19 +89,40 @@ const { execute: create, error: postE, isPending: postPending } = useCreatePost(
 async function createPost() {
 let result;
     try {
-    const result = await create({
-      locale: "en-us",
-      content: `${stream?.name}\nTo subscribe and ensure the best viewing experience, visit: \nhttps://waves-lensv1.vercel.app/profile/${activeProfile?.data?.handle}`,
-      contentFocus: ContentFocus.EMBED,
-      animationUrl: `https://lvpr.tv/?v=${stream?.playbackId}`,
-      collect: {
-        type: CollectPolicyType.NO_COLLECT,
-      },
-      reference: {
-        type: ReferencePolicyType.ANYONE,
-      },
-    });
-
+        if (isFollowersOnly) {
+          result = await createEncrypted?.execute({
+            locale: "en-us",
+            content: `${stream?.name}\nTo subscribe and ensure the best viewing experience, visit: \nhttps://waves-lensv1.vercel.app/profile/${activeProfile?.data?.handle}`,
+            contentFocus: ContentFocus.EMBED,
+            animationUrl: `https://lvpr.tv/?v=${stream?.playbackId}`,
+            decryptionCriteria: {
+              type: DecryptionCriteriaType.FOLLOW_PROFILE,
+              profileId: activeProfile?.data?.id,
+            },
+            collect: {
+              type: CollectPolicyType.NO_COLLECT,
+            },
+            reference: {
+              type: ReferencePolicyType.ANYONE,
+            },
+          });
+        }
+        // 4/4 No File + Public
+        else {
+          result = await createUnencrypted?.execute({
+            locale: "en-us",
+            content: `${stream?.name}\nTo subscribe and ensure the best viewing experience, visit: \nhttps://waves-lensv1.vercel.app/profile/${activeProfile?.data?.handle}`,
+            contentFocus: ContentFocus.EMBED,
+            animationUrl: `https://lvpr.tv/?v=${stream?.playbackId}`,
+            collect: {
+              type: CollectPolicyType.NO_COLLECT,
+            },
+            reference: {
+              type: ReferencePolicyType.ANYONE,
+            },
+          });
+        }
+      
       if (result?.isFailure()) {
               notifications.show({
       title: "Error creating post.",
@@ -287,6 +321,7 @@ let result;
                 <>
                 <Container>
                               <Card shadow="sm" p="lg" radius="md" withBorder>
+                             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                               <HoverCard width={280} closeDelay={700} shadow="md">
         <HoverCard.Target>
         <ActionIcon radius="xl" size="sm" variant="outline">
@@ -294,16 +329,29 @@ let result;
       </ActionIcon >
         </HoverCard.Target>
         <HoverCard.Dropdown>
-          <Text fw={500} size="sm">
-            This is a one time use Stream Key. Paste in the Stream URL and Key to your Studio.
+          <Text fw={500} size="xs">
+            This is a one time use Stream Key.
           </Text>
           <Space h="xs" />
-          <Text  fw={500}  size="sm">
-            
+          <Text fw={500} size="xs">
+           Paste in the Stream URL and Key to your Studio.
           </Text>
+          <Space h="xs" />
+       
         </HoverCard.Dropdown>
       </HoverCard>
-      
+       <Group justify="right">
+      <Checkbox
+      labelPosition="left"
+      label="Follower Only Stream"
+      description="Select before your launch!"
+      id="followers-only"
+      size="md"
+      checked={isFollowersOnly}
+      onChange={() => setIsFollowersOnly(!isFollowersOnly)}
+    />
+    </Group>
+   </div>
       <Space h="md" />
                               <Group justify="center">
                     <Title order={1}><Text radius="sm" fw={700} fz="lg" >
@@ -329,7 +377,7 @@ let result;
                               {copied ? (
                                 <>
                                   <Center>
-                                    <h4>Stream Server</h4>
+                                    <h4>Stream URL</h4>
                                     <Space w="xs" />
                                     <IconCheck size={16} />
                                   </Center>
@@ -337,7 +385,7 @@ let result;
                               ) : (
                                 <>
                                   <Center>
-                                    <h4>Stream Server</h4>
+                                    <h4>Stream URL</h4>
                                     <Space w="xs" />
                                     <IconCopy size={16} />
                                   </Center>
@@ -382,6 +430,14 @@ let result;
       className={classes.button}
        onClick={() => {
                            createPost();
+
+                             notifications.show({
+      title: "Please Wait!",
+      icon: <BiTimer size="1.1rem" />,
+      color: "blue",
+      message: "Allow a few seconds for your Wave to Launch.",
+    });
+  
                             loaded
                               ? setLoaded(false)
                               : !interval.active && interval.start();
@@ -405,7 +461,12 @@ let result;
         />
       )}
     </Button>
-                    
+    <Space h="md" />
+
+                    <Blockquote color="blue" radius="xl" iconSize={30}  icon={<BsExclamationCircle size="1.2rem"/>} mt="xl">
+      <Text fw={400} fs="italic">This stream playback is not public. Please Launch your Wave to make it accessible across all Lens Apps.</Text>
+    </Blockquote>
+    <Space h="md" />
                       </Group>
                       
                       <Space h="md" />
@@ -413,10 +474,13 @@ let result;
                     </Card>
                     </Container>
                     <Space h="md" />
-                  <Group justify="center" >
-         <Button variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} fullWidth radius="xl" size="md" onClick={toggleMulti}> <Text fw={700} fz="lg">Multistream</Text></Button>
-      </Group>
-
+                    <Center>
+                  <Group  style={{width: "500px"}} >
+                    <Tooltip label="Stream to Multiple Platforms">
+         <Button fullWidth variant="gradient" gradient={{ from: 'indigo', to: 'cyan' }} radius="lg" size="md" onClick={toggleMulti}> <Text fw={700} fz="lg">Multistream</Text></Button>
+    </Tooltip>
+    </Group>
+</Center>
       <Collapse in={openedMulti}>
       <Divider my="sm" />
  <Paper shadow="md" radius="md" p="lg" withBorder>
@@ -564,6 +628,7 @@ let result;
       </Collapse>
      
                   <Space h="md" />
+                  
                   <Group justify="center">
                     <Player
                       title={stream?.name}
