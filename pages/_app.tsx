@@ -27,7 +27,7 @@ import { MantineAppShell } from "@/components/MantineAppShell/MantineAppShell";
 
 const livepeerClient = createReactClient({
   provider: studioProvider({
-    apiKey: "7312cfcb-37a9-4c84-8122-2910ee6c4d23"
+    apiKey: "cf463379-5e2f-469f-b326-42c294a459c9"
   }),
 });
 
