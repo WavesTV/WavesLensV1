@@ -34,7 +34,7 @@ const ProfilePage = () => {
     publicationTypes: [PublicationTypes.Post],
     observerId: activeProfile?.data?.id as ProfileId,
   });
-
+  console.log(publications.data)
   if (profile?.error) {
     return (
      <>
@@ -68,7 +68,7 @@ const ProfilePage = () => {
 
   return (
     <>
-    <Container size="responsive">
+    <Container>
       <Card shadow="sm" padding="lg" radius="md" withBorder>
        <Card.Section>
         {/* @ts-ignore */}
@@ -106,14 +106,7 @@ const ProfilePage = () => {
         <Group justify="center">
           @{profile?.data?.handle}
         </Group>
-    
-      <Space h="xl"/>
-      {"titannode.lens" === profile?.data?.handle ? (
-  <Paper>
-    <Space h="xl" />
-    <Player playbackId="4f33lcebx1uac9tb" title="Titan Node Stream" />
-  </Paper>
-) : null}
+   
 <Space h="xl"/>
        <Paper shadow="sm" p="lg" radius="md" withBorder>
         <Text
@@ -157,7 +150,7 @@ const ProfilePage = () => {
         </Card>
         </Container>
 <Space h="xl"/>
-      <Container>
+      
 
           {/* Loading */}
           {publications?.loading && (
@@ -190,7 +183,7 @@ const ProfilePage = () => {
             </InfiniteScroll>
           )}
      
-      </Container>
+     
     </>
   );
 };

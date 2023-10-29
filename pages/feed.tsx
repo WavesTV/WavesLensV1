@@ -93,38 +93,7 @@ console.log(personalizedFeed.data)
             {/* Public feed has loaded */}
             {!wavesFeed?.loading && wavesFeed?.data && (
               <>
-               <Paper
-              m="md"
-              shadow="lg"
-              radius="md"
-              p="xl"
-              withBorder
-            >
-              <Center>
-                 <UnstyledButton
-                  onClick={() => router.push('/profile/titannode.lens')} 
-                  
-                >
-                  <Avatar
-                    radius="xl"
-                    size="lg"
-                   src="https://ik.imagekit.io/lens/media-snapshot/4a06ebbbd900102ba392ff8f63f4b1562ccf999a865ebc7bf8b26efdfcb14532.png"
-                  />
-                  <Space w="xs" />
-                  <Text fw={600} size="sm">
-                    Titan Node
-                  </Text>
-                </UnstyledButton>
-              </Center>
-              <Space h="xl" />
-              <Player
-            
-                playbackId="4f33lcebx1uac9tb"
-                title="Titan Node Stream"
-                
-              />
-            </Paper>
-
+  
               <InfiniteScroll
                 dataLength={wavesFeed?.data?.length || 0}
                 next={() => wavesFeed?.next()}
