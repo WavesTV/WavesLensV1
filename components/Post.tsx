@@ -16,9 +16,8 @@ import {
   useActiveProfile
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
-
 import { Skeleton } from "./ui/skeleton";
-
+import ReactPlayer from 'react-player';
 import { Paper, ActionIcon, Group, Tooltip, Avatar, Space, UnstyledButton, Text, Spoiler, Image, Center} from "@mantine/core";
 import { IconCheck, IconHeart, IconHeartFilled, IconMessageCircle, IconMessageShare, IconScriptMinus, IconScriptPlus, IconStack3, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
@@ -147,7 +146,8 @@ export default function Post({ post, className, activeProfile }: Props) {
 
   return (
     <>
-      <Paper shadow="xl" radius="md" withBorder p="xl">
+      <Paper shadow="xl" radius="md" withBorder >
+        <Space h="xs"/>
         <Group grow>
       <Group justify="left">
          {postToUse.isGated && (
@@ -166,7 +166,7 @@ export default function Post({ post, className, activeProfile }: Props) {
             )}
             </Group>
          <Group justify="right">
-             <Text c="dimmed" size="xs" fw={500}>{formatDate(postToUse.createdAt)} ago</Text>
+             <Text c="dimmed" size="xs" fw={500} mr={10}>{formatDate(postToUse.createdAt)} ago</Text>
           </Group>
 </Group>
       <UnstyledButton component={Link} href={`/profile/${postToUse.profile.handle}`}>
@@ -181,7 +181,7 @@ export default function Post({ post, className, activeProfile }: Props) {
         />
 
        
-         <Text fw={500} c="dimmed" >{postToUse.profile.name || postToUse.profile.handle}</Text>
+         <Text fw={500} >{postToUse.profile.name || postToUse.profile.handle}</Text>
          </Group>
       </UnstyledButton>
       <Space h="xl" />
@@ -271,6 +271,18 @@ export default function Post({ post, className, activeProfile }: Props) {
 
                       />
                      </Center>
+            )}
+             {postToUse.metadata.animatedUrl && (
+         
+          <iframe
+      src={postToUse.metadata.animatedUrl}
+      width="100%"
+      height="600"
+      frameborder="0"
+      maxWidth="100%"
+
+                      />
+                     
             )}
             <Space h="xl" />
 
@@ -488,7 +500,7 @@ export default function Post({ post, className, activeProfile }: Props) {
                   {postToUse?.stats?.totalAmountOfCollects}
               </Text>
             </Group>
-         
+         <Space h="lg"/>
        
       </Paper>
       <Space h="md"/>
