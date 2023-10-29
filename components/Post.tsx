@@ -275,13 +275,10 @@ export default function Post({ post, className, activeProfile }: Props) {
              {postToUse.metadata.animatedUrl && (
          
           <iframe
-      src={postToUse.metadata.animatedUrl}
-      width="100%"
-      height="600"
-      
-      maxWidth="100%"
-
-                      />
+            src={postToUse.metadata.animatedUrl}
+            width="100%"
+            height="600"
+            />
                      
             )}
             <Space h="xl" />
