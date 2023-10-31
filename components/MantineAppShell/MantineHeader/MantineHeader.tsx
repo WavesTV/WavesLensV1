@@ -180,10 +180,9 @@ import { useActiveProfile, useActiveWallet, useWalletLogout  } from "@lens-proto
           {/* No Wallet + No Lens Profile */}
           {!walletInfo?.data && !activeProfile?.data && (
             <>
-            <Button component={Link} href="/login">Login</Button>
+            <Button leftSection={<GiWaveCrest size="1rem" />} component={Link} href="/login">Sign In</Button>
             </>
           )}
-
 
             </Group>
   

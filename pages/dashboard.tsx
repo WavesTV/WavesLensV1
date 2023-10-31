@@ -53,6 +53,7 @@ const activeProfile = useActiveProfile();
             src={activeProfile?.data?.coverPicture?.original?.url || ""}
             height={200}
             fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
+            alt={`${activeProfile?.data?.handle}'s cover photo`}
           />
         </Card.Section>
         
@@ -130,6 +131,7 @@ const activeProfile = useActiveProfile();
             src={activeProfile?.data?.coverPicture?.original?.url || ""}
             height={200}
             fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
+            alt='default cover photo'
           />
         </Card.Section>
         
