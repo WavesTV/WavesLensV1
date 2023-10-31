@@ -267,10 +267,7 @@ export default function Post({ post, className, activeProfile }: Props) {
 
         {postToUse.metadata.mainContentFocus === "VIDEO" && (
           <Center>
-          <Player
-                        src={postToUse?.metadata?.media?.[0]?.optimized?.url}
-
-                      />
+          <Player src={postToUse?.metadata?.media?.[0]?.optimized?.url} />
                      </Center>
             )}
 
@@ -279,7 +276,7 @@ export default function Post({ post, className, activeProfile }: Props) {
                   src={postToUse?.metadata?.animatedUrl}
                   width="100%"
                   height="600px"
-                  title={`${postToUse?.profile?.handle}'s Wave`}
+                  title="Waves Livestream"
                   />      
             )}
 
