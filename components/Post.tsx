@@ -260,6 +260,7 @@ export default function Post({ post, className, activeProfile }: Props) {
                         h='auto'
                         w="auto"
                         fit="contain"
+                        alt={`${postToUse?.profile?.handle}'s Post Image`}
                       />
                      </Center>
             )}
@@ -278,6 +279,7 @@ export default function Post({ post, className, activeProfile }: Props) {
                   src={postToUse?.metadata?.animatedUrl}
                   width="100%"
                   height="600px"
+                  title={`${postToUse?.profile?.handle}'s Wave`}
                   />      
             )}
 

@@ -74,11 +74,11 @@ const ProfilePage = () => {
         {/* @ts-ignore */}
           <Image
            // @ts-ignore
-                       alt={`${profile?.data?.handle}'s cover photo`}
+            alt={`${profile?.data?.handle}'s cover photo`}
             // @ts-ignore, image is there
             src={profile?.data?.coverPicture?.original?.url}
             height={200}
-            fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
+            fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"           
           />
         </Card.Section>
         
