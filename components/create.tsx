@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useCreatePost } from "@lens-protocol/react-web";
 import { useSDK } from "@thirdweb-dev/react";
-import fileToMimeType from "@/lib/fileToMimeType";
-import fileToContentFocus from "@/lib/fileToContentFocus";
 import useUpload from "@/lib/useUpload";
 import { useRouter } from "next/router";
 import {
