@@ -12,7 +12,6 @@ import {
   publicationId,
   Quote,
   Mirror,
-  CollectState,
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import {
@@ -477,87 +476,7 @@ export default function Post({ post }: Props) {
             {postContent?.stats?.upvotes}
           </Text>
           <Tooltip position="bottom" label="Collect">
-            <ActionIcon
-              variant="subtle"
-              radius="md"
-              size={36}
-              onClick={async (e) => {
-                e.stopPropagation();
-                try {
-                  if (!session) {
-                    notifications.show({
-                      title: "Error",
-                      icon: <IconX size="1.1rem" />,
-                      color: "red",
-                      message: `Login to collect this post!`,
-                    });
-                    return; // Return early to prevent further execution
-                  }
-
-                  switch (postToUse.collectPolicy.state) {
-                    case CollectState.COLLECT_TIME_EXPIRED:
-                      notifications.show({
-                        title: "Error: Post cannot be collected!",
-                        icon: <IconX size="1.1rem" />,
-                        color: "red",
-                        message: `The collection time has expired for this post.`,
-                      });
-
-                    case CollectState.COLLECT_LIMIT_REACHED:
-                      notifications.show({
-                        title: "Error: Post cannot be collected!",
-                        icon: <IconX size="1.1rem" />,
-                        color: "red",
-                        message: `The collection limit has been reached for this post.`,
-                      });
-
-                    case CollectState.NOT_A_FOLLOWER:
-                      notifications.show({
-                        title: "Error: Post cannot be collected!",
-                        icon: <IconX size="1.1rem" />,
-                        color: "red",
-                        message: `You need to follow ${post.profile.name} to collect this post.`,
-                      });
-
-                    case CollectState.CANNOT_BE_COLLECTED:
-                      notifications.show({
-                        title: "Error: Post cannot be collected!",
-                        icon: <IconX size="1.1rem" />,
-                        color: "red",
-                        message: `The creator of this post has disabled collections.`,
-                      });
-
-                    case CollectState.CAN_BE_COLLECTED:
-                      try {
-                        const result = await collect?.execute();
-
-                        if (result?.isFailure()) {
-                          throw new Error(result.error.message);
-                        }
-                        notifications.show({
-                          title: "Success!",
-                          icon: <IconCheck size="1.1rem" />,
-                          color: "green",
-                          message: `You have collected ${
-                            postToUse.by?.handle?.localName || "Anon"
-                          }'s post`,
-                        });
-                      } catch (error) {
-                        console.error(error);
-                        // TODO: Handle "InsufficientFundsError"
-                        notifications.show({
-                          title: "Error: Post cannot be collected!",
-                          icon: <IconX size="1.1rem" />,
-                          color: "red",
-                          message: `Something went wrong collecting this post. Please try again later.`,
-                        });
-                      }
-                  }
-                } catch (error) {
-                  console.error(error);
-                }
-              }}
-            >
+            <ActionIcon variant="subtle" radius="md" size={36}>
               <IconStack3 size={18} stroke={1.5} />
             </ActionIcon>
           </Tooltip>
