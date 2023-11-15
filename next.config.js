@@ -2,6 +2,7 @@
 const nextConfig = {
   reactStrictMode: true,
   basePath: "",
+  transpilePackages: ['@lens-protocol'],
 };
 
 module.exports = nextConfig;

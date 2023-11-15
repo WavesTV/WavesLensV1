@@ -1,191 +1,185 @@
 import {
-    Space,
-    Center,
-    Text,
-    Paper,
-    Divider, 
-    Image,
-    Group,
-    Avatar,
-    Card,
-    Button,
-    Container
-  } from "@mantine/core";
-import { useActiveProfile, useActiveWallet } from "@lens-protocol/react-web";
+  Space,
+  Center,
+  Text,
+  Paper,
+  Divider,
+  Image,
+  Group,
+  Avatar,
+  Card,
+  Button,
+  Container,
+} from "@mantine/core";
+import {
+  Post as PostType,
+  useSession,
+  usePublications,
+} from "@lens-protocol/react-web";
 import styles from "../styles/ProfileCard.module.css";
 import Link from "next/link";
 import { Stream } from "@/components/Stream";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Post from "@/components/Post";
 
 export default function Dashboard() {
- const walletInfo = useActiveWallet();
-const activeProfile = useActiveProfile();
- const replaceURLs = (text: string) => {
+  const { data: session } = useSession();
+
+  const profilePosts = usePublications({
+    where: {
+      from: [session?.profile?.id],
+    },
+  });
+
+  const replaceURLs = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const atSymbolRegex = /(\S*@+\S*)/g;
 
     return text
-      .replace(urlRegex, (url: string) => `<a href="${url}" target="_blank">${url}</a>`)
+      .replace(
+        urlRegex,
+        (url: string) => `<a href="${url}" target="_blank">${url}</a>`,
+      )
       .replace(atSymbolRegex, (match: string) => ` ${match} `);
   };
-    return(
-        <>
-        <Divider
+
+  return (
+    <>
+      <Divider
         my="xs"
         label={
           <>
             <Text fw={444} fz="xl">
-            Stream Dashboard
+              Stream Dashboard
             </Text>
           </>
         }
         labelPosition="center"
       />
 
-<Space h="lg"/>
+      <Space h="lg" />
 
-    {walletInfo?.data && activeProfile?.data ? (
-      <>
-                     <Card shadow="sm" padding="lg" radius="md" withBorder>
-       <Card.Section>
-        {/* @ts-ignore */}
-          <Image
-           // @ts-ignore
-            src={activeProfile?.data?.coverPicture?.original?.url || ""}
-            height={200}
-            fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
-            alt={`${activeProfile?.data?.handle}'s cover photo`}
-          />
-        </Card.Section>
-        
-        
-    
-          <Avatar
-            // @ts-ignore
-             src={
-                    // @ts-ignore
-                    activeProfile?.data?.picture?.original?.url || "/user.png"
-                  }
-            className={styles.avatar}
-            size={80}
-        radius={80}
-        mx="auto"
-        mt={-30}
-          />
-      
-{/* Profile Handle */}
-<Group justify="center">
-          @{activeProfile?.data?.handle || "anonuser"}
-        </Group>
-        {/* Profile Name */}
-        <Group justify="center" className={styles.profileName}>
-          <Text c="dimmed" fw={500}>{activeProfile?.data?.name || "Anon User"}</Text>
-        </Group>
-        
-      <Space h="xl"/>
-      <Stream />
-      <Space h="xl"/>
-      <Center>
-        <Text
-        
-            fz="sm"
-            style={{
-              maxWidth: "100%",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              
-            }}
-             dangerouslySetInnerHTML={{
-              __html:
-              activeProfile && activeProfile.data && activeProfile.data.bio 
-                  ? replaceURLs(activeProfile.data.bio.replace(/\n/g, "<br> "))
-                  : "",
-            }}
-          />
-          </Center>
-      <Space h="xl"/>
-      <Group justify="center">
+      {session?.authenticated ? (
+        <>
+          <Card shadow="sm" padding="lg" radius="md" withBorder>
+            <Card.Section>
+              {/* @ts-ignore */}
+              <Image
+                // @ts-ignore
 
-      
-      <Text fw={500} fz="sm">
-          {activeProfile?.data?.stats.totalFollowers} {" Followers"}
-        </Text>
-    |
-          <Text fw={500} fz="sm">
-           {activeProfile?.data?.stats.totalFollowing}{" Following"}
-        </Text>
-        </Group>
+                height={200}
+                fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
+              />
+            </Card.Section>
 
-        <Space h="md"/>
-        </Card>
+            <Avatar
+              // @ts-ignore
 
-         <Space h="xl"/>
+              className={styles.avatar}
+              size={80}
+              radius={80}
+              mx="auto"
+              mt={-30}
+            />
 
+            {/* Profile Handle */}
+            <Group justify="center">
+              {" "}
+              <Text size="md" fw={500}>
+                {session && "profile" in session
+                  ? `@${session.profile?.handle?.localName}`
+                  : "No Profile"}
+              </Text>
+            </Group>
 
+            <Space h="xl" />
+            <Stream />
+            <Space h="xl" />
+
+            <Group justify="center">
+              <Text fw={500} size="sm">
+                {session &&
+                  "profile" in session &&
+                  session.profile?.stats?.followers}{" "}
+                Followers
+              </Text>
+              |
+              <Text fw={500} size="sm">
+                {session &&
+                  "profile" in session &&
+                  session.profile?.stats?.following}{" "}
+                Following
+              </Text>
+            </Group>
+
+            <Space h="md" />
+          </Card>
+
+          <Space h="xl" />
+          {/* Loading */}
+          {profilePosts?.loading && <></>}
+          {/* Loaded */}
+          {!profilePosts?.loading && profilePosts?.data && (
+            <InfiniteScroll
+              dataLength={profilePosts?.data?.length || 0}
+              next={() => profilePosts?.next()}
+              hasMore={profilePosts?.hasMore}
+              className="mt-4"
+              loader={<></>}
+            >
+              {// @ts-ignore post type
+              profilePosts?.data?.map((post: PostType) => (
+                <Post key={post.id} post={post} />
+              ))}
+            </InfiniteScroll>
+          )}
         </>
-                ) : (
-                   <Card shadow="sm" padding="lg" radius="md" withBorder>
-       <Card.Section>
-        {/* @ts-ignore */}
-          <Image
-           // @ts-ignore
-            src={activeProfile?.data?.coverPicture?.original?.url || ""}
-            height={200}
-            fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
-            alt='default cover photo'
-          />
-        </Card.Section>
-        
-        
-    
+      ) : (
+        <Card shadow="sm" padding="lg" radius="md" withBorder>
+          <Card.Section>
+            {/* @ts-ignore */}
+            <Image
+              // @ts-ignore
+
+              height={200}
+              fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
+              alt="default cover photo"
+            />
+          </Card.Section>
+
           <Avatar
             // @ts-ignore
-             src={
-                    // @ts-ignore
-                    activeProfile?.data?.picture?.original?.url || "/user.png"
-                  }
             className={styles.avatar}
             size={80}
-        radius={80}
-        mx="auto"
-        mt={-30}
+            radius={80}
+            mx="auto"
+            mt={-30}
           />
-      {/* Profile Name */}
-        <Group justify="center" className={styles.profileName}>
-          <Text fw={500}>{activeProfile?.data?.name || "Anon User"}</Text>
-        </Group>
-{/* Profile Handle */}
-<Group justify="center">
-          @{activeProfile?.data?.handle || "anonuser"}
-        </Group>
-        
-        
-<Space h="md"/>
-     
-      
-      <Group justify="center">
+          {/* Profile Name */}
+          <Group justify="center" className={styles.profileName}>
+            <Text fw={500}>@Anon</Text>
+          </Group>
 
-      
-      <Text fw={500} fz="sm">
-          1 {" Followers"}
-        </Text>
-       |
-          <Text fw={500} fz="sm">
-          1 {" Following"}
-        </Text>
-        </Group>
+          <Space h="md" />
 
-        <Space h="md"/>
-        <Container size="md">
-      
-        <Button component={Link} href="/login">
-            Sign In to Stream
-        </Button>
-        
-        </Container>
+          <Group justify="center">
+            <Text fw={500} fz="sm">
+              1 {" Followers"}
+            </Text>
+            |
+            <Text fw={500} fz="sm">
+              1 {" Following"}
+            </Text>
+          </Group>
+
+          <Space h="md" />
+          <Container size="md">
+            <Button component={Link} href="/login">
+              Sign In to Stream
+            </Button>
+          </Container>
         </Card>
-
-                )}
-
-</>
-    )
+      )}
+    </>
+  );
 }

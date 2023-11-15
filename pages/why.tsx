@@ -1,117 +1,156 @@
 import { Welcome } from "@/components/Welcome/Welcome";
-import { Text, Space, Grid, Paper, Container, Center } from "@mantine/core";
+import {
+  Text,
+  Space,
+  ActionIcon,
+  Paper,
+  Container,
+  Center,
+  Divider,
+} from "@mantine/core";
 import { ImArrowDown2 } from "react-icons/im";
-import { Fade } from 'react-awesome-reveal';
+import { Fade } from "react-awesome-reveal";
 import { HowItWorks } from "@/components/HowItWorks/HowItWorks";
+import { IconCheck } from "@tabler/icons-react";
 export default function Why() {
-
-return(
+  return (
     <>
-<div>
-    <Welcome />
-    </div>
+      <div>
+        <Welcome />
+      </div>
 
-    <HowItWorks />
-    <Space h="xl"/>
- <Text ta="center" fz={50} fw={800} fs="italic" variant="gradient" gradient={{ from: 'blue', to: 'cyan', deg: 176 }}>Roadmap</Text>
-  <Space h="md"/>
-    <Container> 
-      <Fade>
-        <Paper shadow="xl"  radius="md" withBorder p="xl">
-        <Text td="underline" ta="center" fw={500}>Launch To Lens Button</Text>
-        <Text c="dimmed" fw={200}>Creates an embed post type with the Stream PlaybackURL and Title.</Text>
-        <Space h="md"/>
-        <Text c="dimmed" fw={200}>Follower-Only Option.</Text>
-        <Space h="md"/>
-        <Text c="dimmed" fw={200}>Apply to be Whitelisted. Updates user profile with the StreamID and PlaybackURL.</Text>
-        <Space h="md"/>
-        </Paper>
-</Fade>
-        <Space h="sm"/>
-        <Center>
-       <ImArrowDown2/>
-       </Center>
-       <Space h="sm"/>
-<Fade>
-      <Paper shadow="xl" radius="md" withBorder p="xl">
-      <Text td="underline" ta="center" fw={500}>Channel Chats</Text>
-        <Text c="dimmed" fw={200}>Using Firebase to build the Channel Chats for logged in users to engage in.</Text>
-        <Space h="md"/>
-        <Text c="dimmed" fw={200}>Will be the only component on Waves that isnt on-chain.</Text>
-        <Space h="md"/>
-    </Paper>
-</Fade>
-    <Space h="sm"/>
-        <Center>
-       <ImArrowDown2/>
-       </Center>
-       <Space h="sm"/>
-       <Fade>
-      <Paper shadow="xl" radius="md" withBorder p="xl">
-      <Text td="underline" ta="center" fw={500}>Notification Display</Text>
-        <Text c="dimmed" fw={200}>Displaying user notifications.</Text>
-        <Space h="md"/>
-        <Text c="dimmed" fw={200}>Color coded based on Notification Type.</Text>
-    </Paper>
-</Fade>
-    <Space h="sm"/>
-        <Center>
-       <ImArrowDown2/>
-       </Center>
-       <Space h="sm"/>
-       <Fade>
-      <Paper shadow="xl" radius="md" withBorder p="xl">
-      <Text td="underline" ta="center" fw={500}>More Post-Types</Text>
-        <Text c="dimmed" fw={200}>Post Images, Videos, Embedded Links, Votes</Text>
-        <Space h="md"/>
-    </Paper>
-</Fade>
-    <Space h="sm"/>
-        <Center>
-       <ImArrowDown2/>
-       </Center>
-       <Space h="sm"/>
-    <Fade>
-      <Paper shadow="xl" radius="md" withBorder p="xl">
-      <Text td="underline" ta="center" fw={500}>Subcription Payments</Text>
-        <Text c="dimmed" fw={200}>Building subcriptions around crypto payments (MATIC) to be instantly paid out to streamers.</Text>
-        <Space h="md"/>
-        <Text c="dimmed" fw={200}>Subscriber rewards: Subscriber Badge, Subscription NFT, Channel Points, and more...</Text>
-       <Space h="md"/>
-       <Text c="dimmed" fw={200}>Future iterations will take a percentage of subcriptions.</Text>
-    </Paper>
-</Fade>
-    <Space h="sm"/>
-        <Center>
-       <ImArrowDown2/>
-       </Center>
-       <Space h="sm"/>
-<Fade>
-      <Paper shadow="xl" radius="md" withBorder p="xl">
-          <Text td="underline" ta="center" fw={500}>Clean Up</Text>
-        <Text c="dimmed" fw={200}>Fixing any bugs and adding small features based on feedback and testing.</Text>
-        <Space h="md"/>
-        
-    </Paper>
-      </Fade>
-      <Space h="sm"/>
-        <Center>
-       <ImArrowDown2/>
-       </Center>
-       <Space h="sm"/>
-<Fade>
-       <Paper shadow="xl" radius="md" withBorder p="xl">
-          <Text td="underline" ta="center" fw={500}>Community Takeover</Text>
-        <Text c="dimmed" fw={200}>Once the foundation for Waves is complete the platform direction will be dependent on the community.</Text>
-        <Space h="md"/>
-        <Text c="dimmed" fw={200}>Could be done through on-chain voting or some open forum basis.</Text>
-           <Space h="md"/>
-    </Paper>
-      </Fade>
+      <HowItWorks />
+      <Space h="xl" />
+      <Text
+        ta="center"
+        fz={50}
+        fw={800}
+        fs="italic"
+        variant="gradient"
+        gradient={{ from: "blue", to: "cyan", deg: 176 }}
+      >
+        Roadmap
+      </Text>
+      <Text ta="center" size="lg" fw={800} fs="italic">
+        Milestone 1
+      </Text>
+      <Space h="md" />
+      <Container>
+        <Fade>
+          <Paper shadow="xl" radius="md" withBorder p="xl">
+            <ActionIcon variant="light" color="green" aria-label="Settings">
+              <IconCheck style={{ width: "70%", height: "70%" }} stroke={1.5} />
+            </ActionIcon>
 
-   </Container>
-   <Space h={111}/>
+            <Text td="underline" ta="center" fw={500}>
+              Build MVP on Lens V1
+            </Text>
+            <Text c="dimmed" fw={200}>
+              Basic Usage - Post, Livestream, Engage, View Profiles/Feeds
+            </Text>
+            <Space h="md" />
+          </Paper>
+        </Fade>
+        <Space h="sm" />
+        <Center>
+          <ImArrowDown2 />
+        </Center>
+        <Space h="sm" />
+        <Fade>
+          <Paper shadow="xl" radius="md" withBorder p="xl">
+            <Text td="underline" ta="center" fw={500}>
+              Build MVP on Lens V2
+            </Text>
+            <Text c="dimmed" fw={200}>
+              Basic Usage - Post, Livestream, Engage, View Profiles/Feeds
+            </Text>
+            <Space h="md" />
+          </Paper>
+        </Fade>
+      </Container>
 
-</>
-)
+      <Space h="sm" />
+      <Divider my="sm" />
+      <Space h="sm" />
+
+      <Text ta="center" size="lg" fw={800} fs="italic">
+        Milestone 2
+      </Text>
+      <Space h="md" />
+      <Container>
+        <Fade>
+          <Paper shadow="xl" radius="md" withBorder p="xl">
+            <Text td="underline" ta="center" fw={500}>
+              Subcriptions
+            </Text>
+            <Text c="dimmed" fw={200}>
+              Payment Processing - Direct/Instant payments via Matic
+            </Text>
+            <Space h="md" />
+            <Text c="dimmed" fw={200}>
+              Tiered System - 3 tiers similar to Twitch
+            </Text>
+            <Space h="md" />
+            <Text c="dimmed" fw={200}>
+              Rewards - Subscriber Badge, Subscriber NFT, and more
+            </Text>
+          </Paper>
+        </Fade>
+        <Space h="sm" />
+        <Center>
+          <ImArrowDown2 />
+        </Center>
+        <Space h="sm" />
+        <Fade>
+          <Paper shadow="xl" radius="md" withBorder p="xl">
+            <Text td="underline" ta="center" fw={500}>
+              Chat
+            </Text>
+            <Text c="dimmed" fw={200}>
+              Using Streamr to build on-chain channel chats
+            </Text>
+            <Space h="md" />
+          </Paper>
+        </Fade>
+      </Container>
+      <Space h="sm" />
+      <Divider my="sm" />
+      <Space h="sm" />
+
+      <Text ta="center" size="lg" fw={800} fs="italic">
+        Milestone 3
+      </Text>
+      <Space h="md" />
+      <Container>
+        <Fade>
+          <Paper shadow="xl" radius="md" withBorder p="xl">
+            <Text td="underline" ta="center" fw={500}>
+              Mobile App Prototype
+            </Text>
+            <Text c="dimmed" fw={200}>
+              Functionality will mirror Web App
+            </Text>
+            <Space h="md" />
+          </Paper>
+        </Fade>
+        <Space h="sm" />
+        <Center>
+          <ImArrowDown2 />
+        </Center>
+        <Space h="sm" />
+        <Fade>
+          <Paper shadow="xl" radius="md" withBorder p="xl">
+            <Text td="underline" ta="center" fw={500}>
+              Community Takeover
+            </Text>
+            <Text c="dimmed" fw={200}>
+              Future features will be handled via open forum or voting
+            </Text>
+            <Space h="md" />
+          </Paper>
+        </Fade>
+      </Container>
+      <Space h={111} />
+    </>
+  );
 }

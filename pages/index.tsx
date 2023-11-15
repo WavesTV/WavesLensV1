@@ -1,7 +1,7 @@
 import type { NextPage } from "next";
 import {
-  useActiveProfile,
-  useActiveWallet,
+  SessionType, 
+  useSession
 } from "@lens-protocol/react-web";
 import Feed from "./feed";
 import { Avatar, Paper, Text, Button, Textarea, Space, Group, Container, Checkbox , Center} from "@mantine/core";
@@ -10,8 +10,7 @@ import { GiWaveSurfer } from "react-icons/gi";
 import { Create } from "@/components/create";
 
 const Home: NextPage = () => {
- const walletInfo = useActiveWallet();
-  const activeProfile = useActiveProfile();
+ const { data: session } = useSession();
 
 
   return (
@@ -19,8 +18,8 @@ const Home: NextPage = () => {
 <Container size={560} p={0}>
 
         
-                {walletInfo?.data && activeProfile?.data ? (
-                   <><Create /></>
+                {session?.authenticated ? (
+                   <></>
                 ) : (
                   <>
                   <Center>

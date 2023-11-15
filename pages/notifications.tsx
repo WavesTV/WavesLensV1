@@ -7,20 +7,16 @@ import {
     Container
   } from "@mantine/core";
 import {
-  useActiveProfile,
+  useSession,
   useNotifications 
 } from "@lens-protocol/react-web";
 
 export default function Notifications() {
-  const activeProfile = useActiveProfile();
- 
+    const session = useSession();
 
-        
-  
-  
     return(
         <>
-        <Divider
+      <Divider
         my="xs"
         label={
           <>
@@ -33,16 +29,17 @@ export default function Notifications() {
       />
 
 <Space h="lg"/>
-<Container>
+
+      <Container>
         <Paper shadow="xl" p="lg" withBorder>
-        <Center>
-          <Text c="dimmed" fw={700}>
-            Coming Soon
-          </Text>
-        </Center>
+          <Center>
+            <Text c="dimmed" fw={700}>
+              Coming Soon
+            </Text>
+          </Center>
         
         </Paper>
-        </Container>
+      </Container>
         </>
     )
 }

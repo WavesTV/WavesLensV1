@@ -7,7 +7,6 @@ import {
 import { useNetworkMismatch, useAddress } from "@thirdweb-dev/react";
 import { useRouter } from "next/router";
 import SignInWithLensButton from "./SignInWithLensButton";
-import { useActiveWallet } from "@lens-protocol/react-web";
 import { Center, Container, Group, Paper, Space, Text } from "@mantine/core";
 
 const MODAL_DISPLAY_DELAY = 1000; // Set the delay time in milliseconds
@@ -17,25 +16,22 @@ export default function NetworkSwitchModal() {
   const address = useAddress();
   const wrongNetwork = useNetworkMismatch();
   const [openNetworkModal, setOpenNetworkModal] = useState<boolean>(false);
-  const walletInfo = useActiveWallet();
+
 
   useEffect(() => {
-    let timeoutId: NodeJS.Timeout;
 
-    if (!address || wrongNetwork || !walletInfo?.data) {
+
+    if (!address || wrongNetwork) {
       if (router.pathname !== "/") {
-        timeoutId = setTimeout(() => {
+     
           setOpenNetworkModal(true);
-        }, MODAL_DISPLAY_DELAY);
-      }
+    
     } else {
       setOpenNetworkModal(false);
     }
 
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [address, wrongNetwork, router.pathname, walletInfo?.data]);
+  }
+  }, [address, wrongNetwork, router.pathname]);
 
   return (
     <>
