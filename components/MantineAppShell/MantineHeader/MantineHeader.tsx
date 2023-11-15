@@ -153,17 +153,15 @@ export function MantineHeader() {
                       <Avatar size="md" radius="md" mx="auto" />
                     </Menu.Target>
                     <Menu.Dropdown>
-                      <Menu.Item>
-                        <Button
-                          leftSection={<IconLogout size={17} />}
-                          fullWidth
-                          variant="subtle"
-                          color="red"
-                          onClick={execute}
-                          disabled={isPending}
-                        >
-                          Sign Out
-                        </Button>
+                      <Menu.Item
+                        onClick={(e) => {
+                          e.preventDefault(); // Prevent default button behavior if necessary
+                          execute();
+                        }}
+                        disabled={isPending}
+                        leftSection={<IconLogout size={17} />}
+                      >
+                        Sign Out
                       </Menu.Item>
                     </Menu.Dropdown>
                   </Menu>
@@ -306,17 +304,15 @@ export function MantineHeader() {
                     </Button>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item>
-                      <Button
-                        leftSection={<IconLogout size={17} />}
-                        fullWidth
-                        variant="subtle"
-                        color="red"
-                        onClick={execute}
-                        disabled={isPending}
-                      >
-                        Sign Out
-                      </Button>
+                    <Menu.Item
+                      leftSection={<IconLogout size={17} />}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        execute();
+                      }}
+                      disabled={isPending}
+                    >
+                      Sign Out
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
