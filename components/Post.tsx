@@ -59,7 +59,7 @@ export default function Post({ post }: Props) {
 
   //handling reposts
   const isMirror = post.__typename === "Mirror";
-  const postContent = isMirror ? postToUse.mirrorOn : postToUse;
+  const postContent = isMirror ? postToUse?.mirrorOn : postToUse;
 
   const { execute: mirror } = useCreateMirror();
   async function handleMirror() {
