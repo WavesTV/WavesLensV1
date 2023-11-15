@@ -35,14 +35,10 @@ import { ColorSchemeToggle } from "../../ColorSchemeToggle";
 import { SessionType, useSession, useLogout } from "@lens-protocol/react-web";
 
 export function MantineHeader() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
+  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
+    useDisclosure(false);
   const { data: session } = useSession();
   const { execute, loading: isPending } = useLogout();
-
-  const logout = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault();
-    void execute();
-  };
 
   return (
     <>
@@ -157,12 +153,17 @@ export function MantineHeader() {
                       <Avatar size="md" radius="md" mx="auto" />
                     </Menu.Target>
                     <Menu.Dropdown>
-                      <Menu.Item
-                        leftSection={<IconLogout size={17} />}
-                        disabled={isPending}
-                        onClick={logout}
-                      >
-                        Sign Out
+                      <Menu.Item>
+                        <Button
+                          leftSection={<IconLogout size={17} />}
+                          fullWidth
+                          variant="subtle"
+                          color="red"
+                          onClick={execute}
+                          disabled={isPending}
+                        >
+                          Sign Out
+                        </Button>
                       </Menu.Item>
                     </Menu.Dropdown>
                   </Menu>
@@ -305,12 +306,17 @@ export function MantineHeader() {
                     </Button>
                   </Menu.Target>
                   <Menu.Dropdown>
-                    <Menu.Item
-                      leftSection={<IconLogout size={17} />}
-                      disabled={isPending}
-                      onClick={logout}
+                    <Menu.Item>
+                      <Button
+                        leftSection={<IconLogout size={17} />}
+                        fullWidth
+                        variant="subtle"
+                        color="red"
+                        onClick={execute}
+                        disabled={isPending}
                       >
                         Sign Out
+                      </Button>
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>

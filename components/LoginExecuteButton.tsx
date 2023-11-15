@@ -7,10 +7,10 @@ export default function LoginExecuteButton() {
   const { execute: login, loading: isLoginPending } = useLogin();
   const address = useAddress();
   const { data: ownedProfiles } = useProfiles({
-      where: {
-        ownedBy: address ? [address] : [], // Wrap address in an array
-      },
-    });
+    where: {
+      ownedBy: address && [address], // Wrap address in an array
+    },
+  });
   if (!address)
     return (
       <ConnectWallet

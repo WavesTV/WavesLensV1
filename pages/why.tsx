@@ -65,6 +65,11 @@ export default function Why() {
               Basic Usage - Post, Livestream, Engage, View Profiles/Feeds
             </Text>
             <Space h="md" />
+            <Text c="dimmed" fw={200}>
+              Share Stream Button - Viewers can share your stream directly onto
+              Lens
+            </Text>
+            <Space h="md" />
           </Paper>
         </Fade>
       </Container>
