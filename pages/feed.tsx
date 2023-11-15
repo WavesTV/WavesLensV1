@@ -51,7 +51,10 @@ export default function Feed() {
 
   const followingFeed = useFeed({
     where: {
-      for: session?.profile?.id,
+      for:
+        session && "profile" in session && session?.profile?.id
+          ? session.profile.id
+          : undefined,
     },
   });
 

@@ -20,7 +20,7 @@ export default function Wallet() {
       />
 
       <Space h="lg" />
-      {session?.data?.address && (
+      {session?.data && "address" in session.data && (
         <>
           <Group justify="center">
             <ConnectWallet

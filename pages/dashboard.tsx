@@ -27,7 +27,10 @@ export default function Dashboard() {
 
   const profilePosts = usePublications({
     where: {
-      from: [session?.profile?.id],
+      from:
+        session && "profile" in session && session?.profile?.id
+          ? [session.profile.id]
+          : undefined,
     },
   });
 

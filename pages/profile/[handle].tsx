@@ -50,7 +50,7 @@ const ProfilePage = () => {
 
   const profilePosts = usePublications({
     where: {
-      from: [profileId],
+      from: profileId ? [profileId] : undefined,
     },
   });
 
@@ -104,7 +104,11 @@ const ProfilePage = () => {
             alt={`${profile?.data?.handle?.localName}'s profile picture`}
             // @ts-ignore, image is there
             src={
-              profile?.data?.metadata?.picture?.optimized?.uri || "/user.png"
+             profile?.data?.metadata?.picture &&
+                "optimized" in profile?.data?.metadata?.picture
+                  ? profile?.data?.metadata?.picture.optimized?.uri
+                  : "/user.png"
+             
             }
             className={styles.avatar}
             size={80}

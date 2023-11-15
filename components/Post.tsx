@@ -60,7 +60,7 @@ export default function Post({ post }: Props) {
   const postToUse = useMemo(() => {
     return post;
   }, [post]);
-
+  console.log(post);
   //handling reposts
   const isMirror = isMirrorPost(post);
   const postContent = isMirror ? post.mirrorOn : post;
@@ -159,8 +159,10 @@ export default function Post({ post }: Props) {
             <Avatar
               // @ts-ignore
               src={
-                postContent?.by?.metadata?.picture?.optimized?.uri ||
-                "/user.png"
+                postContent?.by?.metadata?.picture &&
+                "optimized" in postContent?.by?.metadata?.picture
+                  ? postContent.by.metadata.picture.optimized?.uri
+                  : "/user.png"
               }
               alt={`${postContent.by?.handle?.localName}'s profile picture`}
               size="lg"
@@ -208,11 +210,13 @@ export default function Post({ post }: Props) {
                   textAlign: "center",
                 }}
                 dangerouslySetInnerHTML={{
-                  __html: postContent?.metadata?.content
-                    ? replaceURLs(
-                        postContent.metadata.content.replace(/\n/g, "<br> "),
-                      )
-                    : "",
+                  __html:
+                    "content" in postContent?.metadata &&
+                    postContent?.metadata?.content
+                      ? replaceURLs(
+                          postContent.metadata.content.replace(/\n/g, "<br> "),
+                        )
+                      : "",
                 }}
               />
             </div>
@@ -220,32 +224,36 @@ export default function Post({ post }: Props) {
         </Center>
         <Space h="md" />
 
-        {postContent.metadata?.asset?.image && (
-          <Center>
-            <Image
-              src={postContent?.metadata?.asset?.image?.optimized?.uri}
-              radius="md"
-              h="555"
-              w="auto"
-              fit="contain"
-              alt={`${postToUse.by?.handle?.localName}'s Post Image`}
-            />
-          </Center>
-        )}
+        {"asset" in postContent?.metadata &&
+          "image" in postContent?.metadata.asset &&
+          postContent.metadata?.asset?.image && (
+            <Center>
+              <Image
+                src={postContent?.metadata?.asset?.image?.optimized?.uri}
+                radius="md"
+                h="555"
+                w="auto"
+                fit="contain"
+                alt={`${postToUse.by?.handle?.localName}'s Post Image`}
+              />
+            </Center>
+          )}
 
-        {postContent?.metadata?.asset?.video && (
+        { "asset" in postContent?.metadata &&
+          "video" in postContent?.metadata.asset && postContent?.metadata?.asset?.video && (
           <Center>
             <Player src={postContent?.metadata?.asset?.video?.optimized?.uri} />
           </Center>
         )}
 
-        {postContent?.metadata?.embed && (
+        {"embed" in postContent?.metadata &&
+           postContent?.metadata?.embed && (
           <Center>
-            <Player src={postToUse?.quoteOn?.metadata?.embed} />
+            <Player src={postContent?.metadata?.embed} />
           </Center>
         )}
 
-        {post.__typename === "Quote" && (
+        {post.__typename === "Quote" && "quoteOn" in postToUse && (
           <Paper shadow="xl" radius="md" p="xs" withBorder>
             <Group justify="right">
               <Text c="dimmed" size="xs" fw={500} mr={10}>
@@ -261,8 +269,11 @@ export default function Post({ post }: Props) {
                 <Avatar
                   // @ts-ignore
                   src={
-                    postToUse.quoteOn.by.metadata?.picture?.optimized?.uri ||
-                    "/user.png"
+                    postToUse?.by?.metadata?.picture &&
+                "optimized" in postToUse?.by?.metadata?.picture
+                  ? postToUse.by.metadata.picture.optimized?.uri
+                  : "/user.png"
+          
                   }
                   alt={`${postToUse.quoteOn.by?.handle?.localName}'s profile picture`}
                   size="lg"
@@ -310,7 +321,7 @@ export default function Post({ post }: Props) {
                       textAlign: "center",
                     }}
                     dangerouslySetInnerHTML={{
-                      __html: postToUse?.quoteOn?.metadata?.content
+                      __html:  "content" in postToUse?.quoteOn?.metadata && postToUse?.quoteOn?.metadata?.content
                         ? replaceURLs(
                             postToUse.quoteOn.metadata.content.replace(
                               /\n/g,
@@ -324,7 +335,7 @@ export default function Post({ post }: Props) {
               </Spoiler>
             </Center>
             <Space h="md" />
-            {postToUse.quoteOn.metadata?.asset?.image && (
+            {"asset" in postToUse?.quoteOn?.metadata && "image" in postToUse?.quoteOn?.metadata?.asset && postToUse.quoteOn.metadata?.asset?.image && (
               <Center>
                 <Image
                   src={
@@ -339,7 +350,7 @@ export default function Post({ post }: Props) {
               </Center>
             )}
 
-            {postToUse?.quoteOn?.metadata?.asset?.video && (
+            {"asset" in postToUse?.quoteOn?.metadata && "video" in postToUse?.quoteOn?.metadata?.asset && postToUse?.quoteOn?.metadata?.asset?.video && (
               <Center>
                 <Player
                   src={
@@ -349,7 +360,7 @@ export default function Post({ post }: Props) {
               </Center>
             )}
 
-            {postToUse?.quoteOn?.metadata?.embed && (
+            {"embed" in postToUse?.quoteOn?.metadata && postToUse?.quoteOn?.metadata?.embed && (
               <Center>
                 <Player src={postToUse?.quoteOn?.metadata?.embed} />
               </Center>
