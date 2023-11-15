@@ -27,6 +27,7 @@ import {
   Image,
   Center,
   Button,
+  CollectState,
 } from "@mantine/core";
 import {
   IconCheck,
@@ -47,6 +48,10 @@ type Props = {
   post: Post | Comment | Quote | Mirror;
 };
 
+function isMirrorPost(post: Post | Comment | Quote | Mirror): post is Mirror {
+  return post.__typename === "Mirror" && "mirrorOn" in post;
+}
+
 export default function Post({ post }: Props) {
   const router = useRouter();
   const { execute: react, loading, error } = useReactionToggle();
@@ -58,8 +63,8 @@ export default function Post({ post }: Props) {
   }, [post]);
 
   //handling reposts
-  const isMirror = post.__typename === "Mirror";
-  const postContent = isMirror ? postToUse?.mirrorOn : postToUse;
+  const isMirror = isMirrorPost(post);
+  const postContent = isMirror ? post.mirrorOn : post;
 
   const { execute: mirror } = useCreateMirror();
   async function handleMirror() {
@@ -72,7 +77,7 @@ export default function Post({ post }: Props) {
   const hasReaction = useMemo(() => {
     if (session?.authenticated && postToUse && "canUpvote" in postToUse) {
       return hasReacted({
-        publication: postToUse,
+        publication: postToUse as Post,
         reaction: PublicationReactionType.Upvote,
       });
     }
@@ -84,14 +89,14 @@ export default function Post({ post }: Props) {
 
     if (!hasReaction) {
       await react({
-        publication: postToUse,
+        publication: postToUse as Post,
         reaction: PublicationReactionType.Upvote,
       });
 
       setUserUpvotedReacted(true);
     } else {
       await react({
-        publication: postToUse,
+        publication: postToUse as Post,
         reaction: PublicationReactionType.Downvote,
       });
     }
@@ -155,7 +160,8 @@ export default function Post({ post }: Props) {
             <Avatar
               // @ts-ignore
               src={
-                postContent.by.metadata?.picture?.optimized?.uri || "/user.png"
+                postContent?.by?.metadata?.picture?.optimized?.uri ||
+                "/user.png"
               }
               alt={`${postContent.by?.handle?.localName}'s profile picture`}
               size="lg"
