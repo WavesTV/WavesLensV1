@@ -12,6 +12,7 @@ import {
   publicationId,
   Quote,
   Mirror,
+  CollectState,
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import {
@@ -27,7 +28,6 @@ import {
   Image,
   Center,
   Button,
-  CollectState,
 } from "@mantine/core";
 import {
   IconCheck,
