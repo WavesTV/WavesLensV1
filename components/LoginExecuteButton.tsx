@@ -8,7 +8,7 @@ export default function LoginExecuteButton() {
   const address = useAddress();
   const { data: ownedProfiles } = useProfiles({
     where: {
-      ownedBy: address && [address], // Wrap address in an array
+      ownedBy: address ? [address] : [], // Wrap address in an array
     },
   });
   if (!address)
@@ -24,7 +24,7 @@ export default function LoginExecuteButton() {
     <Button
       onClick={async () => {
         await login({
-          address: address,
+          address: address && address,
           profileId: ownedProfiles && ownedProfiles[0].id,
         });
       }}
