@@ -9,7 +9,6 @@ import {
   PublicationReactionType,
   useSession,
   hasReacted,
-  publicationId,
   Quote,
   Mirror,
 } from "@lens-protocol/react-web";
@@ -118,38 +117,51 @@ export default function Post({ post }: Props) {
   return (
     <>
       <Paper shadow="xl" radius="md" p="xs" withBorder>
-        <Space h="xs" />
-        <div>
-          {isMirror && (
-            <Button
-              variant="transparent"
-              leftSection={<GiMirrorMirror size={13} />}
-              component={Link}
-              href={`/profile/${postToUse.by?.handle?.localName}`}
-            >
-              <Text c="dimmed" size="xs">
-                {postToUse.by.handle?.localName} mirrored
-              </Text>
-            </Button>
-          )}
-          {postToUse.__typename === "Comment" && (
-            <Button
-              variant="transparent"
-              leftSection={<IconMessageCircle size={13} />}
-              component={Link}
-              href={`/profile/${postToUse.by?.handle?.localName}`}
-            >
-              <Text c="dimmed" size="xs">
-                {postToUse.by.handle?.localName} Commented
-              </Text>
-            </Button>
-          )}
-          <Group justify="right">
-            <Text c="dimmed" size="xs" fw={500} mr={10}>
+        <Space h="sm" />
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <Text c="dimmed" size="xs" fw={500} ml={10}>
               {formatDate(postToUse.createdAt)} ago
             </Text>
+          </div>
+
+          <Group justify="right">
+            {isMirror && (
+              <Button
+                variant="transparent"
+                leftSection={<GiMirrorMirror size={13} />}
+                component={Link}
+                href={`/profile/${postToUse.by?.handle?.localName}`}
+              >
+                <Text c="dimmed" size="xs">
+                  {postToUse.by.handle?.localName} mirrored
+                </Text>
+              </Button>
+            )}
+
+            {postToUse.__typename === "Comment" && (
+              <Button
+                variant="transparent"
+                leftSection={<IconMessageCircle size={13} />}
+                component={Link}
+                href={`/profile/${postToUse.by?.handle?.localName}`}
+              >
+                <Text c="dimmed" size="xs">
+                  {postToUse.by.handle?.localName} Commented
+                </Text>
+              </Button>
+            )}
           </Group>
         </div>
+
+        <Space h="lg" />
 
         <UnstyledButton
           component={Link}
@@ -239,15 +251,17 @@ export default function Post({ post }: Props) {
             </Center>
           )}
 
-        { "asset" in postContent?.metadata &&
-          "video" in postContent?.metadata.asset && postContent?.metadata?.asset?.video && (
-          <Center>
-            <Player src={postContent?.metadata?.asset?.video?.optimized?.uri} />
-          </Center>
-        )}
+        {"asset" in postContent?.metadata &&
+          "video" in postContent?.metadata.asset &&
+          postContent?.metadata?.asset?.video && (
+            <Center>
+              <Player
+                src={postContent?.metadata?.asset?.video?.optimized?.uri}
+              />
+            </Center>
+          )}
 
-        {"embed" in postContent?.metadata &&
-           postContent?.metadata?.embed && (
+        {"embed" in postContent?.metadata && postContent?.metadata?.embed && (
           <Center>
             <Player src={postContent?.metadata?.embed} />
           </Center>
@@ -270,10 +284,9 @@ export default function Post({ post }: Props) {
                   // @ts-ignore
                   src={
                     postToUse?.by?.metadata?.picture &&
-                "optimized" in postToUse?.by?.metadata?.picture
-                  ? postToUse.by.metadata.picture.optimized?.uri
-                  : "/user.png"
-          
+                    "optimized" in postToUse?.by?.metadata?.picture
+                      ? postToUse.by.metadata.picture.optimized?.uri
+                      : "/user.png"
                   }
                   alt={`${postToUse.quoteOn.by?.handle?.localName}'s profile picture`}
                   size="lg"
@@ -321,50 +334,57 @@ export default function Post({ post }: Props) {
                       textAlign: "center",
                     }}
                     dangerouslySetInnerHTML={{
-                      __html:  "content" in postToUse?.quoteOn?.metadata && postToUse?.quoteOn?.metadata?.content
-                        ? replaceURLs(
-                            postToUse.quoteOn.metadata.content.replace(
-                              /\n/g,
-                              "<br> ",
-                            ),
-                          )
-                        : "",
+                      __html:
+                        "content" in postToUse?.quoteOn?.metadata &&
+                        postToUse?.quoteOn?.metadata?.content
+                          ? replaceURLs(
+                              postToUse.quoteOn.metadata.content.replace(
+                                /\n/g,
+                                "<br> ",
+                              ),
+                            )
+                          : "",
                     }}
                   />
                 </div>
               </Spoiler>
             </Center>
             <Space h="md" />
-            {"asset" in postToUse?.quoteOn?.metadata && "image" in postToUse?.quoteOn?.metadata?.asset && postToUse.quoteOn.metadata?.asset?.image && (
-              <Center>
-                <Image
-                  src={
-                    postToUse?.quoteOn?.metadata?.asset?.image?.optimized?.uri
-                  }
-                  radius="md"
-                  h="555"
-                  w="auto"
-                  fit="contain"
-                  alt={`${postToUse?.quoteOn?.by?.handle?.localName}'s Post Image`}
-                />
-              </Center>
-            )}
+            {"asset" in postToUse?.quoteOn?.metadata &&
+              "image" in postToUse?.quoteOn?.metadata?.asset &&
+              postToUse.quoteOn.metadata?.asset?.image && (
+                <Center>
+                  <Image
+                    src={
+                      postToUse?.quoteOn?.metadata?.asset?.image?.optimized?.uri
+                    }
+                    radius="md"
+                    h="555"
+                    w="auto"
+                    fit="contain"
+                    alt={`${postToUse?.quoteOn?.by?.handle?.localName}'s Post Image`}
+                  />
+                </Center>
+              )}
 
-            {"asset" in postToUse?.quoteOn?.metadata && "video" in postToUse?.quoteOn?.metadata?.asset && postToUse?.quoteOn?.metadata?.asset?.video && (
-              <Center>
-                <Player
-                  src={
-                    postToUse.quoteOn?.metadata?.asset?.video?.optimized?.uri
-                  }
-                />
-              </Center>
-            )}
+            {"asset" in postToUse?.quoteOn?.metadata &&
+              "video" in postToUse?.quoteOn?.metadata?.asset &&
+              postToUse?.quoteOn?.metadata?.asset?.video && (
+                <Center>
+                  <Player
+                    src={
+                      postToUse.quoteOn?.metadata?.asset?.video?.optimized?.uri
+                    }
+                  />
+                </Center>
+              )}
 
-            {"embed" in postToUse?.quoteOn?.metadata && postToUse?.quoteOn?.metadata?.embed && (
-              <Center>
-                <Player src={postToUse?.quoteOn?.metadata?.embed} />
-              </Center>
-            )}
+            {"embed" in postToUse?.quoteOn?.metadata &&
+              postToUse?.quoteOn?.metadata?.embed && (
+                <Center>
+                  <Player src={postToUse?.quoteOn?.metadata?.embed} />
+                </Center>
+              )}
           </Paper>
         )}
 
