@@ -24,14 +24,15 @@ import {
   Image,
   Container,
   Paper,
-  ActionIcon,
+  CopyButton,
+  Tooltip,
 } from "@mantine/core";
 import styles from "../../styles/ProfileCard.module.css";
 import { Player } from "@livepeer/react";
 import { notifications } from "@mantine/notifications";
 import {
-  IconUserPlus,
-  IconUserX,
+  IconCheck,
+  IconScreenShare,
   IconExclamationMark,
 } from "@tabler/icons-react";
 
@@ -45,7 +46,7 @@ const ProfilePage = () => {
   const profile = useProfile({
     forHandle: `lens/${handle}`,
   });
-
+  
   const profileId = profile?.data?.id;
 
   const profilePosts = usePublications({
@@ -104,11 +105,10 @@ const ProfilePage = () => {
             alt={`${profile?.data?.handle?.localName}'s profile picture`}
             // @ts-ignore, image is there
             src={
-             profile?.data?.metadata?.picture &&
-                "optimized" in profile?.data?.metadata?.picture
-                  ? profile?.data?.metadata?.picture.optimized?.uri
-                  : "/user.png"
-             
+              profile?.data?.metadata?.picture &&
+              "optimized" in profile?.data?.metadata?.picture
+                ? profile?.data?.metadata?.picture.optimized?.uri
+                : "/user.png"
             }
             className={styles.avatar}
             size={80}
@@ -127,6 +127,40 @@ const ProfilePage = () => {
 
           <Space h="xl" />
           <Paper shadow="sm" p="lg" radius="md" withBorder>
+            <Group justify="right">
+              <CopyButton
+                value={`https://waves-lensv1.vercel.app/profile/${profile?.data?.handle?.localName}`}
+                timeout={2000}
+              >
+                {({ copied, copy }) => (
+                  <Button
+                    size="xs"
+                    color={copied ? "teal" : "blue"}
+                    onClick={copy}
+                  >
+                    {copied ? (
+                      <>
+                        <Tooltip label="Copied Wave">
+                          <IconCheck size={16} />
+                        </Tooltip>
+                      </>
+                    ) : (
+                      <>
+                        <Tooltip
+                          label={`Share ${
+                            profile?.data?.metadata?.displayName ||
+                            profile?.data?.handle?.localName
+                          }'s Wave`}
+                        >
+                          <IconScreenShare size={16} />
+                        </Tooltip>
+                      </>
+                    )}
+                  </Button>
+                )}
+              </CopyButton>
+            </Group>
+            <Space h="" />
             <Text
               fz="sm"
               style={{

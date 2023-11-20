@@ -7,14 +7,14 @@ export interface TypedDataSigner {
   _signTypedData(
     domain: TypedDataDomain,
     types: Record<string, Array<TypedDataField>>,
-    value: Record<string, any>
+    value: Record<string, any>,
   ): Promise<string>;
 }
 
 // Chat GPT idk how this works but it does
 function addTypedDataToSigner(
   signer: Signer,
-  sdk: ThirdwebSDK
+  sdk: ThirdwebSDK,
 ): Signer & TypedDataSigner {
   const signerWithTypedData = Object.create(signer);
 
@@ -30,7 +30,7 @@ function addTypedDataToSigner(
   signerWithTypedData._signTypedData = async (
     domain: TypedDataDomain,
     types: Record<string, Array<TypedDataField>>,
-    value: Record<string, any>
+    value: Record<string, any>,
   ): Promise<string> => {
     return (
       await sdk.wallet.signTypedData(domain as EIP712Domain, types, value)
@@ -42,7 +42,7 @@ function addTypedDataToSigner(
 
 export function useTypedDataSignerWrapper(
   signer: Signer | undefined,
-  sdk: ThirdwebSDK | undefined
+  sdk: ThirdwebSDK | undefined,
 ): (Signer & TypedDataSigner) | undefined {
   const signerWithTypedData = useMemo(() => {
     if (signer && sdk) {

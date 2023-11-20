@@ -8,7 +8,6 @@ import {
   Drawer,
   ScrollArea,
   rem,
-  useMantineTheme,
   ActionIcon,
   Tooltip,
   Badge,
@@ -16,7 +15,6 @@ import {
   Menu,
   Avatar,
   Modal,
-  Center,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -30,18 +28,32 @@ import classes from "./MantineHeader.module.css";
 import Link from "next/link";
 import { GiWaveCrest } from "react-icons/gi";
 import { PiSealQuestion } from "react-icons/pi";
-import { CiLogin } from "react-icons/ci";
 import { ColorSchemeToggle } from "../../ColorSchemeToggle";
 import { SessionType, useSession, useLogout } from "@lens-protocol/react-web";
+import { useDisconnect } from "@thirdweb-dev/react";
+import { BiSearchAlt } from "react-icons/bi";
+import { Search } from "@/components/Search";
 
 export function MantineHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false);
   const { data: session } = useSession();
   const { execute, loading: isPending } = useLogout();
+  const disconnect = useDisconnect();
 
   return (
     <>
+      {/* Modal content */}
+      <Modal
+        size="sm"
+        opened={opened}
+        onClose={close}
+        title="Search Lens Profile"
+      >
+        <Search />
+      </Modal>
+
       <Box>
         <header className={classes.header}>
           <Group justify="space-between" h="100%">
@@ -133,6 +145,9 @@ export function MantineHeader() {
                   <PiSealQuestion size="1.7rem" />
                 </ActionIcon>
               </Tooltip>
+              <ActionIcon onClick={open} variant="light" size="lg" radius="xl">
+                <BiSearchAlt size="1.2rem" />
+              </ActionIcon>
             </Group>
 
             <Group visibleFrom="sm">
@@ -155,11 +170,12 @@ export function MantineHeader() {
                     <Menu.Dropdown>
                       <Menu.Item
                         onClick={(e) => {
-                          e.preventDefault(); // Prevent default button behavior if necessary
+                          e.preventDefault();
                           execute();
+                          disconnect();
                         }}
                         disabled={isPending}
-                        leftSection={<IconLogout size={17} />}
+                        leftSection={<IconLogout size={17} color="red" />}
                       >
                         Sign Out
                       </Menu.Item>
@@ -305,10 +321,11 @@ export function MantineHeader() {
                   </Menu.Target>
                   <Menu.Dropdown>
                     <Menu.Item
-                      leftSection={<IconLogout size={17} />}
+                      leftSection={<IconLogout size={17} color="red" />}
                       onClick={(e) => {
                         e.preventDefault();
                         execute();
+                        disconnect();
                       }}
                       disabled={isPending}
                     >

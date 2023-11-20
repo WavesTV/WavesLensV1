@@ -12,8 +12,8 @@ const data = [
     description: 'Earn via Subcriptions, Tips, and NFT Sales.',
   },
   {
-    title: 'Build',
-    description: 'Waves is a place for Streamers to maximize their visibility and earnings. Start growing you Wave today!',
+    title: 'Grow',
+    description: 'Waves is a place for Streamers to maximize their visibility and earnings. Start growing your Wave today!',
   },
 ];
 

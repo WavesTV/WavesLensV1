@@ -1,10 +1,21 @@
-import { Space, Center, Text, Group, Divider } from "@mantine/core";
+import {
+  Space,
+  Center,
+  Text,
+  Paper,
+  Divider,
+  Group,
+  Button,
+  Container,
+} from "@mantine/core";
 import { useSession } from "@lens-protocol/react-web";
-import { ConnectWallet } from "@thirdweb-dev/react";
+import { ConnectWallet, useAddress } from "@thirdweb-dev/react";
+import { GiWaveCrest } from "react-icons/gi";
+import { useRouter } from "next/router";
 
 export default function Wallet() {
-  const session = useSession();
-  console.log(session);
+  const address = useAddress();
+  const router = useRouter();
   return (
     <>
       <Divider
@@ -20,7 +31,7 @@ export default function Wallet() {
       />
 
       <Space h="lg" />
-      {session?.data && "address" in session.data && (
+      {address ? (
         <>
           <Group justify="center">
             <ConnectWallet
@@ -30,6 +41,30 @@ export default function Wallet() {
               }}
             />
           </Group>
+        </>
+      ) : (
+        <>
+          <Container size="30rem" px={0}>
+            <Paper shadow="xl" p="lg" withBorder>
+              <Center>
+                <Text size="md" fw={400}>
+                  Connect your Wallet to view it.
+                </Text>
+              </Center>
+              <Space h="md" />
+              <Center>
+                <Button
+                  fullWidth
+                  leftSection={<GiWaveCrest size="1rem" />}
+                  variant="gradient"
+                  gradient={{ from: "cyan", to: "indigo" }}
+                  onClick={() => router.push("/login")}
+                >
+                  Connect Wallet
+                </Button>
+              </Center>
+            </Paper>
+          </Container>
         </>
       )}
       <Space h="lg" />

@@ -10,6 +10,8 @@ import {
   Card,
   Button,
   Container,
+  Modal,
+  ActionIcon,
 } from "@mantine/core";
 import {
   Post as PostType,
@@ -21,9 +23,16 @@ import Link from "next/link";
 import { Stream } from "@/components/Stream";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@/components/Post";
+import { GiWaveCrest } from "react-icons/gi";
+import { useRouter } from "next/router";
+import { IconSettings } from "@tabler/icons-react";
+import { useDisclosure } from "@mantine/hooks";
+import ProfileForm from "@/components/ProfileForm";
 
 export default function Dashboard() {
   const { data: session } = useSession();
+  const [opened, { open, close }] = useDisclosure(false);
+  const router = useRouter();
 
   const profilePosts = usePublications({
     where: {
@@ -33,6 +42,8 @@ export default function Dashboard() {
           : undefined,
     },
   });
+
+  console.log(session);
 
   const replaceURLs = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -62,22 +73,32 @@ export default function Dashboard() {
 
       <Space h="lg" />
 
-      {session?.authenticated ? (
+      {session?.authenticated && session.type === "WITH_PROFILE" ? (
         <>
+          {/* Modal content */}
+          <Modal
+            opened={opened}
+            onClose={close}
+            centered
+          >
+            <ProfileForm Profile={session?.profile} />
+          </Modal>
+
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Card.Section>
               {/* @ts-ignore */}
               <Image
                 // @ts-ignore
-
+                src={session?.profile?.metadata?.coverPicture}
                 height={200}
                 fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
+                alt="cover picture"
               />
             </Card.Section>
 
             <Avatar
               // @ts-ignore
-
+              src={session?.profile?.metadata?.picture}
               className={styles.avatar}
               size={80}
               radius={80}
@@ -95,23 +116,47 @@ export default function Dashboard() {
               </Text>
             </Group>
 
+            <Group justify="right">
+            <ActionIcon
+              onClick={open}
+              variant="light"
+              radius="md"
+              aria-label="Settings"
+            >
+              <IconSettings size="1.3rem" />
+            </ActionIcon>
+            </Group>
+
             <Space h="xl" />
             <Stream />
+            <Space h="xl" />
+            <Paper shadow="sm" p="lg" radius="md" withBorder>
+              <Text
+                fz="sm"
+                style={{
+                  maxWidth: "100%",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                  textAlign: "center",
+                }}
+                dangerouslySetInnerHTML={{
+                  __html: session?.profile?.metadata?.bio
+                    ? replaceURLs(
+                        session?.profile?.metadata?.bio.replace(/\n/g, "<br> "),
+                      )
+                    : "",
+                }}
+              />
+            </Paper>
             <Space h="xl" />
 
             <Group justify="center">
               <Text fw={500} size="sm">
-                {session &&
-                  "profile" in session &&
-                  session.profile?.stats?.followers}{" "}
-                Followers
+                {session.profile?.stats?.followers} Followers
               </Text>
               |
               <Text fw={500} size="sm">
-                {session &&
-                  "profile" in session &&
-                  session.profile?.stats?.following}{" "}
-                Following
+                {session.profile?.stats?.following} Following
               </Text>
             </Group>
 
@@ -176,10 +221,34 @@ export default function Dashboard() {
           </Group>
 
           <Space h="md" />
-          <Container size="md">
-            <Button component={Link} href="/login">
-              Sign In to Stream
-            </Button>
+          <Container size="30rem" px={0}>
+            <Paper shadow="xl" p="lg" withBorder>
+              <Center>
+                <Text size="md" fw={400}>
+                  Connect your Wallet or Sign In to view your Dashboard.
+                </Text>
+              </Center>
+              <Space h="md" />
+              <Center>
+                <Button
+                  fullWidth
+                  leftSection={<GiWaveCrest size="1rem" />}
+                  variant="gradient"
+                  gradient={{ from: "cyan", to: "indigo" }}
+                  onClick={() => router.push("/login")}
+                >
+                  Connect Wallet
+                </Button>
+                <Space w="xs" />
+                <Button
+                  fullWidth
+                  variant="default"
+                  onClick={() => router.push("/login")}
+                >
+                  Sign In
+                </Button>
+              </Center>
+            </Paper>
           </Container>
         </Card>
       )}

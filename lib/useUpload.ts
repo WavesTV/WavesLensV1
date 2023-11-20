@@ -36,7 +36,7 @@ export default function useUpload() {
     // So, by fetching, we kind of wait for the file to be ready to be served before returning the URL
     // to avoid the error.
     await fetch(gatewayUrl);
-
+    console.log("gatewayUrl", gatewayUrl);
     return gatewayUrl;
   };
 }

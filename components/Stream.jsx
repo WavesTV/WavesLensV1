@@ -51,9 +51,8 @@ import {
   ReferencePolicyType,
   useSession,
   useCreatePost,
-  
 } from "@lens-protocol/react-web";
-import { mainContentFocus, collectCondition } from "@lens-protocol/metadata";
+import { mainContentFocus, liveStream } from "@lens-protocol/metadata";
 import classes from "../styles/LaunchButton.module.css";
 import useUpload from "@/lib/useUpload";
 import { BsExclamationCircle } from "react-icons/bs";
@@ -66,61 +65,16 @@ export const Stream = () => {
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
   const [activeTab, setActiveTab] = useState("first");
-  const [openedMulti, { toggle: toggleMulti }] = useDisclosure(false);
+  const [openedMulti, { toggle: toggleMulti }] = useDisclosure(true);
   const embed = useRef(); // We use a ref instead of state to avoid rerenders.
   const upload = useUpload();
   const [postSuccess, setPostSuccess] = useState(false);
-
-  const createUnencrypted = useCreatePost({
-    upload: async (data) => upload(data),
-  });
+  const { execute, error, loading } = useCreatePost();
 
   const handleReady = (e) => {
     embed.current = e;
   };
 
-  async function createPost() {
-    let result;
-    try {
-      result = await createUnencrypted?.execute({
-        locale: "en-us",
-        content: `${stream?.name}\nTo subscribe and ensure the best viewing experience, visit: \nhttps://waves-lensv1.vercel.app/profile/${session?.profile?.handle.localName}`,
-        contentFocus: mainContentFocus.EMBED,
-        animationUrl: `https://lvpr.tv/?v=${stream?.playbackId}`,
-        collect: {
-          type: collectCondition.NO_COLLECT,
-        },
-      });
-
-      if (result?.isFailure()) {
-        notifications.show({
-          title: "Error creating post.",
-          icon: <IconX size="1.1rem" />,
-          color: "red",
-          message: `${result.error.message}. Please try again later.`,
-        });
-        throw new Error(result.error.message);
-      } else {
-        notifications.show({
-          title: "Success",
-          icon: <IconCheck size="1.1rem" />,
-          color: "green",
-          message: "Allow a few seconds for your post to appear.",
-        });
-        // After successful post creation, set postSuccess to true
-        setPostSuccess(true);
-      }
-    } catch (error) {
-      console.error(error);
-      notifications.show({
-        title: "Error creating post.",
-        icon: <IconX size="1.1rem" />,
-        color: "red",
-        message:
-          "Something went wrong creating your post. Please try again later.",
-      });
-    }
-  }
   const interval = useInterval(
     () =>
       setProgress((current) => {
@@ -141,6 +95,28 @@ export const Stream = () => {
     data: stream,
     status,
   } = useCreateStream(streamName ? { name: streamName } : null);
+
+  async function createLivestreamPost() {
+    try {
+      // Get the current date and time in ISO 8601 format
+      const currentDate = new Date().toISOString();
+
+      const metadata = liveStream({
+        title: stream?.name,
+        liveUrl: `https://lvpr.tv/?v=${stream?.playbackId}`,
+        playbackUrl: `https://lvpr.tv/?v=${stream?.playbackId}`,
+        startsAt: currentDate,
+      });
+
+      const uri = await upload(metadata);
+
+      const result = await execute({
+        metadata: uri,
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const isLoading = useMemo(() => status === "loading", [status]);
 
@@ -388,55 +364,26 @@ export const Stream = () => {
                           fullWidth
                           className={classes.button}
                           onClick={() => {
-                            createPost();
-
-                            notifications.show({
-                              title: "Please Wait!",
-                              icon: <BiTimer size="1.1rem" />,
-                              color: "blue",
-                              message:
-                                "Allow a few seconds for your Wave to Launch.",
-                            });
-
-                            loaded
-                              ? setLoaded(false)
-                              : !interval.active && interval.start();
+                            createLivestreamPost();
                           }}
-                          color={loaded ? "teal" : theme.primaryColor}
-                          disabled={interval.active || postSuccess}
-                        >
-                          <div className={classes.label}>
-                            {progress !== 0
-                              ? "Launching"
-                              : loaded
-                              ? "Launched"
-                              : "Launch Wave"}
-                          </div>
-                          {progress !== 0 && (
-                            <Progress
-                              value={progress}
-                              className={classes.progress}
-                              color={rgba(theme.colors.blue[2], 0.35)}
-                              radius="sm"
-                            />
-                          )}
-                        </Button>
+                        ></Button>
                         <Space h="md" />
 
                         <Blockquote
-                          color="blue"
+                          color="red"
                           radius="xl"
                           iconSize={30}
                           icon={<BsExclamationCircle size="1.2rem" />}
                           mt="xl"
                         >
                           <Text fw={400} fs="italic">
-                            This stream playback is not public. Please Launch
-                            your Wave to make it accessible across all Lens
-                            Apps.
+                            Your Stream Data is stored locally in your browser,
+                            so if you click away from your dashboard during an
+                            active stream you will have to start a new Wave. We
+                            will rework this in the future for a better
+                            experience.
                           </Text>
                         </Blockquote>
-                        <Space h="md" />
                       </Group>
 
                       <Space h="md" />
@@ -494,11 +441,7 @@ export const Stream = () => {
                         </HoverCard.Dropdown>
                       </HoverCard>
                       <Space h="xs" />
-                      <Accordion
-                        variant="separated"
-                        radius="md"
-                        defaultValue="Youtube"
-                      >
+                      <Accordion variant="separated" radius="md">
                         <Accordion.Item value="Youtube">
                           <Accordion.Control
                             icon={<RiYoutubeLine size={"1.5rem"} color="red" />}
@@ -641,7 +584,19 @@ export const Stream = () => {
                   </Collapse>
 
                   <Space h="md" />
-
+                  <Blockquote
+                    color="blue"
+                    radius="xl"
+                    iconSize={30}
+                    icon={<BsExclamationCircle size="1.2rem" />}
+                    mt="xl"
+                  >
+                    <Text fw={400} fs="italic">
+                      This stream playback is not public. Please Launch your
+                      Wave to make it accessible across all Lens Apps.
+                    </Text>
+                  </Blockquote>
+                  <Space h="md" />
                   <Group justify="center">
                     <Player
                       title={stream?.name}

@@ -1,16 +1,13 @@
 import type { NextPage } from "next";
 import {
-  SessionType,
   useSession,
   useExplorePublications,
   Post as PostType,
   useFeed,
-  FeedEventItemType,
   ExplorePublicationsOrderByType,
   ExplorePublicationType,
-  appId,
   LimitType,
-  ProfileId,
+  useFeedHighlights,
 } from "@lens-protocol/react-web";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@/components/Post";
@@ -28,28 +25,41 @@ import {
   Group,
   Center,
   Button,
-  ActionIcon,
-  Avatar,
+  MantineProvider,
   Paper,
-  UnstyledButton,
+  createTheme,
+  Checkbox,
 } from "@mantine/core";
 import classes from "../styles/Tabs.module.css";
 import { useRouter } from "next/router";
-import { Player } from "@livepeer/react";
 
 export default function Feed() {
   const router = useRouter();
   const { data: session } = useSession();
+  const [checked, setChecked] = useState(false);
+
+  const theme = createTheme({
+    cursorType: "pointer",
+  });
 
   const hotFeed = useExplorePublications({
     where: {
       publicationTypes: [ExplorePublicationType.Post],
     },
-    orderBy: ExplorePublicationsOrderByType.TopMirrored,
+    orderBy: ExplorePublicationsOrderByType.TopCollectedOpenAction,
     limit: LimitType.TwentyFive,
   });
 
   const followingFeed = useFeed({
+    where: {
+      for:
+        session && "profile" in session && session?.profile?.id
+          ? session.profile.id
+          : undefined,
+    },
+  });
+
+  const highlightsFeed = useFeedHighlights({
     where: {
       for:
         session && "profile" in session && session?.profile?.id
@@ -98,47 +108,141 @@ export default function Feed() {
 
         <Tabs.Panel value="second">
           <Space h="xl" />
-          {/* Public feed loading */}
 
-          {/* Wallet connected, but no Lens profile */}
+          {/* No Wallet, No Lens profile connected */}
           {!session?.authenticated && (
             <>
-              <Center>
-                <Button onClick={() => router.push("/login")}>
-                  Sign In To View
-                </Button>
-              </Center>
+              <Container size="30rem" px={0}>
+                <Paper shadow="xl" p="lg" withBorder>
+                  <Center>
+                    <Text size="md" fw={400}>
+                      Sign In to your Lens profile to view your Following feed.
+                    </Text>
+                  </Center>
+                  <Space h="md" />
+                  <Center>
+                    <Button
+                      fullWidth
+                      variant="default"
+                      onClick={() => router.push("/login")}
+                    >
+                      Sign In
+                    </Button>
+                  </Center>
+                </Paper>
+              </Container>
             </>
           )}
 
-          {followingFeed.loading && (
-            <Group justify="center">
-              <Loader color="blue" />
-            </Group>
+          {/* Wallet Connected with Lens Profile */}
+          {session?.authenticated && session.type === "WITH_PROFILE" && (
+            <>
+              <Group justify="left">
+                <MantineProvider theme={theme}>
+                  <Checkbox
+                    checked={checked}
+                    onChange={(event) =>
+                      setChecked(event.currentTarget.checked)
+                    }
+                    radius="xl"
+                    label={
+                      <Text size="xs" fw={444} fs="italic">
+                        Feed Highlights
+                      </Text>
+                    }
+                    labelPosition="right"
+                  />
+                </MantineProvider>
+              </Group>
+
+              <Space h="md" />
+
+              {checked ? (
+                <>
+                  {highlightsFeed.loading && (
+                    <Group justify="center">
+                      <Loader color="blue" />
+                    </Group>
+                  )}
+
+                  {!highlightsFeed.loading && highlightsFeed && (
+                    <InfiniteScroll
+                      dataLength={highlightsFeed?.data?.length || 0}
+                      next={() => highlightsFeed.next()}
+                      hasMore={highlightsFeed.hasMore}
+                      loader={
+                        <>
+                          <Group justify="center">
+                            <Loader color="blue" />
+                          </Group>
+                        </>
+                      }
+                      endMessage={<Space h={100} />}
+                    >
+                      {session &&
+                        session.authenticated &&
+                        highlightsFeed?.data?.map((post) => (
+                          <Post key={post.id} post={post} />
+                        ))}
+                    </InfiniteScroll>
+                  )}
+                </>
+              ) : (
+                <>
+                  {followingFeed.loading && (
+                    <Group justify="center">
+                      <Loader color="blue" />
+                    </Group>
+                  )}
+
+                  {!followingFeed.loading && followingFeed && (
+                    <InfiniteScroll
+                      dataLength={followingFeed?.data?.length || 0}
+                      next={() => followingFeed.next()}
+                      hasMore={followingFeed.hasMore}
+                      loader={
+                        <>
+                          <Group justify="center">
+                            <Loader color="blue" />
+                          </Group>
+                        </>
+                      }
+                      endMessage={<Space h={100} />}
+                    >
+                      {session &&
+                        session.authenticated &&
+                        followingFeed?.data?.map((post) => (
+                          <Post key={post.root.id} post={post.root} />
+                        ))}
+                    </InfiniteScroll>
+                  )}
+                </>
+              )}
+            </>
           )}
 
-          {/* Public feed has loaded */}
-          {!followingFeed.loading && followingFeed && (
-            <InfiniteScroll
-              dataLength={followingFeed?.data?.length || 0}
-              next={() => followingFeed.next()}
-              hasMore={followingFeed.hasMore}
-              loader={
-                <>
-                  <Group justify="center">
-                    <Loader color="blue" />
-                  </Group>
-                </>
-              }
-              endMessage={<Space h={100} />}
-            >
-              {session &&
-                session.authenticated &&
-                followingFeed?.data?.map((post) => (
-                  <Post key={post.root.id} post={post.root} />
-                ))}
-            </InfiniteScroll>
+          {session?.authenticated && session.type !== "WITH_PROFILE" && (
+            <Container size="30rem" px={0}>
+              <Paper shadow="xl" p="lg" withBorder>
+                <Center>
+                  <Text size="md" fw={400}>
+                    Sign In to your Lens profile to view your Following feed.
+                  </Text>
+                </Center>
+                <Space h="md" />
+                <Center>
+                  <Button
+                    fullWidth
+                    variant="default"
+                    onClick={() => router.push("/login")}
+                  >
+                    Sign In
+                  </Button>
+                </Center>
+              </Paper>
+            </Container>
           )}
+
           <Space h={100} />
         </Tabs.Panel>
 
@@ -152,7 +256,7 @@ export default function Feed() {
             </Group>
           )}
 
-          {/* Public feed has loaded */}
+          {/* Hot feed has loaded */}
           {!hotFeed.loading && hotFeed && (
             <InfiniteScroll
               dataLength={hotFeed?.data?.length || 0}

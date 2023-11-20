@@ -59,7 +59,7 @@ export default function Post({ post }: Props) {
   const postToUse = useMemo(() => {
     return post;
   }, [post]);
-  console.log(post);
+
   //handling reposts
   const isMirror = isMirrorPost(post);
   const postContent = isMirror ? post.mirrorOn : post;
@@ -116,7 +116,7 @@ export default function Post({ post }: Props) {
 
   return (
     <>
-      <Paper shadow="xl" radius="md" p="xs" withBorder>
+      <Paper shadow="xl" radius="md" p="md" withBorder>
         <Space h="sm" />
 
         <div
@@ -127,7 +127,7 @@ export default function Post({ post }: Props) {
           }}
         >
           <div>
-            <Text c="dimmed" size="xs" fw={500} ml={10}>
+            <Text c="dimmed" size="xs" fw={500}>
               {formatDate(postToUse.createdAt)} ago
             </Text>
           </div>
@@ -161,7 +161,7 @@ export default function Post({ post }: Props) {
           </Group>
         </div>
 
-        <Space h="lg" />
+        <Space h="xl" />
 
         <UnstyledButton
           component={Link}
@@ -391,7 +391,7 @@ export default function Post({ post }: Props) {
         <Space h="xl" />
 
         {/* Post metadata */}
-        <Group justify="center" style={{ whiteSpace: "nowrap" }}>
+        <Group justify="center" wrap="nowrap">
           {/* Comments - Take user to the post */}
           <Tooltip position="bottom" label="Comment">
             <ActionIcon

@@ -34,9 +34,18 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
   const sdk = useSDK();
   const signer = useSigner();
   const router = useRouter();
-  const signerWrapped = useTypedDataSignerWrapper(signer, sdk);
+  const signerWrapped = useTypedDataSignerWrapper(signer, sdk as any);
+  const allowedPaths = [
+    "/",
+    "/dashboard",
+    "/notifications",
+    "/post/[id]",
+    "/profile/[handle]",
+    "/wallet",
+    "/why",
+  ];
 
-  if (!signer && router.pathname !== "/") {
+  if (!signer && !allowedPaths.includes(router.pathname)) {
     return (
       <>
         <NetworkSwitchModal />
@@ -78,7 +87,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                 domain: process.env.NEXT_PUBLIC_AUTH_DOMAIN || "evmkit.com",
                 authUrl: "/api/auth",
               }}
-              clientId={process.env.NEXT_PUBLIC_THIRDWEB_API_KEY || ""}
+              clientId="4270b68ede8f28eb63dbb8feb81b9a51"
             >
               <LensThirdwebProvider>
                 <MantineAppShell>
