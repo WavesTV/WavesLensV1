@@ -1,4 +1,4 @@
-import { PublicationMainFocus } from "@lens-protocol/react-web";
+import { PublicationMainFocus } from "@lens-protocol/metadata";
 
 /**
  * Convert file type to one of the supported content focus types
