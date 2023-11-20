@@ -46,7 +46,7 @@ const ProfilePage = () => {
   const profile = useProfile({
     forHandle: `lens/${handle}`,
   });
-  
+
   const profileId = profile?.data?.id;
 
   const profilePosts = usePublications({

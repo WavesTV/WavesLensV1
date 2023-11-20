@@ -265,7 +265,7 @@ function NewMentionNotification({
     <NotificationItemWrapper>
       <Paper shadow="xl" radius="md" withBorder p="lg">
 
-        Mentioned "{notification.publication.id}" by{" "}
+        Mentioned &quot;{notification.publication.id}&quot; by{" "}
         {notification.publication.by.handle?.localName ??
           notification.publication.by.id}
       </Paper>
