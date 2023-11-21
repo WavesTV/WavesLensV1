@@ -2,16 +2,20 @@ import { Welcome } from "@/components/Welcome/Welcome";
 import {
   Text,
   Space,
-  ActionIcon,
+  List,
   Paper,
-  Container,
+  ThemeIcon,
   Center,
-  Divider,
+  rem,
+  Stepper,
 } from "@mantine/core";
-import { ImArrowDown2 } from "react-icons/im";
 import { Fade } from "react-awesome-reveal";
 import { HowItWorks } from "@/components/HowItWorks/HowItWorks";
-import { IconCheck } from "@tabler/icons-react";
+import { IconCircleCheck, IconCircleDashed } from "@tabler/icons-react";
+import classes from "../styles/MilestoneStepper.module.css";
+import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { TbProgressBolt } from "react-icons/tb";
+
 export default function Why() {
   return (
     <>
@@ -20,7 +24,7 @@ export default function Why() {
       </div>
 
       <HowItWorks />
-      <Space h="xl" />
+      <Space h={70} />
       <Text
         ta="center"
         fz={50}
@@ -31,130 +35,231 @@ export default function Why() {
       >
         Roadmap
       </Text>
-      <Text ta="center" size="lg" fw={800} fs="italic">
-        Milestone 1
-      </Text>
-      <Space h="md" />
-      <Container>
-        <Fade>
-          <Paper shadow="xl" radius="md" withBorder p="xl">
-            <ActionIcon variant="light" color="green" aria-label="Settings">
-              <IconCheck style={{ width: "70%", height: "70%" }} stroke={1.5} />
-            </ActionIcon>
+      <Space h={70} />
+      <Center>
+        <Stepper
+          active={2}
+          orientation="vertical"
+          size="xl"
+          classNames={classes}
+          completedIcon={<IoMdCheckmarkCircleOutline size="1.7rem" />}
+        >
+          <Stepper.Step
+            label="Milestone 1"
+            description={
+              <>
+                <Fade>
+                  <Paper shadow="sm" radius="md" withBorder p="xl">
+                    <Text c="dimmed" fw={200}>
+                      Basic Usage on Lens V1 - Post, Livestream, Post
+                      Engagement, View Profiles/Feeds
+                    </Text>
+                    <Space h="md" />
+                  </Paper>
+                </Fade>
+              </>
+            }
+          />
+          <Stepper.Step
+            label="Milestone 2"
+            loading
+            icon={<TbProgressBolt size="1.7rem" />}
+            description={
+              <>
+                <Paper shadow="sm" radius="md" withBorder p="xl">
+                  <Text c="dimmed" fw={200}>
+                    Lens V2 Upgrade & More
+                  </Text>
+                  <Space h="md" />
 
-            <Text td="underline" ta="center" fw={500}>
-              Build MVP on Lens V1
-            </Text>
-            <Text c="dimmed" fw={200}>
-              Basic Usage - Post, Livestream, Engage, View Profiles/Feeds
-            </Text>
-            <Space h="md" />
-          </Paper>
-        </Fade>
-        <Space h="sm" />
-        <Center>
-          <ImArrowDown2 />
-        </Center>
-        <Space h="sm" />
-        <Fade>
-          <Paper shadow="xl" radius="md" withBorder p="xl">
-            <Text td="underline" ta="center" fw={500}>
-              Build MVP on Lens V2
-            </Text>
-            <Text c="dimmed" fw={200}>
-              Basic Usage - Post, Livestream, Engage, View Profiles/Feeds
-            </Text>
-            <Space h="md" />
-            <Text c="dimmed" fw={200}>
-              Share Stream Button - Viewers can share your stream directly onto
-              Lens
-            </Text>
-            <Space h="md" />
-          </Paper>
-        </Fade>
-      </Container>
+                  <List
+                    spacing="xs"
+                    size="sm"
+                    center
+                    icon={
+                      <ThemeIcon color="teal" size={24} radius="xl">
+                        <IconCircleCheck
+                          style={{ width: rem(16), height: rem(16) }}
+                        />
+                      </ThemeIcon>
+                    }
+                  >
+                    <Fade>
+                      <List.Item>Connect Wallet + Sign In + Sign Out</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>
+                        View Following with Highlight Filter + Explore Feeds
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>
+                        Livestream via OBS/Streamlabs + Post Livestreams
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>
+                        Multistream to Twitch, Youtube, & Kick
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>
+                        Wallet Page with HeroSwap (Will support Matic in the
+                        future)
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Search Lens Profiles</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>
+                        Edit Profile (Display Name, Bio, Profile + Cover
+                        Picture)
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>View Notifications with Filter</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Much UI Buffs</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Powered By Lens Banner</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item
+                        icon={
+                          <ThemeIcon color="blue" size={24} radius="xl">
+                            <IconCircleDashed
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Post Actions - Like, Comment, Mirror, Collect
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item
+                        icon={
+                          <ThemeIcon color="blue" size={24} radius="xl">
+                            <IconCircleDashed
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Dashboard with Profile Feed + Filters
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item
+                        icon={
+                          <ThemeIcon color="blue" size={24} radius="xl">
+                            <IconCircleDashed
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Live Demo
+                      </List.Item>
+                    </Fade>
+                  </List>
+                </Paper>
+              </>
+            }
+          />
+          <Stepper.Step
+            label="Milestone 3"
+            description={
+              <>
+                <Paper shadow="sm" radius="md" withBorder p="xl">
+                  <Text c="dimmed" fw={200}>
+                    Monetization + Channel Chats + Enhancements
+                  </Text>
+                  <Space h="md" />
 
-      <Space h="sm" />
-      <Divider my="sm" />
-      <Space h="sm" />
+                  <List
+                    spacing="xs"
+                    size="sm"
+                    center
+                    icon={
+                      <ThemeIcon color="blue" size={24} radius="xl">
+                        <IconCircleDashed
+                          style={{ width: rem(16), height: rem(16) }}
+                        />
+                      </ThemeIcon>
+                    }
+                  >
+                    <Fade>
+                      <List.Item>Subscriptions + Rewards</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Donations</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>
+                        Channel Chats (1st iteration will use Firebase)
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Stream Collects</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>
+                        More Post Types(Images, Embed Links, Videos)
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Desktop (Mobile Friendly) Streams</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Paid Follows</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Follow/Unfollow Users</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Waves Feed</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>More UI Buffs</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>And More</List.Item>
+                    </Fade>
+                  </List>
+                </Paper>
+              </>
+            }
+          />
+        </Stepper>
+      </Center>
+      <Space h="xl" />
 
-      <Text ta="center" size="lg" fw={800} fs="italic">
-        Milestone 2
-      </Text>
-      <Space h="md" />
-      <Container>
-        <Fade>
-          <Paper shadow="xl" radius="md" withBorder p="xl">
-            <Text td="underline" ta="center" fw={500}>
-              Subcriptions
-            </Text>
-            <Text c="dimmed" fw={200}>
-              Payment Processing - Direct/Instant payments via Matic
-            </Text>
-            <Space h="md" />
-            <Text c="dimmed" fw={200}>
-              Tiered System - 3 tiers similar to Twitch
-            </Text>
-            <Space h="md" />
-            <Text c="dimmed" fw={200}>
-              Rewards - Subscriber Badge, Subscriber NFT, and more
-            </Text>
-          </Paper>
-        </Fade>
-        <Space h="sm" />
-        <Center>
-          <ImArrowDown2 />
-        </Center>
-        <Space h="sm" />
-        <Fade>
-          <Paper shadow="xl" radius="md" withBorder p="xl">
-            <Text td="underline" ta="center" fw={500}>
-              Chat
-            </Text>
-            <Text c="dimmed" fw={200}>
-              Using Streamr to build on-chain channel chats
-            </Text>
-            <Space h="md" />
-          </Paper>
-        </Fade>
-      </Container>
-      <Space h="sm" />
-      <Divider my="sm" />
-      <Space h="sm" />
-
-      <Text ta="center" size="lg" fw={800} fs="italic">
-        Milestone 3
-      </Text>
-      <Space h="md" />
-      <Container>
-        <Fade>
-          <Paper shadow="xl" radius="md" withBorder p="xl">
-            <Text td="underline" ta="center" fw={500}>
-              Mobile App Prototype
-            </Text>
-            <Text c="dimmed" fw={200}>
-              Functionality will mirror Web App
-            </Text>
-            <Space h="md" />
-          </Paper>
-        </Fade>
-        <Space h="sm" />
-        <Center>
-          <ImArrowDown2 />
-        </Center>
-        <Space h="sm" />
-        <Fade>
-          <Paper shadow="xl" radius="md" withBorder p="xl">
-            <Text td="underline" ta="center" fw={500}>
-              Community Takeover
-            </Text>
-            <Text c="dimmed" fw={200}>
-              Future features will be handled via open forum or voting
-            </Text>
-            <Space h="md" />
-          </Paper>
-        </Fade>
-      </Container>
       <Space h={111} />
     </>
   );

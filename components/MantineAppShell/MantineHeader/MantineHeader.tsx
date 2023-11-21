@@ -33,11 +33,16 @@ import { SessionType, useSession, useLogout } from "@lens-protocol/react-web";
 import { useDisconnect } from "@thirdweb-dev/react";
 import { BiSearchAlt } from "react-icons/bi";
 import { Search } from "@/components/Search";
+import { Create } from "@/components/create";
+import { BsPlusCircleDotted } from "react-icons/bs";
 
 export function MantineHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
     useDisclosure(false);
-  const [opened, { open, close }] = useDisclosure(false);
+  const [openedSearch, { open: openSearch, close: closeSearch }] =
+    useDisclosure(false);
+  const [openedCreate, { open: openCreate, close: closeCreate }] =
+    useDisclosure(false);
   const { data: session } = useSession();
   const { execute, loading: isPending } = useLogout();
   const disconnect = useDisconnect();
@@ -47,11 +52,15 @@ export function MantineHeader() {
       {/* Modal content */}
       <Modal
         size="sm"
-        opened={opened}
-        onClose={close}
+        opened={openedSearch}
+        onClose={closeSearch}
         title="Search Lens Profile"
       >
         <Search />
+      </Modal>
+
+      <Modal opened={openedCreate} onClose={closeCreate} title="Create Post">
+        <Create />
       </Modal>
 
       <Box>
@@ -79,6 +88,19 @@ export function MantineHeader() {
               </Group>
             </UnstyledButton>
             <Group h="100%" visibleFrom="sm">
+              {session?.type === "WITH_PROFILE" && (
+                <Tooltip label="Create Post">
+                  <ActionIcon
+                    onClick={openCreate}
+                    variant="light"
+                    size="lg"
+                    radius="xl"
+                  >
+                    <BsPlusCircleDotted size="1.3rem" />
+                  </ActionIcon>
+                </Tooltip>
+              )}
+
               <Tooltip label="Home" withArrow position="bottom" offset={3}>
                 <ActionIcon
                   component={Link}
@@ -145,9 +167,16 @@ export function MantineHeader() {
                   <PiSealQuestion size="1.7rem" />
                 </ActionIcon>
               </Tooltip>
-              <ActionIcon onClick={open} variant="light" size="lg" radius="xl">
-                <BiSearchAlt size="1.2rem" />
-              </ActionIcon>
+              <Tooltip label="Search Lens Profile">
+                <ActionIcon
+                  onClick={openSearch}
+                  variant="light"
+                  size="lg"
+                  radius="xl"
+                >
+                  <BiSearchAlt size="1.2rem" />
+                </ActionIcon>
+              </Tooltip>
             </Group>
 
             <Group visibleFrom="sm">

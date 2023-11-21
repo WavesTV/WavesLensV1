@@ -28,6 +28,7 @@ import { TfiComments } from "react-icons/tfi";
 import { useRouter } from "next/router";
 import formatDate from "@/lib/formatDate";
 import { IconHeartFilled, IconHeartBroken } from "@tabler/icons-react";
+import { FaHeartCirclePlus } from "react-icons/fa6";
 import classes from "./../styles/RecommendedWaves.module.css";
 import Post from "@/components/Post";
 
@@ -162,7 +163,7 @@ function NewReactionNotification({
                         </Text>
 
                         <Text c="dimmed" size="xs">
-                         {`@${reaction.profile.handle?.localName}`}
+                          {`@${reaction.profile.handle?.localName}`}
                         </Text>
                       </div>
                     </Group>
@@ -264,7 +265,6 @@ function NewMentionNotification({
   return (
     <NotificationItemWrapper>
       <Paper shadow="xl" radius="md" withBorder p="lg">
-
         Mentioned &quot;{notification.publication.id}&quot; by{" "}
         {notification.publication.by.handle?.localName ??
           notification.publication.by.id}
@@ -302,8 +302,7 @@ type NotificationItemProps = {
   notification: Notification;
 };
 
-export function NotificationTypes({ notification }: NotificationItemProps) 
-{
+export function NotificationTypes({ notification }: NotificationItemProps) {
   switch (notification.__typename) {
     case "ActedNotification":
       return <NewActedNotification notification={notification} />;
