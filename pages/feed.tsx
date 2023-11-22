@@ -29,9 +29,12 @@ import {
   Paper,
   createTheme,
   Checkbox,
+  UnstyledButton,
+  Avatar,
 } from "@mantine/core";
 import classes from "../styles/Tabs.module.css";
 import { useRouter } from "next/router";
+import { Player } from "@livepeer/react";
 
 export default function Feed() {
   const router = useRouter();
@@ -100,9 +103,19 @@ export default function Feed() {
 
         <Tabs.Panel value="first">
           <Space h="xl" />
-          <Text ta="center" c="dimmed" fw={700}>
-            Coming Soon
-          </Text>
+          <Paper m="md" shadow="lg" radius="md" p="xl" withBorder>
+            <Center>
+              <UnstyledButton onClick={() => router.push("/profile/wavestv")}>
+                <Avatar radius="xl" size="lg" />
+                <Space w="xs" />
+                <Text fw={600} size="sm">
+                  WavesTV
+                </Text>
+              </UnstyledButton>
+            </Center>
+            <Space h="xl" />
+            <Player playbackId="d986yofqyztqce4h" title="type shi" />
+          </Paper>
           <Space h="xl" />
         </Tabs.Panel>
 

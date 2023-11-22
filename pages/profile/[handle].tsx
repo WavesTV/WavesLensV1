@@ -126,8 +126,7 @@ const ProfilePage = () => {
           <Group justify="center">@{profile?.data?.handle?.localName}</Group>
 
           <Space h="xl" />
-          <Paper shadow="sm" p="lg" radius="md" withBorder>
-            <Group justify="right">
+           <Group justify="right">
               <CopyButton
                 value={`https://waves-lensv1.vercel.app/profile/${profile?.data?.handle?.localName}`}
                 timeout={2000}
@@ -160,7 +159,16 @@ const ProfilePage = () => {
                 )}
               </CopyButton>
             </Group>
-            <Space h="" />
+          {"wavestv" === profile?.data?.handle?.localName && (
+            <Paper>
+              
+              <Player playbackId="d986yofqyztqce4h" title="pp poopoo" />
+            </Paper>
+          )}
+          <Space h="xl" />
+          <Paper shadow="sm" p="lg" radius="md" withBorder>
+           
+           
             <Text
               fz="sm"
               style={{
@@ -183,6 +191,7 @@ const ProfilePage = () => {
             />
           </Paper>
           <Space h="xl" />
+
           <Group justify="center">
             <Text fw={500} fz="sm">
               {profile?.data?.stats.followers}

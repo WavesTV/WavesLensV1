@@ -16,33 +16,27 @@
     },
     "build": {
       "name": "build",
-      "command": "yarn build",
-      "runAtStart": false
+      "command": "yarn build"
     },
     "start": {
       "name": "start",
-      "command": "yarn start",
-      "runAtStart": false
+      "command": "yarn start"
     },
     "lint": {
       "name": "lint",
-      "command": "yarn lint",
-      "runAtStart": false
+      "command": "yarn lint"
     },
     "export": {
       "name": "export",
-      "command": "yarn export",
-      "runAtStart": false
+      "command": "yarn export"
     },
     "generate": {
       "name": "generate",
-      "command": "yarn generate",
-      "runAtStart": false
+      "command": "yarn generate"
     },
     "add-component": {
       "name": "add-component",
-      "command": "yarn add-component",
-      "runAtStart": false
+      "command": "yarn add-component"
     }
   }
 }
