@@ -1,23 +1,31 @@
-import { ActionIcon, Modal, Button, TextInput, Space, useMantineTheme, Text } from "@mantine/core";
+import {
+  ActionIcon,
+  Modal,
+  Button,
+  TextInput,
+  Space,
+  useMantineTheme,
+  Text,
+} from "@mantine/core";
 import { useState } from "react";
-import { useRouter } from 'next/router';
-import { TbUserSearch } from 'react-icons/tb';
-import { BiSearchAlt } from 'react-icons/bi';
+import { useRouter } from "next/router";
+import { TbUserSearch } from "react-icons/tb";
+import { BiSearchAlt } from "react-icons/bi";
 
 export const Search = (props) => {
- const router = useRouter();
+  const router = useRouter();
   const theme = useMantineTheme();
-  const [searchInput, setSearchInput] = useState(''); // State to store the user input
-  const [error, setError] = useState(''); // State to store the error message
+  const [searchInput, setSearchInput] = useState(""); // State to store the user input
+  const [error, setError] = useState(""); // State to store the error message
 
   const handleSearch = () => {
-    if (searchInput.trim() === '') {
-      setError('Please enter a Lens Handle.'); // Set an error message
+    if (searchInput.trim() === "") {
+      setError("Please enter a Lens Handle."); // Set an error message
       return; // Don't perform the search if the input is empty
     }
 
     // Clear any previous error
-    setError('');
+    setError("");
 
     // Use router.push to navigate to the profile page with the input value
     router.push(`/profile/${searchInput}`);
@@ -35,19 +43,19 @@ export const Search = (props) => {
         onChange={(e) => {
           setSearchInput(e.target.value);
           // Clear the error when the user starts typing again
-          setError('');
+          setError("");
         }}
         error={error}
         leftSection={<BiSearchAlt size="1rem" />}
         rightSection={
           <ActionIcon
             size={32}
-            radius="xl"
+            radius="sm"
             color={theme.primaryColor}
             variant="light"
             onClick={handleSearch} // Call handleSearch on button click
           >
-            {theme.dir === 'ltr' ? (
+            {theme.dir === "ltr" ? (
               <TbUserSearch size="1.1rem" />
             ) : (
               <TbUserSearch size="1.1rem" />
@@ -56,7 +64,6 @@ export const Search = (props) => {
         }
         rightSectionWidth={42}
       />
-      
     </>
   );
 };

@@ -50,16 +50,11 @@ export function MantineHeader() {
   return (
     <>
       {/* Modal content */}
-      <Modal
-        size="sm"
-        opened={openedSearch}
-        onClose={closeSearch}
-        title="Search Lens Profile"
-      >
+      <Modal size="sm" opened={openedSearch} onClose={closeSearch}>
         <Search />
       </Modal>
 
-      <Modal opened={openedCreate} onClose={closeCreate} title="Create Post">
+      <Modal size="xl" opened={openedCreate} onClose={closeCreate}>
         <Create />
       </Modal>
 
@@ -254,6 +249,7 @@ export function MantineHeader() {
           zIndex={1000000}
         >
           <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
+            <Search />
             <Group p="md">
               <ColorSchemeToggle />
             </Group>

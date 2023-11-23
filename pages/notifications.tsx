@@ -331,11 +331,11 @@ export default function Notifications() {
               <Paper shadow="xl" p="lg" withBorder>
                 <Center>
                   <Text size="md" fw={400}>
-                    Connect your Wallet or Sign In to view your Notifications.
+                    Sign In to view your Notifications.
                   </Text>
                 </Center>
                 <Space h="md" />
-                <Center>
+              
                   <Button
                     fullWidth
                     leftSection={<GiWaveCrest size="1rem" />}
@@ -343,17 +343,10 @@ export default function Notifications() {
                     gradient={{ from: "cyan", to: "indigo" }}
                     onClick={() => router.push("/login")}
                   >
-                    Connect Wallet
-                  </Button>
-                  <Space w="xs" />
-                  <Button
-                    fullWidth
-                    variant="default"
-                    onClick={() => router.push("/login")}
-                  >
                     Sign In
                   </Button>
-                </Center>
+                 
+              
               </Paper>
             </Container>
           </>

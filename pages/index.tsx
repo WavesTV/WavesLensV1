@@ -25,7 +25,9 @@ const Home: NextPage = () => {
       <Container size={560} p={0}>
         {session?.authenticated && session?.type === "WITH_PROFILE" ? (
           <>
-            <Create />
+            <Paper shadow="xl" withBorder p="sm">
+              <Create />
+            </Paper>
           </>
         ) : (
           <>
@@ -98,6 +100,7 @@ const Home: NextPage = () => {
       <Container>
         <Feed />
       </Container>
+      <Space h={50} />
     </>
   );
 };

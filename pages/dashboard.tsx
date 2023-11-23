@@ -76,11 +76,7 @@ export default function Dashboard() {
       {session?.authenticated && session.type === "WITH_PROFILE" ? (
         <>
           {/* Modal content */}
-          <Modal
-            opened={opened}
-            onClose={close}
-            centered
-          >
+          <Modal opened={opened} onClose={close} centered>
             <ProfileForm Profile={session?.profile} />
           </Modal>
 
@@ -117,14 +113,14 @@ export default function Dashboard() {
             </Group>
 
             <Group justify="right">
-            <ActionIcon
-              onClick={open}
-              variant="light"
-              radius="md"
-              aria-label="Settings"
-            >
-              <IconSettings size="1.3rem" />
-            </ActionIcon>
+              <ActionIcon
+                onClick={open}
+                variant="light"
+                radius="md"
+                aria-label="Settings"
+              >
+                <IconSettings size="1.3rem" />
+              </ActionIcon>
             </Group>
 
             <Space h="xl" />
@@ -185,10 +181,7 @@ export default function Dashboard() {
       ) : (
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
-            {/* @ts-ignore */}
             <Image
-              // @ts-ignore
-
               height={200}
               fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
               alt="default cover photo"
@@ -196,14 +189,13 @@ export default function Dashboard() {
           </Card.Section>
 
           <Avatar
-            // @ts-ignore
             className={styles.avatar}
             size={80}
             radius={80}
             mx="auto"
             mt={-30}
           />
-          {/* Profile Name */}
+
           <Group justify="center" className={styles.profileName}>
             <Text fw={500}>@Anon</Text>
           </Group>
@@ -212,44 +204,32 @@ export default function Dashboard() {
 
           <Group justify="center">
             <Text fw={500} fz="sm">
-              1 {" Followers"}
+              0 {" Followers"}
             </Text>
             |
             <Text fw={500} fz="sm">
-              1 {" Following"}
+              0 {" Following"}
             </Text>
           </Group>
 
           <Space h="md" />
-          <Container size="30rem" px={0}>
-            <Paper shadow="xl" p="lg" withBorder>
-              <Center>
-                <Text size="md" fw={400}>
-                  Connect your Wallet or Sign In to view your Dashboard.
-                </Text>
-              </Center>
-              <Space h="md" />
-              <Center>
-                <Button
-                  fullWidth
-                  leftSection={<GiWaveCrest size="1rem" />}
-                  variant="gradient"
-                  gradient={{ from: "cyan", to: "indigo" }}
-                  onClick={() => router.push("/login")}
-                >
-                  Connect Wallet
-                </Button>
-                <Space w="xs" />
-                <Button
-                  fullWidth
-                  variant="default"
-                  onClick={() => router.push("/login")}
-                >
-                  Sign In
-                </Button>
-              </Center>
-            </Paper>
+          <Container>
+            <Center>
+              <Text size="md" fw={400}>
+                Sign In to view your Dashboard.
+              </Text>
+            </Center>
+            <Space h="md" />
           </Container>
+          <Button
+            fullWidth
+            leftSection={<GiWaveCrest size="1rem" />}
+            variant="gradient"
+            gradient={{ from: "cyan", to: "indigo" }}
+            onClick={() => router.push("/login")}
+          >
+            Sign In
+          </Button>
         </Card>
       )}
     </>

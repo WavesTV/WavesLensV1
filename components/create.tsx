@@ -102,54 +102,52 @@ export function Create() {
 
   return (
     <>
-      <Container>
-        {session?.authenticated && session?.type === "WITH_PROFILE" && (
-          <Paper shadow="xl" withBorder p="xl">
-            <Group justify="left">
-              <Avatar
-                // @ts-ignore
-                src={session?.profile?.metadata?.picture}
-                size="lg"
-                radius="xl"
-              />
-
-              <Text fw={500} size="lg">
-                {session?.profile?.handle?.localName || "anon"}
-              </Text>
-            </Group>
-            <Space h="md" />
-            <Textarea
-              id="content"
-              variant="filled"
-              size="md"
-              radius="md"
-              placeholder="Announce your next Stream!"
-              onChange={(e) => setContent(e.target.value)}
+      {session?.authenticated && session?.type === "WITH_PROFILE" && (
+        <Container>
+          <Group justify="left">
+            <Avatar
+              // @ts-ignore
+              src={session?.profile?.metadata?.picture}
+              size="lg"
+              radius="xl"
             />
 
-            <Space h="md" />
+            <Text fw={500} size="lg">
+              {session?.profile?.handle?.localName || "anon"}
+            </Text>
+          </Group>
+          <Space h="md" />
+          <Textarea
+            id="content"
+            variant="filled"
+            size="md"
+            radius="md"
+            placeholder="Announce your next Stream!"
+            onChange={(e) => setContent(e.target.value)}
+          />
 
-            <Group justify="right">
-              <Button
-                variant="gradient"
-                gradient={{ from: "blue", to: "cyan", deg: 205 }}
-                onClick={() => {
-                  handleCreatePost(); // Trigger the createpost function
+          <Space h="md" />
 
-                  notifications.show({
-                    title: "Please Wait!",
-                    icon: <BiTimer size="1.1rem" />,
-                    color: "blue",
-                    message: "Allow a few seconds for your post to process.",
-                  });
-                }}
-              >
-                Create
-              </Button>
-            </Group>
-          </Paper>
-        )}
-      </Container>
+          <Group justify="right">
+            <Button
+              variant="gradient"
+              gradient={{ from: "blue", to: "cyan", deg: 205 }}
+              onClick={() => {
+                handleCreatePost(); // Trigger the createpost function
+
+                notifications.show({
+                  title: "Please Wait!",
+                  icon: <BiTimer size="1.1rem" />,
+                  color: "blue",
+                  message: "Allow a few seconds for your post to process.",
+                });
+              }}
+            >
+              Create
+            </Button>
+          </Group>
+        </Container>
+      )}
     </>
   );
 }

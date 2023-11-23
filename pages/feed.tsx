@@ -103,7 +103,8 @@ export default function Feed() {
 
         <Tabs.Panel value="first">
           <Space h="xl" />
-          <Paper m="md" shadow="lg" radius="md" p="xl" withBorder>
+          <Paper m="md" shadow="lg" radius="md" withBorder>
+            <Space h="sm" />
             <Center>
               <UnstyledButton onClick={() => router.push("/profile/wavestv")}>
                 <Avatar radius="xl" size="lg" />
@@ -113,8 +114,9 @@ export default function Feed() {
                 </Text>
               </UnstyledButton>
             </Center>
-            <Space h="xl" />
+            <Space h="md" />
             <Player playbackId="d986yofqyztqce4h" title="type shi" />
+            <Space h="sm" />
           </Paper>
           <Space h="xl" />
         </Tabs.Panel>
@@ -136,7 +138,9 @@ export default function Feed() {
                   <Center>
                     <Button
                       fullWidth
-                      variant="default"
+                      leftSection={<GiWaveCrest size="1rem" />}
+                      variant="gradient"
+                      gradient={{ from: "cyan", to: "indigo" }}
                       onClick={() => router.push("/login")}
                     >
                       Sign In
@@ -239,7 +243,7 @@ export default function Feed() {
               <Paper shadow="xl" p="lg" withBorder>
                 <Center>
                   <Text size="md" fw={400}>
-                    Sign In to your Lens profile to view your Following feed.
+                    You must have a Active Lens Profile.
                   </Text>
                 </Center>
                 <Space h="md" />

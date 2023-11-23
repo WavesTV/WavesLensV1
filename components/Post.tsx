@@ -22,6 +22,7 @@ import {
   Space,
   UnstyledButton,
   Text,
+  Container,
   Spoiler,
   Image,
   Center,
@@ -116,7 +117,7 @@ export default function Post({ post }: Props) {
 
   return (
     <>
-      <Paper shadow="xl" radius="md" p="md" withBorder>
+      <Paper shadow="xl" radius="md" withBorder>
         <Space h="sm" />
 
         <div
@@ -126,11 +127,11 @@ export default function Post({ post }: Props) {
             alignItems: "center",
           }}
         >
-          <div>
+          <Group ml={10} justify="left">
             <Text c="dimmed" size="xs" fw={500}>
               {formatDate(postToUse.createdAt)} ago
             </Text>
-          </div>
+          </Group>
 
           <Group justify="right">
             {isMirror && (
@@ -242,10 +243,12 @@ export default function Post({ post }: Props) {
             <Center>
               <Image
                 src={postContent?.metadata?.asset?.image?.optimized?.uri}
-                radius="md"
-                h="555"
-                w="auto"
-                fit="contain"
+                radius="xs"
+                style={{
+                  width: "100%", // Width is 100% of the container
+                  height: "auto", // Height is auto to maintain aspect ratio
+                  maxWidth: "100%", // Ensures the image doesn't scale beyond its original size
+                }}
                 alt={`${postToUse.by?.handle?.localName}'s Post Image`}
               />
             </Center>
@@ -358,10 +361,12 @@ export default function Post({ post }: Props) {
                     src={
                       postToUse?.quoteOn?.metadata?.asset?.image?.optimized?.uri
                     }
-                    radius="md"
-                    h="555"
-                    w="auto"
-                    fit="contain"
+                    radius="xs"
+                    style={{
+                      width: "100%", // Width is 100% of the container
+                      height: "auto", // Height is auto to maintain aspect ratio
+                      maxWidth: "100%", // Ensures the image doesn't scale beyond its original size
+                    }}
                     alt={`${postToUse?.quoteOn?.by?.handle?.localName}'s Post Image`}
                   />
                 </Center>
@@ -391,130 +396,132 @@ export default function Post({ post }: Props) {
         <Space h="xl" />
 
         {/* Post metadata */}
-        <Group justify="center" wrap="nowrap">
-          {/* Comments - Take user to the post */}
-          <Tooltip position="bottom" label="Comment">
-            <ActionIcon
-              variant="subtle"
-              radius="md"
-              size={36}
-              onClick={(e) => {
-                router.push(`/post/${postToUse?.id}`);
-                e.stopPropagation();
-              }}
-            >
-              <IconMessageCircle size={18} stroke={1.5} />
-            </ActionIcon>
-          </Tooltip>
-          <Text size="xs" c="dimmed">
-            {postContent?.stats?.comments}
-          </Text>
-
-          {/* Mirrors */}
-          <Tooltip position="bottom" label="Mirror">
-            <ActionIcon
-              variant="subtle"
-              radius="md"
-              size={36}
-              onClick={async (e) => {
-                try {
+        <Container fluid>
+          <Group justify="center">
+            {/* Comments - Take user to the post */}
+            <Tooltip position="bottom" label="Comment">
+              <ActionIcon
+                variant="subtle"
+                radius="md"
+                size={36}
+                onClick={(e) => {
+                  router.push(`/post/${postToUse?.id}`);
                   e.stopPropagation();
-                  if (session) {
-                    handleMirror();
+                }}
+              >
+                <IconMessageCircle size={18} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Text size="xs" c="dimmed">
+              {postContent?.stats?.comments}
+            </Text>
 
-                    notifications.show({
-                      title: "Post mirrored",
-                      icon: <IconCheck size="1.1rem" />,
-                      color: "green",
-                      message: `Successfully mirrored ${
-                        postToUse.by?.handle?.localName || "anon"
-                      }'s post.`,
-                    });
-                  } else {
-                    // Handle the case when activeProfile.data is falsy (button disabled)
-                    notifications.show({
-                      title: "Error",
-                      icon: <IconX size="1.1rem" />,
-                      color: "red",
-                      message: `Login to mirror this post!`,
-                    });
-                  }
-                } catch (error) {
-                  console.error(error);
-                  notifications.show({
-                    title: "Error",
-                    icon: <IconX size="1.1rem" />,
-                    color: "red",
-                    message: `Something Happened: ${error}`,
-                  });
-                }
-              }}
-            >
-              <GiMirrorMirror size={18} />
-            </ActionIcon>
-          </Tooltip>
-          <Text size="xs" c="dimmed">
-            {postContent?.stats?.mirrors}
-          </Text>
+            {/* Mirrors */}
+            <Tooltip position="bottom" label="Mirror">
+              <ActionIcon
+                variant="subtle"
+                radius="md"
+                size={36}
+                onClick={async (e) => {
+                  try {
+                    e.stopPropagation();
+                    if (session) {
+                      handleMirror();
 
-          {/* Hearts */}
-          <Tooltip position="bottom" label="Heart">
-            <ActionIcon
-              variant="subtle"
-              radius="md"
-              size={36}
-              onClick={(e) => {
-                e.stopPropagation();
-                try {
-                  if (!session?.authenticated) {
+                      notifications.show({
+                        title: "Post mirrored",
+                        icon: <IconCheck size="1.1rem" />,
+                        color: "green",
+                        message: `Successfully mirrored ${
+                          postToUse.by?.handle?.localName || "anon"
+                        }'s post.`,
+                      });
+                    } else {
+                      // Handle the case when activeProfile.data is falsy (button disabled)
+                      notifications.show({
+                        title: "Error",
+                        icon: <IconX size="1.1rem" />,
+                        color: "red",
+                        message: `Login to mirror this post!`,
+                      });
+                    }
+                  } catch (error) {
+                    console.error(error);
                     notifications.show({
                       title: "Error",
                       icon: <IconX size="1.1rem" />,
                       color: "red",
-                      message: `Login to like this post!`,
+                      message: `Something Happened: ${error}`,
                     });
-                    return; // Return early to prevent further execution
                   }
+                }}
+              >
+                <GiMirrorMirror size={18} />
+              </ActionIcon>
+            </Tooltip>
+            <Text size="xs" c="dimmed">
+              {postContent?.stats?.mirrors}
+            </Text>
 
-                  handleReaction();
-                  notifications.show({
-                    title: "Liked!",
-                    icon: <IconHeartFilled size="1.1rem" />,
-                    color: "blue",
-                    message: `You Liked ${
-                      postToUse.by?.handle?.localName || "Anon"
-                    }'s post. Keep it going!`,
-                  });
-                } catch (error) {
-                  notifications.show({
-                    title: "Error",
-                    icon: <IconX size="1.1rem" />,
-                    color: "red",
-                    message: `Something Happened! ${error}`,
-                  });
-                  console.error(error);
-                }
-              }}
-            >
-              {userUpvoted || hasReaction ? (
-                <IconHeartFilled size={18} stroke={1.5} />
-              ) : (
-                <IconHeart size={18} stroke={1.5} />
-              )}
-            </ActionIcon>
-          </Tooltip>
-          <Text size="xs" c="dimmed">
-            {postContent?.stats?.upvotes}
-          </Text>
-          <Tooltip position="bottom" label="Collect">
-            <ActionIcon variant="subtle" radius="md" size={36}>
-              <IconStack3 size={18} stroke={1.5} />
-            </ActionIcon>
-          </Tooltip>
-          <Text size="xs" c="dimmed">
-            {postContent?.stats?.collects}
-          </Text>
-        </Group>
+            {/* Hearts */}
+            <Tooltip position="bottom" label="Heart">
+              <ActionIcon
+                variant="subtle"
+                radius="md"
+                size={36}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  try {
+                    if (!session?.authenticated) {
+                      notifications.show({
+                        title: "Error",
+                        icon: <IconX size="1.1rem" />,
+                        color: "red",
+                        message: `Login to like this post!`,
+                      });
+                      return; // Return early to prevent further execution
+                    }
+
+                    handleReaction();
+                    notifications.show({
+                      title: "Liked!",
+                      icon: <IconHeartFilled size="1.1rem" />,
+                      color: "blue",
+                      message: `You Liked ${
+                        postToUse.by?.handle?.localName || "Anon"
+                      }'s post. Keep it going!`,
+                    });
+                  } catch (error) {
+                    notifications.show({
+                      title: "Error",
+                      icon: <IconX size="1.1rem" />,
+                      color: "red",
+                      message: `Something Happened! ${error}`,
+                    });
+                    console.error(error);
+                  }
+                }}
+              >
+                {userUpvoted || hasReaction ? (
+                  <IconHeartFilled size={18} stroke={1.5} />
+                ) : (
+                  <IconHeart size={18} stroke={1.5} />
+                )}
+              </ActionIcon>
+            </Tooltip>
+            <Text size="xs" c="dimmed">
+              {postContent?.stats?.upvotes}
+            </Text>
+            <Tooltip position="bottom" label="Collect">
+              <ActionIcon variant="subtle" radius="md" size={36}>
+                <IconStack3 size={18} stroke={1.5} />
+              </ActionIcon>
+            </Tooltip>
+            <Text size="xs" c="dimmed">
+              {postContent?.stats?.collects}
+            </Text>
+          </Group>
+        </Container>
         <Space h="lg" />
       </Paper>
       <Space h="md" />
