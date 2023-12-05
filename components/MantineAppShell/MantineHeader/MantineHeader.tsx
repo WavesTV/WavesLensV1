@@ -15,6 +15,7 @@ import {
   Menu,
   Avatar,
   Modal,
+  Popover,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -35,6 +36,8 @@ import { BiSearchAlt } from "react-icons/bi";
 import { Search } from "@/components/Search";
 import { Create } from "@/components/create";
 import { BsPlusCircleDotted } from "react-icons/bs";
+import Notifications from "../../../pages/notifications";
+import { useRouter } from "next/router";
 
 export function MantineHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -43,14 +46,23 @@ export function MantineHeader() {
     useDisclosure(false);
   const [openedCreate, { open: openCreate, close: closeCreate }] =
     useDisclosure(false);
+  const [openedNotifs, { toggle: openNotifs, close: closeNotifs }] =
+    useDisclosure(false);
   const { data: session } = useSession();
+
+  const router = useRouter();
   const { execute, loading: isPending } = useLogout();
   const disconnect = useDisconnect();
 
   return (
     <>
       {/* Modal content */}
-      <Modal size="sm" opened={openedSearch} onClose={closeSearch}>
+      <Modal
+        title="Search"
+        size="sm"
+        opened={openedSearch}
+        onClose={closeSearch}
+      >
         <Search />
       </Modal>
 
@@ -132,23 +144,46 @@ export function MantineHeader() {
                   <IconWallet />
                 </ActionIcon>
               </Tooltip>
-              <Tooltip
-                label="Notifications"
-                withArrow
-                position="bottom"
-                offset={3}
+
+              <Menu
+                trigger="hover"
+                openDelay={100}
+                shadow="md"
+                width={555}
+                zIndex={1000000}
               >
-                <ActionIcon
-                  component={Link}
-                  href="/notifications"
-                  variant="gradient"
-                  size="xl"
-                  aria-label="Gradient action icon"
-                  gradient={{ from: "blue", to: "cyan", deg: 270 }}
+                <Menu.Target>
+                  <ActionIcon
+                    variant="gradient"
+                    size="xl"
+                    aria-label="Gradient action icon"
+                    gradient={{ from: "blue", to: "cyan", deg: 270 }}
+                    onMouseEnter={openNotifs}
+                  >
+                    <IconBellRinging />
+                  </ActionIcon>
+                </Menu.Target>
+
+                <Menu.Dropdown
+                  style={{
+                    maxHeight: "555px", // Adjust this value based on your preference
+                    overflowY: "auto",
+                  }}
                 >
-                  <IconBellRinging />
-                </ActionIcon>
-              </Tooltip>
+                  <Group justify="right">
+                    <UnstyledButton
+                      onClick={() => {
+                        closeNotifs();
+                        router.push("/notifications");
+                      }}
+                    >
+                      <Text size="xs">View More</Text>
+                    </UnstyledButton>
+                  </Group>
+
+                  <Notifications />
+                </Menu.Dropdown>
+              </Menu>
 
               <Tooltip label="Why Waves" withArrow position="bottom" offset={3}>
                 <ActionIcon
@@ -157,7 +192,7 @@ export function MantineHeader() {
                   variant="gradient"
                   size="xl"
                   aria-label="Gradient action icon"
-                  gradient={{ from: "blue", to: "cyan", deg: 270 }}
+                  gradient={{ from: "blue", to: "cyan", deg: 360 }}
                 >
                   <PiSealQuestion size="1.7rem" />
                 </ActionIcon>
@@ -178,7 +213,7 @@ export function MantineHeader() {
               <ColorSchemeToggle />
 
               {/* Wallet + Active Lens Profile */}
-              {session?.authenticated && (
+              {session?.authenticated && session?.type === "WITH_PROFILE" && (
                 <>
                   <Menu
                     trigger="hover"
@@ -189,11 +224,19 @@ export function MantineHeader() {
                     zIndex={1000000}
                   >
                     <Menu.Target>
-                      <Avatar size="md" radius="md" mx="auto" />
+                      <Avatar
+                        size="md"
+                        radius="xl"
+                        mx="auto" // @ts-ignore
+                        src={
+                          session?.profile?.metadata?.picture ||
+                          "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+                        }
+                      />
                     </Menu.Target>
                     <Menu.Dropdown>
                       <Menu.Item
-                        onClick={(e) => {
+                        onClick={(e: any) => {
                           e.preventDefault();
                           execute();
                           disconnect();
@@ -347,7 +390,7 @@ export function MantineHeader() {
                   <Menu.Dropdown>
                     <Menu.Item
                       leftSection={<IconLogout size={17} color="red" />}
-                      onClick={(e) => {
+                      onClick={(e: any) => {
                         e.preventDefault();
                         execute();
                         disconnect();

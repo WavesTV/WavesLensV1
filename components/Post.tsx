@@ -27,6 +27,8 @@ import {
   Image,
   Center,
   Button,
+  HoverCard,
+  Box,
 } from "@mantine/core";
 import {
   IconCheck,
@@ -42,6 +44,7 @@ import {
 import { notifications } from "@mantine/notifications";
 import { GiMirrorMirror } from "react-icons/gi";
 import { Player } from "@livepeer/react";
+import { IconExclamationMark } from "@tabler/icons-react";
 
 type Props = {
   post: Post | Comment | Quote | Mirror;
@@ -110,14 +113,14 @@ export default function Post({ post }: Props) {
     return text
       .replace(
         urlRegex,
-        (url: string) => `<a href="${url}" target="_blank">${url}</a>`,
+        (url: any) => `<a href="${url}" target="_blank">${url}</a>`,
       )
-      .replace(atSymbolRegex, (match: string) => ` ${match} `);
+      .replace(atSymbolRegex, (match: any) => ` ${match} `);
   };
 
   return (
     <>
-      <Paper shadow="xl" radius="md" withBorder>
+      <Paper p="xs" shadow="xl" radius="md" withBorder>
         <Space h="sm" />
 
         <div
@@ -163,27 +166,93 @@ export default function Post({ post }: Props) {
         </div>
 
         <Space h="xl" />
-
-        <UnstyledButton
-          component={Link}
-          href={`/profile/${postContent.by?.handle?.localName}`}
+        <HoverCard
+          width={320}
+          shadow="md"
+          withArrow
+          openDelay={200}
+          closeDelay={400}
         >
-          <Group justify="center">
-            <Avatar
-              // @ts-ignore
-              src={
-                postContent?.by?.metadata?.picture &&
-                "optimized" in postContent?.by?.metadata?.picture
-                  ? postContent.by.metadata.picture.optimized?.uri
-                  : "/user.png"
-              }
-              alt={`${postContent.by?.handle?.localName}'s profile picture`}
-              size="lg"
-            />
+          <HoverCard.Target>
+            <UnstyledButton
+              component={Link}
+              href={`/profile/${postContent.by?.handle?.localName}`}
+            >
+              <Group justify="center">
+                <Avatar
+                  // @ts-ignore
+                  src={
+                    postContent?.by?.metadata?.picture &&
+                    "optimized" in postContent?.by?.metadata?.picture
+                      ? postContent.by.metadata.picture.optimized?.uri
+                      : "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+                  }
+                  alt={`${postContent.by?.handle?.localName}'s profile picture`}
+                  size="lg"
+                />
 
-            <Text fw={500}>{postContent.by?.handle?.localName}</Text>
-          </Group>
-        </UnstyledButton>
+                <Text fw={500}>{postContent.by?.handle?.localName}</Text>
+              </Group>
+            </UnstyledButton>
+          </HoverCard.Target>
+
+          <UnstyledButton
+            component={Link}
+            href={`/profile/${postContent.by?.handle?.localName}`}
+          >
+            <HoverCard.Dropdown>
+              <Group>
+                <Avatar
+                  // @ts-ignore
+                  src={
+                    postContent?.by?.metadata?.picture &&
+                    "optimized" in postContent?.by?.metadata?.picture
+                      ? postContent.by.metadata.picture.optimized?.uri
+                      : "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+                  }
+                  alt={`${postContent.by?.handle?.localName}'s profile picture`}
+                  size="lg"
+                />
+
+                <div style={{ flex: 1 }}>
+                  <Text size="md" fw={500}>
+                    {postContent.by?.metadata?.displayName ||
+                      postContent.by?.handle?.localName}
+                  </Text>
+
+                  <Text c="dimmed" size="sm">
+                    @{postContent.by?.handle?.localName}
+                  </Text>
+                </div>
+              </Group>
+              <Space h="md" />
+              <Text lineClamp={3} fw={200}>
+                {
+                  // @ts-ignore
+                  postContent.by.metadata?.bio || null
+                }
+              </Text>
+              <Space h="md" />
+              <Group justify="center">
+                <Text fw={500} size="sm">
+                  {
+                    // @ts-ignore
+                    postContent.by.stats.followers || "0"
+                  }{" "}
+                  Followers
+                </Text>
+                |
+                <Text fw={500} size="sm">
+                  {
+                    // @ts-ignore
+                    postContent.by.stats.following || "0"
+                  }{" "}
+                  Following
+                </Text>
+              </Group>
+            </HoverCard.Dropdown>
+          </UnstyledButton>
+        </HoverCard>
 
         <Space h="xl" />
 
@@ -207,7 +276,7 @@ export default function Post({ post }: Props) {
               </>
             }
           >
-            <div
+            <Box
               style={{
                 maxWidth: "100%", // Adjust this value to control the maximum width
                 margin: "0 auto", // Center the content horizontally if needed
@@ -224,24 +293,26 @@ export default function Post({ post }: Props) {
                 }}
                 dangerouslySetInnerHTML={{
                   __html:
-                    "content" in postContent?.metadata &&
+                    // @ts-ignore
                     postContent?.metadata?.content
                       ? replaceURLs(
+                          // @ts-ignore
                           postContent.metadata.content.replace(/\n/g, "<br> "),
                         )
                       : "",
                 }}
               />
-            </div>
+            </Box>
           </Spoiler>
         </Center>
         <Space h="md" />
 
-        {"asset" in postContent?.metadata &&
-          "image" in postContent?.metadata.asset &&
+        {
+          // @ts-ignore
           postContent.metadata?.asset?.image && (
             <Center>
               <Image
+                // @ts-ignore
                 src={postContent?.metadata?.asset?.image?.optimized?.uri}
                 radius="xs"
                 style={{
@@ -252,50 +323,70 @@ export default function Post({ post }: Props) {
                 alt={`${postToUse.by?.handle?.localName}'s Post Image`}
               />
             </Center>
-          )}
+          )
+        }
 
-        {"asset" in postContent?.metadata &&
-          "video" in postContent?.metadata.asset &&
+        {
+          // @ts-ignore
           postContent?.metadata?.asset?.video && (
             <Center>
               <Player
+                // @ts-ignore
                 src={postContent?.metadata?.asset?.video?.optimized?.uri}
               />
             </Center>
-          )}
+          )
+        }
 
-        {"embed" in postContent?.metadata && postContent?.metadata?.embed && (
-          <Center>
-            <Player src={postContent?.metadata?.embed} />
-          </Center>
-        )}
+        {
+          // @ts-ignore
+          postContent?.metadata?.embed && (
+            <Center>
+              <Player
+                // @ts-ignore
+                src={postContent?.metadata?.embed}
+              />
+            </Center>
+          )
+        }
 
-        {post.__typename === "Quote" && "quoteOn" in postToUse && (
+        {post.__typename === "Quote" && (
           <Paper shadow="xl" radius="md" p="xs" withBorder>
             <Group justify="right">
               <Text c="dimmed" size="xs" fw={500} mr={10}>
-                {formatDate(postToUse.quoteOn.createdAt)} ago
+                {
+                  // @ts-ignore
+                  formatDate(postToUse.quoteOn.createdAt)
+                }{" "}
+                ago
               </Text>
             </Group>
 
             <UnstyledButton
               component={Link}
+              // @ts-ignore
               href={`/profile/${postToUse.quoteOn.by?.handle?.localName}`}
             >
               <Group justify="center">
                 <Avatar
-                  // @ts-ignore
                   src={
-                    postToUse?.by?.metadata?.picture &&
-                    "optimized" in postToUse?.by?.metadata?.picture
-                      ? postToUse.by.metadata.picture.optimized?.uri
-                      : "/user.png"
+                    // @ts-ignore
+                    postToUse?.by?.metadata?.picture?.optimized?.uri ||
+                    "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
                   }
-                  alt={`${postToUse.quoteOn.by?.handle?.localName}'s profile picture`}
+                  alt={
+                    // @ts-ignore
+                    `${postToUse.quoteOn.by?.handle?.localName}'s profile picture`
+                  }
                   size="lg"
                 />
 
-                <Text fw={500}>{postToUse.quoteOn.by?.handle?.localName}</Text>
+                <Text fw={500}>
+                  {
+                    // @ts-ignore
+                    postToUse.quoteOn.by?.handle?.localName
+                  }
+                </Text>
               </Group>
             </UnstyledButton>
 
@@ -338,9 +429,10 @@ export default function Post({ post }: Props) {
                     }}
                     dangerouslySetInnerHTML={{
                       __html:
-                        "content" in postToUse?.quoteOn?.metadata &&
+                        // @ts-ignore
                         postToUse?.quoteOn?.metadata?.content
                           ? replaceURLs(
+                              // @ts-ignore
                               postToUse.quoteOn.metadata.content.replace(
                                 /\n/g,
                                 "<br> ",
@@ -353,12 +445,13 @@ export default function Post({ post }: Props) {
               </Spoiler>
             </Center>
             <Space h="md" />
-            {"asset" in postToUse?.quoteOn?.metadata &&
-              "image" in postToUse?.quoteOn?.metadata?.asset &&
+            {
+              // @ts-ignore
               postToUse.quoteOn.metadata?.asset?.image && (
                 <Center>
                   <Image
                     src={
+                      // @ts-ignore
                       postToUse?.quoteOn?.metadata?.asset?.image?.optimized?.uri
                     }
                     radius="xs"
@@ -367,29 +460,39 @@ export default function Post({ post }: Props) {
                       height: "auto", // Height is auto to maintain aspect ratio
                       maxWidth: "100%", // Ensures the image doesn't scale beyond its original size
                     }}
-                    alt={`${postToUse?.quoteOn?.by?.handle?.localName}'s Post Image`}
+                    alt={
+                      // @ts-ignore
+                      `${postToUse?.quoteOn?.by?.handle?.localName}'s Post Image`
+                    }
                   />
                 </Center>
-              )}
+              )
+            }
 
-            {"asset" in postToUse?.quoteOn?.metadata &&
-              "video" in postToUse?.quoteOn?.metadata?.asset &&
+            {
+              // @ts-ignore
               postToUse?.quoteOn?.metadata?.asset?.video && (
                 <Center>
                   <Player
                     src={
+                      // @ts-ignore
                       postToUse.quoteOn?.metadata?.asset?.video?.optimized?.uri
                     }
                   />
                 </Center>
-              )}
+              )
+            }
 
-            {"embed" in postToUse?.quoteOn?.metadata &&
+            {
+              // @ts-ignore
               postToUse?.quoteOn?.metadata?.embed && (
                 <Center>
-                  <Player src={postToUse?.quoteOn?.metadata?.embed} />
+                  <Player // @ts-ignore
+                    src={postToUse?.quoteOn?.metadata?.embed}
+                  />
                 </Center>
-              )}
+              )
+            }
           </Paper>
         )}
 
@@ -404,7 +507,7 @@ export default function Post({ post }: Props) {
                 variant="subtle"
                 radius="md"
                 size={36}
-                onClick={(e) => {
+                onClick={(e: any) => {
                   router.push(`/post/${postToUse?.id}`);
                   e.stopPropagation();
                 }}
@@ -422,19 +525,16 @@ export default function Post({ post }: Props) {
                 variant="subtle"
                 radius="md"
                 size={36}
-                onClick={async (e) => {
+                onClick={async (e: any) => {
                   try {
                     e.stopPropagation();
                     if (session) {
-                      handleMirror();
-
                       notifications.show({
-                        title: "Post mirrored",
-                        icon: <IconCheck size="1.1rem" />,
-                        color: "green",
-                        message: `Successfully mirrored ${
-                          postToUse.by?.handle?.localName || "anon"
-                        }'s post.`,
+                        title: "Lens V2 Upgrade",
+                        icon: <IconExclamationMark size="1.1rem" />,
+                        color: "blue",
+                        message:
+                          "Waves is upgrading to Lens v2. This will work soon... hopefully. ",
                       });
                     } else {
                       // Handle the case when activeProfile.data is falsy (button disabled)
@@ -469,7 +569,7 @@ export default function Post({ post }: Props) {
                 variant="subtle"
                 radius="md"
                 size={36}
-                onClick={(e) => {
+                onClick={(e: any) => {
                   e.stopPropagation();
                   try {
                     if (!session?.authenticated) {

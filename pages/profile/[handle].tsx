@@ -20,7 +20,7 @@ import {
   Group,
   Avatar,
   Text,
-  Loader,
+  Skeleton,
   Image,
   Container,
   Paper,
@@ -108,7 +108,7 @@ const ProfilePage = () => {
               profile?.data?.metadata?.picture &&
               "optimized" in profile?.data?.metadata?.picture
                 ? profile?.data?.metadata?.picture.optimized?.uri
-                : "/user.png"
+                : "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
             }
             className={styles.avatar}
             size={80}
@@ -126,7 +126,15 @@ const ProfilePage = () => {
           <Group justify="center">@{profile?.data?.handle?.localName}</Group>
 
           <Space h="xl" />
-           <Group justify="right">
+
+          {"wavestv" === profile?.data?.handle?.localName && (
+            <Paper>
+              <Player playbackId="d986yofqyztqce4h" title="pp poopoo" />
+            </Paper>
+          )}
+          <Space h="xl" />
+          <Paper shadow="sm" p="lg" radius="md" withBorder>
+            <Group justify="right">
               <CopyButton
                 value={`https://waves-lensv1.vercel.app/profile/${profile?.data?.handle?.localName}`}
                 timeout={2000}
@@ -159,16 +167,7 @@ const ProfilePage = () => {
                 )}
               </CopyButton>
             </Group>
-          {"wavestv" === profile?.data?.handle?.localName && (
-            <Paper>
-              
-              <Player playbackId="d986yofqyztqce4h" title="pp poopoo" />
-            </Paper>
-          )}
-          <Space h="xl" />
-          <Paper shadow="sm" p="lg" radius="md" withBorder>
-           
-           
+            <Space h="md" />
             <Text
               fz="sm"
               style={{
@@ -228,7 +227,22 @@ const ProfilePage = () => {
       <Space h="xl" />
 
       {/* Loading */}
-      {profilePosts?.loading && <></>}
+      {profilePosts?.loading &&
+        Array.from({ length: 10 }).map((_, i) => (
+          <>
+            <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+              <Space h="md" />
+              <Center>
+                <Skeleton height={50} circle mb="xl" />
+              </Center>
+              <Skeleton height={8} radius="xl" />
+              <Skeleton height={8} mt={6} radius="xl" />
+              <Skeleton height={8} mt={6} width="70%" radius="xl" />
+              <Space h="md" />
+            </Paper>
+            <Space h="md" />
+          </>
+        ))}
       {/* Loaded */}
       {!profilePosts?.loading && profilePosts?.data && (
         <InfiniteScroll
@@ -236,7 +250,25 @@ const ProfilePage = () => {
           next={() => profilePosts?.next()}
           hasMore={profilePosts?.hasMore}
           className="mt-4"
-          loader={<></>}
+          loader={
+            <>
+              {Array.from({ length: 10 }).map((_, i) => (
+                <>
+                  <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+                    <Space h="md" />
+                    <Center>
+                      <Skeleton height={50} circle mb="xl" />
+                    </Center>
+                    <Skeleton height={8} radius="xl" />
+                    <Skeleton height={8} mt={6} radius="xl" />
+                    <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                    <Space h="md" />
+                  </Paper>
+                  <Space h="md" />
+                </>
+              ))}
+            </>
+          }
         >
           {// @ts-ignore post type
           profilePosts?.data?.map((post: PostType) => (

@@ -10,7 +10,7 @@ import {
   Space,
   Group,
   Container,
-  Checkbox,
+  Skeleton,
   Center,
 } from "@mantine/core";
 import Link from "next/link";
@@ -66,10 +66,15 @@ const Home: NextPage = () => {
 
             <Paper shadow="xl" withBorder p="xl">
               <Group>
-                <Avatar size="lg" />
+                <Avatar
+                  src={
+                    "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+                  }
+                  size="lg"
+                />
 
                 <Text c="dimmed" fw={500} size="lg">
-                  anon
+                  Anon
                 </Text>
               </Group>
               <Space h="md" />

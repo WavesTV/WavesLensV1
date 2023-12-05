@@ -12,6 +12,7 @@ import {
   Container,
   Modal,
   ActionIcon,
+  Skeleton,
 } from "@mantine/core";
 import {
   Post as PostType,
@@ -19,7 +20,6 @@ import {
   usePublications,
 } from "@lens-protocol/react-web";
 import styles from "../styles/ProfileCard.module.css";
-import Link from "next/link";
 import { Stream } from "@/components/Stream";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@/components/Post";
@@ -42,8 +42,6 @@ export default function Dashboard() {
           : undefined,
     },
   });
-
-  console.log(session);
 
   const replaceURLs = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -94,7 +92,10 @@ export default function Dashboard() {
 
             <Avatar
               // @ts-ignore
-              src={session?.profile?.metadata?.picture}
+              src={
+                session?.profile?.metadata?.picture ||
+                "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+              }
               className={styles.avatar}
               size={80}
               radius={80}
@@ -161,7 +162,22 @@ export default function Dashboard() {
 
           <Space h="xl" />
           {/* Loading */}
-          {profilePosts?.loading && <></>}
+          {profilePosts?.loading &&
+            Array.from({ length: 10 }).map((_, i) => (
+              <>
+                <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+                  <Space h="md" />
+                  <Center>
+                    <Skeleton height={50} circle mb="xl" />
+                  </Center>
+                  <Skeleton height={8} radius="xl" />
+                  <Skeleton height={8} mt={6} radius="xl" />
+                  <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                  <Space h="md" />
+                </Paper>
+                <Space h="md" />
+              </>
+            ))}
           {/* Loaded */}
           {!profilePosts?.loading && profilePosts?.data && (
             <InfiniteScroll
@@ -169,7 +185,25 @@ export default function Dashboard() {
               next={() => profilePosts?.next()}
               hasMore={profilePosts?.hasMore}
               className="mt-4"
-              loader={<></>}
+              loader={
+                <>
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <>
+                      <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+                        <Space h="md" />
+                        <Center>
+                          <Skeleton height={50} circle mb="xl" />
+                        </Center>
+                        <Skeleton height={8} radius="xl" />
+                        <Skeleton height={8} mt={6} radius="xl" />
+                        <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                        <Space h="md" />
+                      </Paper>
+                      <Space h="md" />
+                    </>
+                  ))}
+                </>
+              }
             >
               {// @ts-ignore post type
               profilePosts?.data?.map((post: PostType) => (
@@ -190,6 +224,9 @@ export default function Dashboard() {
 
           <Avatar
             className={styles.avatar}
+            src={
+              "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+            }
             size={80}
             radius={80}
             mx="auto"

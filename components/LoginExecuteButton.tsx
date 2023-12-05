@@ -44,7 +44,10 @@ export default function LoginExecuteButton() {
                 <Group justify="space-between" wrap="nowrap">
                   <Avatar
                     // @ts-ignore
-                    src={profile.metadata?.picture || null}
+                    src={
+                      profile.metadata?.picture ||
+                      "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+                    }
                     alt={`${profile.handle?.localName}'s profile`}
                     radius="md"
                   />
@@ -81,7 +84,7 @@ export default function LoginExecuteButton() {
           </>
         ))
       ) : (
-        <Paper shadow="lg" radius="md" withBorder p="sm">
+        <Paper shadow="lg" radius="sm" withBorder p="sm">
           <Center>
             <ConnectWallet
               auth={{

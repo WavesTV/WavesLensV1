@@ -9,7 +9,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from "@/components/form";
 import {
   FollowPolicyType,
   Session,
@@ -21,7 +21,7 @@ import {
 import useUpload from "@/lib/useUpload";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { Separator } from "./ui/separator";
+
 import Link from "next/link";
 import { IconUserPlus, IconX } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
@@ -206,7 +206,7 @@ export default function ProfileForm({ Profile }: Props) {
                       type="file"
                       accept="image/*"
                       multiple={false}
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         if (e.target.files) {
                           setProfilePicture(e.target.files[0]);
                         }
@@ -236,7 +236,7 @@ export default function ProfileForm({ Profile }: Props) {
                       type="file"
                       accept="image/*"
                       multiple={false}
-                      onChange={(e) => {
+                      onChange={(e: any) => {
                         if (e.target.files) {
                           setCoverPicture(e.target.files[0]);
                         }

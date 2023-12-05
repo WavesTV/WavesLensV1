@@ -1,4 +1,3 @@
-import type { NextPage } from "next";
 import {
   useSession,
   useExplorePublications,
@@ -8,20 +7,20 @@ import {
   ExplorePublicationType,
   LimitType,
   useFeedHighlights,
+  useProfile,
 } from "@lens-protocol/react-web";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@/components/Post";
 import { useState } from "react";
-import { BsFire } from "react-icons/bs";
-import { GiWaveCrest } from "react-icons/gi";
 import { FaUsers } from "react-icons/fa";
 import {
   Container,
+  Loader,
   Space,
   Tabs,
   rem,
   Text,
-  Loader,
+  ActionIcon,
   Group,
   Center,
   Button,
@@ -31,10 +30,19 @@ import {
   Checkbox,
   UnstyledButton,
   Avatar,
+  Skeleton,
+  Menu,
+  TextInput,
 } from "@mantine/core";
 import classes from "../styles/Tabs.module.css";
 import { useRouter } from "next/router";
 import { Player } from "@livepeer/react";
+import { RxReload } from "react-icons/rx";
+import { RiArrowDropDownFill, RiArrowRightCircleLine } from "react-icons/ri";
+import { CiCircleRemove } from "react-icons/ci";
+import { MdPlaylistRemove } from "react-icons/md";
+import { BsFire } from "react-icons/bs";
+import { GiWaveCrest, GiWaveSurfer } from "react-icons/gi";
 
 export default function Feed() {
   const router = useRouter();
@@ -49,7 +57,7 @@ export default function Feed() {
     where: {
       publicationTypes: [ExplorePublicationType.Post],
     },
-    orderBy: ExplorePublicationsOrderByType.TopCollectedOpenAction,
+    orderBy: ExplorePublicationsOrderByType.TopCommented,
     limit: LimitType.TwentyFive,
   });
 
@@ -69,8 +77,23 @@ export default function Feed() {
           ? session.profile.id
           : undefined,
     },
+    limit: LimitType.TwentyFive,
   });
 
+  const [handle, setHandle] = useState("");
+
+  const surfProfile = useProfile({
+    forHandle: `lens/${handle}`,
+  });
+
+  const profileId = surfProfile?.data?.id;
+  console.log(surfProfile);
+  const surfFeed = useFeed({
+    where: {
+      for: profileId,
+    },
+  });
+  console.log(surfFeed);
   return (
     <>
       <Tabs variant="unstyled" defaultValue="first" classNames={classes}>
@@ -107,7 +130,11 @@ export default function Feed() {
             <Space h="sm" />
             <Center>
               <UnstyledButton onClick={() => router.push("/profile/wavestv")}>
-                <Avatar radius="xl" size="lg" />
+                <Avatar
+                  src="https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+                  radius="xl"
+                  size="lg"
+                />
                 <Space w="xs" />
                 <Text fw={600} size="sm">
                   WavesTV
@@ -174,13 +201,47 @@ export default function Feed() {
 
               <Space h="md" />
 
+              {followingFeed.data === undefined &&
+                session?.type === "WITH_PROFILE" && (
+                  <>
+                    <Center>
+                      <ActionIcon
+                        variant="light"
+                        size="lg"
+                        radius="xl"
+                        onClick={() => window.location.reload()}
+                      >
+                        <RxReload size="1.4rem" />
+                      </ActionIcon>
+                    </Center>
+                    <Space h="md" />
+                  </>
+                )}
+
               {checked ? (
                 <>
-                  {highlightsFeed.loading && (
-                    <Group justify="center">
-                      <Loader color="blue" />
-                    </Group>
-                  )}
+                  {highlightsFeed.loading &&
+                    Array.from({ length: 10 }).map((_, i) => (
+                      <>
+                        <Paper
+                          p="xs"
+                          shadow="xl"
+                          radius="md"
+                          withBorder
+                          key={i}
+                        >
+                          <Space h="md" />
+                          <Center>
+                            <Skeleton height={50} circle mb="xl" />
+                          </Center>
+                          <Skeleton height={8} radius="xl" />
+                          <Skeleton height={8} mt={6} radius="xl" />
+                          <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                          <Space h="md" />
+                        </Paper>
+                        <Space h="md" />
+                      </>
+                    ))}
 
                   {!highlightsFeed.loading && highlightsFeed && (
                     <InfiniteScroll
@@ -189,9 +250,32 @@ export default function Feed() {
                       hasMore={highlightsFeed.hasMore}
                       loader={
                         <>
-                          <Group justify="center">
-                            <Loader color="blue" />
-                          </Group>
+                          {Array.from({ length: 10 }).map((_, i) => (
+                            <>
+                              <Paper
+                                p="xs"
+                                shadow="xl"
+                                radius="md"
+                                withBorder
+                                key={i}
+                              >
+                                <Space h="md" />
+                                <Center>
+                                  <Skeleton height={50} circle mb="xl" />
+                                </Center>
+                                <Skeleton height={8} radius="xl" />
+                                <Skeleton height={8} mt={6} radius="xl" />
+                                <Skeleton
+                                  height={8}
+                                  mt={6}
+                                  width="70%"
+                                  radius="xl"
+                                />
+                                <Space h="md" />
+                              </Paper>
+                              <Space h="md" />
+                            </>
+                          ))}
                         </>
                       }
                       endMessage={<Space h={100} />}
@@ -206,11 +290,28 @@ export default function Feed() {
                 </>
               ) : (
                 <>
-                  {followingFeed.loading && (
-                    <Group justify="center">
-                      <Loader color="blue" />
-                    </Group>
-                  )}
+                  {followingFeed.loading &&
+                    Array.from({ length: 10 }).map((_, i) => (
+                      <>
+                        <Paper
+                          p="xs"
+                          shadow="xl"
+                          radius="md"
+                          withBorder
+                          key={i}
+                        >
+                          <Space h="md" />
+                          <Center>
+                            <Skeleton height={50} circle mb="xl" />
+                          </Center>
+                          <Skeleton height={8} radius="xl" />
+                          <Skeleton height={8} mt={6} radius="xl" />
+                          <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                          <Space h="md" />
+                        </Paper>
+                        <Space h="md" />
+                      </>
+                    ))}
 
                   {!followingFeed.loading && followingFeed && (
                     <InfiniteScroll
@@ -219,9 +320,32 @@ export default function Feed() {
                       hasMore={followingFeed.hasMore}
                       loader={
                         <>
-                          <Group justify="center">
-                            <Loader color="blue" />
-                          </Group>
+                          {Array.from({ length: 10 }).map((_, i) => (
+                            <>
+                              <Paper
+                                p="xs"
+                                shadow="xl"
+                                radius="md"
+                                withBorder
+                                key={i}
+                              >
+                                <Space h="md" />
+                                <Center>
+                                  <Skeleton height={50} circle mb="xl" />
+                                </Center>
+                                <Skeleton height={8} radius="xl" />
+                                <Skeleton height={8} mt={6} radius="xl" />
+                                <Skeleton
+                                  height={8}
+                                  mt={6}
+                                  width="70%"
+                                  radius="xl"
+                                />
+                                <Space h="md" />
+                              </Paper>
+                              <Space h="md" />
+                            </>
+                          ))}
                         </>
                       }
                       endMessage={<Space h={100} />}
@@ -265,35 +389,170 @@ export default function Feed() {
 
         <Tabs.Panel value="third">
           <Space h="xl" />
+          <Menu shadow="md" width={277}>
+            <Menu.Target>
+              <Button
+                variant="light"
+                radius="xl"
+                size="xs"
+                leftSection={<GiWaveSurfer size="1.2rem" />}
+                rightSection={<RiArrowDropDownFill size="1.4rem" />}
+              >
+                Feed Surf
+              </Button>
+            </Menu.Target>
+
+            <Menu.Dropdown>
+              <Space w="xl" />
+              <Paper p="sm">
+                <TextInput
+                  variant="filled"
+                  size="sm"
+                  radius="xl"
+                  label="Dive into a User's Feed"
+                  placeholder="Search any Lens Handle!"
+                  error={
+                    handle.length > 0 &&
+                    surfProfile?.error &&
+                    "No Profile Found"
+                  }
+                  onChange={(e) => setHandle(e.target.value)}
+                  rightSection={
+                    surfProfile.loading && <Loader color="blue" size="xs" />
+                  }
+                />
+              </Paper>
+            </Menu.Dropdown>
+          </Menu>
+          <Space h="md" />
 
           {/* Hot feed loading */}
-          {hotFeed.loading && (
-            <Group justify="center">
-              <Loader color="blue" />
-            </Group>
-          )}
+          {hotFeed.loading &&
+            Array.from({ length: 10 }).map((_, i) => (
+              <>
+                <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+                  <Space h="md" />
+                  <Center>
+                    <Skeleton height={50} circle mb="xl" />
+                  </Center>
+                  <Skeleton height={8} radius="xl" />
+                  <Skeleton height={8} mt={6} radius="xl" />
+                  <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                  <Space h="md" />
+                </Paper>
+                <Space h="md" />
+              </>
+            ))}
 
-          {/* Hot feed has loaded */}
-          {!hotFeed.loading && hotFeed && (
+          {/* surfFeed loading */}
+          {!surfFeed.error &&
+            surfFeed.loading &&
+            Array.from({ length: 10 }).map((_, i) => (
+              <>
+                <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+                  <Space h="md" />
+                  <Center>
+                    <Skeleton height={50} circle mb="xl" />
+                  </Center>
+                  <Skeleton height={8} radius="xl" />
+                  <Skeleton height={8} mt={6} radius="xl" />
+                  <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                  <Space h="md" />
+                </Paper>
+                <Space h="md" />
+              </>
+            ))}
+
+          {handle.length > 0 &&
+          surfFeed &&
+          !surfFeed.loading &&
+          !surfFeed.error ? (
+            <>
+              <Group justify="right">
+                <ActionIcon
+                  onClick={() => {
+                    setHandle("");
+                  }}
+                  variant="light"
+                  size="sm"
+                  color="red"
+                  radius="lg"
+                >
+                  <MdPlaylistRemove size="1.2rem" />
+                </ActionIcon>
+              </Group>
+              <Space h="xs" />
+              <InfiniteScroll
+                // @ts-ignore
+                dataLength={surfFeed?.data?.length || 0}
+                // @ts-ignore
+                next={() => surfFeed?.data?.next()}
+                // @ts-ignore
+                hasMore={surfFeed?.data?.hasMore}
+                loader={
+                  <>
+                    {Array.from({ length: 10 }).map((_, i) => (
+                      <>
+                        <Paper
+                          p="xs"
+                          shadow="xl"
+                          radius="md"
+                          withBorder
+                          key={i}
+                        >
+                          <Space h="md" />
+                          <Center>
+                            <Skeleton height={50} circle mb="xl" />
+                          </Center>
+                          <Skeleton height={8} radius="xl" />
+                          <Skeleton height={8} mt={6} radius="xl" />
+                          <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                          <Space h="md" />
+                        </Paper>
+                        <Space h="md" />
+                      </>
+                    ))}
+                  </>
+                }
+                endMessage={<Space h={100} />}
+              >
+                {// @ts-ignore post type
+                surfFeed?.data?.map((post: PostType) => (
+                  // @ts-ignore
+                  <Post key={post.id} post={post.root} />
+                ))}
+              </InfiniteScroll>
+            </>
+          ) : (
             <InfiniteScroll
               dataLength={hotFeed?.data?.length || 0}
               next={() => hotFeed?.next()}
               hasMore={hotFeed?.hasMore}
               loader={
                 <>
-                  <Group justify="center">
-                    <Loader color="blue" />
-                  </Group>
+                  {Array.from({ length: 10 }).map((_, i) => (
+                    <>
+                      <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+                        <Space h="md" />
+                        <Center>
+                          <Skeleton height={50} circle mb="xl" />
+                        </Center>
+                        <Skeleton height={8} radius="xl" />
+                        <Skeleton height={8} mt={6} radius="xl" />
+                        <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                        <Space h="md" />
+                      </Paper>
+                      <Space h="md" />
+                    </>
+                  ))}
                 </>
               }
               endMessage={<Space h={100} />}
             >
-              {
-                // @ts-ignore post type
-                hotFeed.data.map((post: PostType) => (
-                  <Post key={post.id} post={post} />
-                ))
-              }
+              {// @ts-ignore post type
+              hotFeed?.data?.map((post: PostType) => (
+                <Post key={post.id} post={post} />
+              ))}
             </InfiniteScroll>
           )}
         </Tabs.Panel>

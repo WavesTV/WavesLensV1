@@ -10,6 +10,7 @@ import {
   Group,
   Tabs,
   rem,
+  ActionIcon,
 } from "@mantine/core";
 import {
   useSession,
@@ -35,14 +36,40 @@ import {
   IconAt,
 } from "@tabler/icons-react";
 import { GiWaveCrest } from "react-icons/gi";
+import { RxReload } from "react-icons/rx";
 
 export default function Notifications() {
   const session = useSession();
   const router = useRouter();
   const allNotifications = useNotifications();
-  console.log(allNotifications.data);
-  const iconStyle = { width: rem(15), height: rem(15) };
+
+  const iconStyle = { width: rem(18), height: rem(18) };
   const [activeTab, setActiveTab] = useState<string | null>("All");
+
+  if (
+    allNotifications.data === undefined &&
+    session?.data?.type === "WITH_PROFILE"
+  ) {
+    return (
+      <>
+        <Center>
+          <ActionIcon
+            variant="light"
+            size="lg"
+            radius="xl"
+            onClick={() => window.location.reload()}
+          >
+            <RxReload size="1.4rem" />
+          </ActionIcon>
+        </Center>
+        <Space h="md" />
+        <Text ta="center" size="md" fw={333} fs="italic">
+          Please Refresh
+        </Text>
+        <Space h="md" />
+      </>
+    );
+  }
 
   return (
     <>
@@ -78,33 +105,23 @@ export default function Notifications() {
                 <Tabs.Tab
                   value="Follows"
                   leftSection={<AiOutlineUsergroupAdd style={iconStyle} />}
-                >
-                  Follows
-                </Tabs.Tab>
+                ></Tabs.Tab>
                 <Tabs.Tab
                   value="Mentions"
                   leftSection={<IconAt style={iconStyle} />}
-                >
-                  Mentions
-                </Tabs.Tab>
+                ></Tabs.Tab>
                 <Tabs.Tab
                   value="Reactions"
                   leftSection={<IconHeart style={iconStyle} />}
-                >
-                  Reactions
-                </Tabs.Tab>
+                ></Tabs.Tab>
                 <Tabs.Tab
                   value="Comments"
                   leftSection={<IconMessageCircle style={iconStyle} />}
-                >
-                  Comments
-                </Tabs.Tab>
+                ></Tabs.Tab>
                 <Tabs.Tab
                   value="Quotes"
                   leftSection={<TfiComments style={iconStyle} />}
-                >
-                  Quotes
-                </Tabs.Tab>
+                ></Tabs.Tab>
               </Tabs.List>
 
               <Space h="md" />
@@ -335,18 +352,16 @@ export default function Notifications() {
                   </Text>
                 </Center>
                 <Space h="md" />
-              
-                  <Button
-                    fullWidth
-                    leftSection={<GiWaveCrest size="1rem" />}
-                    variant="gradient"
-                    gradient={{ from: "cyan", to: "indigo" }}
-                    onClick={() => router.push("/login")}
-                  >
-                    Sign In
-                  </Button>
-                 
-              
+
+                <Button
+                  fullWidth
+                  leftSection={<GiWaveCrest size="1rem" />}
+                  variant="gradient"
+                  gradient={{ from: "cyan", to: "indigo" }}
+                  onClick={() => router.push("/login")}
+                >
+                  Sign In
+                </Button>
               </Paper>
             </Container>
           </>

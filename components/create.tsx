@@ -107,7 +107,7 @@ export function Create() {
           <Group justify="left">
             <Avatar
               // @ts-ignore
-              src={session?.profile?.metadata?.picture}
+              src={session?.profile?.metadata?.picture || "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"}
               size="lg"
               radius="xl"
             />
@@ -134,13 +134,6 @@ export function Create() {
               gradient={{ from: "blue", to: "cyan", deg: 205 }}
               onClick={() => {
                 handleCreatePost(); // Trigger the createpost function
-
-                notifications.show({
-                  title: "Please Wait!",
-                  icon: <BiTimer size="1.1rem" />,
-                  color: "blue",
-                  message: "Allow a few seconds for your post to process.",
-                });
               }}
             >
               Create
