@@ -83,7 +83,7 @@ export function ViewFollowers({
               <UnstyledButton
                 onClick={() => {
                   router.push(`/profile/${user.handle?.localName}`);
-                  closeFollowing();
+                  closeFollowers();
                 }}
                 className={classes.user}
               >
