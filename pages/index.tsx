@@ -1,6 +1,6 @@
 import type { NextPage } from "next";
 import { SessionType, useSession } from "@lens-protocol/react-web";
-import Feed from "./feed";
+import Feed from "@/components/Feeds/Feed";
 import {
   Avatar,
   Paper,

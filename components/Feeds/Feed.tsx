@@ -33,7 +33,7 @@ import {
   Menu,
   TextInput,
 } from "@mantine/core";
-import classes from "../styles/Tabs.module.css";
+import classes from "../../styles/Tabs.module.css";
 import { useRouter } from "next/router";
 import { Player } from "@livepeer/react";
 import { RxReload } from "react-icons/rx";
@@ -42,9 +42,9 @@ import { CiCircleRemove } from "react-icons/ci";
 import { MdPlaylistRemove } from "react-icons/md";
 import { BsFire } from "react-icons/bs";
 import { GiWaveCrest, GiWaveSurfer } from "react-icons/gi";
-import { FollowerFeed } from "../components/Feeds/FollowerFeed";
-import { HighlightFeed } from "../components/Feeds/HighlightFeed";
-import { HotFeed } from "../components/Feeds/HotFeed";
+import { FollowerFeed } from "./FollowerFeed";
+import { HighlightFeed } from "./HighlightFeed";
+import { HotFeed } from "./HotFeed";
 import { BsChatSquareTextFill } from "react-icons/bs";
 import { MdVideoCameraBack } from "react-icons/md";
 import { FaImage } from "react-icons/fa6";
