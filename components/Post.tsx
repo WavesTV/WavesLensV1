@@ -191,7 +191,10 @@ export default function Post({ post }: Props) {
                   size="lg"
                 />
 
-                <Text fw={500}>{postContent.by?.handle?.localName}</Text>
+                <Text fw={500}>
+                  {postContent.by?.metadata?.displayName ||
+                    postContent.by?.handle?.localName}
+                </Text>
               </Group>
             </UnstyledButton>
           </HoverCard.Target>
@@ -333,6 +336,18 @@ export default function Post({ post }: Props) {
               <Player
                 // @ts-ignore
                 src={postContent?.metadata?.asset?.video?.optimized?.uri}
+              />
+            </Center>
+          )
+        }
+
+        {
+          // @ts-ignore
+          postContent?.metadata?.asset?.audio && (
+            <Center>
+              <iframe
+                // @ts-ignore
+                src={"postContent?.metadata?.asset?.audio?.optimized?.uri"}
               />
             </Center>
           )

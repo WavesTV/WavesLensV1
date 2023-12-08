@@ -13,6 +13,9 @@ import {
   Modal,
   ActionIcon,
   Skeleton,
+  Tabs,
+  rem,
+  UnstyledButton,
 } from "@mantine/core";
 import {
   Post as PostType,
@@ -28,11 +31,23 @@ import { useRouter } from "next/router";
 import { IconSettings } from "@tabler/icons-react";
 import { useDisclosure } from "@mantine/hooks";
 import ProfileForm from "@/components/ProfileForm";
+import { BsChatSquareTextFill } from "react-icons/bs";
+import { MdVideoCameraBack } from "react-icons/md";
+import { FaImage } from "react-icons/fa6";
+import { useState } from "react";
+import { ViewFollowing } from "@/components/ViewFollowing";
+import { ViewFollowers } from "@/components/ViewFollowers";
 
 export default function Dashboard() {
   const { data: session } = useSession();
   const [opened, { open, close }] = useDisclosure(false);
   const router = useRouter();
+  const iconStyle = { width: rem(18), height: rem(18) };
+  const [activeTab, setActiveTab] = useState<string | null>("All");
+  const [openedFollowing, { open: openFollowing, close: closeFollowing }] =
+    useDisclosure(false);
+  const [openedFollowers, { open: openFollowers, close: closeFollowers }] =
+    useDisclosure(false);
 
   const profilePosts = usePublications({
     where: {
@@ -57,6 +72,60 @@ export default function Dashboard() {
 
   return (
     <>
+      {session?.authenticated && session.type === "WITH_PROFILE" && (
+        <>
+          <Modal
+            opened={openedFollowing}
+            onClose={closeFollowing}
+            title={
+              <Text fw={555}>
+                {
+                  // @ts-ignore
+                  session.profile?.metadata?.displayName ||
+                    // @ts-ignore
+                    session.profile?.handle?.localName
+                }
+                &apos;s Following
+              </Text>
+            }
+            centered
+          >
+            <ViewFollowing
+              profileId={
+                // @ts-ignore
+                session?.profile?.id
+              }
+              closeFollowing={closeFollowing}
+            />
+          </Modal>
+
+          <Modal
+            opened={openedFollowers}
+            onClose={closeFollowers}
+            title={
+              <Text fw={555}>
+                {
+                  // @ts-ignore
+                  session.profile?.metadata?.displayName ||
+                    // @ts-ignore
+                    session.profile?.handle?.localName
+                }
+                &apos;s Followers
+              </Text>
+            }
+            centered
+          >
+            <ViewFollowers
+              profileId={
+                // @ts-ignore
+                session.profile.id
+              }
+              closeFollowers={closeFollowers}
+            />
+          </Modal>
+        </>
+      )}
+
       <Divider
         my="xs"
         label={
@@ -103,14 +172,17 @@ export default function Dashboard() {
               mt={-30}
             />
 
+            {/* Profile Name */}
+            <Group justify="center" className={styles.profileName}>
+              <Text fw={500}>
+                {session.profile?.metadata?.displayName ||
+                  session.profile?.handle?.localName}
+              </Text>
+            </Group>
+
             {/* Profile Handle */}
             <Group justify="center">
-              {" "}
-              <Text size="md" fw={500}>
-                {session && "profile" in session
-                  ? `@${session.profile?.handle?.localName}`
-                  : "No Profile"}
-              </Text>
+              @{session.profile?.handle?.localName}
             </Group>
 
             <Group justify="right">
@@ -148,69 +220,358 @@ export default function Dashboard() {
             <Space h="xl" />
 
             <Group justify="center">
-              <Text fw={500} size="sm">
-                {session.profile?.stats?.followers} Followers
-              </Text>
+              <UnstyledButton onClick={openFollowers}>
+                <Text fw={500} size="sm">
+                  {session.profile?.stats?.followers} Followers
+                </Text>
+              </UnstyledButton>
               |
-              <Text fw={500} size="sm">
-                {session.profile?.stats?.following} Following
-              </Text>
+              <UnstyledButton onClick={openFollowing}>
+                <Text fw={500} size="sm">
+                  {session.profile?.stats?.following} Following
+                </Text>
+              </UnstyledButton>
             </Group>
 
             <Space h="md" />
           </Card>
 
           <Space h="xl" />
-          {/* Loading */}
-          {profilePosts?.loading &&
-            Array.from({ length: 10 }).map((_, i) => (
-              <>
-                <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
-                  <Space h="md" />
-                  <Center>
-                    <Skeleton height={50} circle mb="xl" />
-                  </Center>
-                  <Skeleton height={8} radius="xl" />
-                  <Skeleton height={8} mt={6} radius="xl" />
-                  <Skeleton height={8} mt={6} width="70%" radius="xl" />
-                  <Space h="md" />
-                </Paper>
-                <Space h="md" />
-              </>
-            ))}
-          {/* Loaded */}
-          {!profilePosts?.loading && profilePosts?.data && (
-            <InfiniteScroll
-              dataLength={profilePosts?.data?.length || 0}
-              next={() => profilePosts?.next()}
-              hasMore={profilePosts?.hasMore}
-              className="mt-4"
-              loader={
+          <Tabs
+            variant="pills"
+            value={activeTab}
+            onChange={setActiveTab}
+            radius="xl"
+            defaultValue="All"
+          >
+            <Tabs.List justify="center">
+              <Tabs.Tab value="All">All</Tabs.Tab>
+              <Tabs.Tab
+                value="Text"
+                leftSection={<BsChatSquareTextFill style={iconStyle} />}
+              />
+              <Tabs.Tab
+                value="Video"
+                leftSection={<MdVideoCameraBack style={iconStyle} />}
+              />
+
+              <Tabs.Tab
+                value="Images"
+                leftSection={<FaImage style={iconStyle} />}
+              />
+            </Tabs.List>
+
+            <Space h="md" />
+
+            {/* Loading */}
+            {profilePosts?.loading &&
+              Array.from({ length: 10 }).map((_, i) => (
                 <>
-                  {Array.from({ length: 10 }).map((_, i) => (
-                    <>
-                      <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
-                        <Space h="md" />
-                        <Center>
-                          <Skeleton height={50} circle mb="xl" />
-                        </Center>
-                        <Skeleton height={8} radius="xl" />
-                        <Skeleton height={8} mt={6} radius="xl" />
-                        <Skeleton height={8} mt={6} width="70%" radius="xl" />
-                        <Space h="md" />
-                      </Paper>
-                      <Space h="md" />
-                    </>
-                  ))}
+                  <Paper p="xs" shadow="xl" radius="md" withBorder key={i}>
+                    <Space h="md" />
+                    <Center>
+                      <Skeleton height={50} circle mb="xl" />
+                    </Center>
+                    <Skeleton height={8} radius="xl" />
+                    <Skeleton height={8} mt={6} radius="xl" />
+                    <Skeleton height={8} mt={6} width="70%" radius="xl" />
+                    <Space h="md" />
+                  </Paper>
+                  <Space h="md" />
                 </>
-              }
-            >
-              {// @ts-ignore post type
-              profilePosts?.data?.map((post: PostType) => (
-                <Post key={post.id} post={post} />
               ))}
-            </InfiniteScroll>
-          )}
+
+            <Tabs.Panel value="All">
+              <Space h="md" />
+
+              {/* Hot feed content */}
+              {!profilePosts?.loading && profilePosts?.data && (
+                <InfiniteScroll
+                  dataLength={profilePosts?.data?.length || 0}
+                  next={() => profilePosts?.next()}
+                  hasMore={profilePosts?.hasMore}
+                  className="mt-4"
+                  loader={
+                    <>
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <>
+                          <Paper
+                            p="xs"
+                            shadow="xl"
+                            radius="md"
+                            withBorder
+                            key={i}
+                          >
+                            <Space h="md" />
+                            <Center>
+                              <Skeleton height={50} circle mb="xl" />
+                            </Center>
+                            <Skeleton height={8} radius="xl" />
+                            <Skeleton height={8} mt={6} radius="xl" />
+                            <Skeleton
+                              height={8}
+                              mt={6}
+                              width="70%"
+                              radius="xl"
+                            />
+                            <Space h="md" />
+                          </Paper>
+                          <Space h="md" />
+                        </>
+                      ))}
+                    </>
+                  }
+                >
+                  {// @ts-ignore post type
+                  profilePosts?.data?.map((post: PostType) => (
+                    <Post key={post.id} post={post} />
+                  ))}
+                </InfiniteScroll>
+              )}
+            </Tabs.Panel>
+
+            <Tabs.Panel value="Text">
+              <Space h="md" />
+
+              {/* Hot feed content */}
+              {!profilePosts.loading && profilePosts && (
+                <InfiniteScroll
+                  dataLength={profilePosts?.data?.length || 0}
+                  next={() => profilePosts?.next()}
+                  hasMore={profilePosts?.hasMore}
+                  loader={
+                    <>
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <>
+                          <Paper
+                            p="xs"
+                            shadow="xl"
+                            radius="md"
+                            withBorder
+                            key={i}
+                          >
+                            <Space h="md" />
+                            <Center>
+                              <Skeleton height={50} circle mb="xl" />
+                            </Center>
+                            <Skeleton height={8} radius="xl" />
+                            <Skeleton height={8} mt={6} radius="xl" />
+                            <Skeleton
+                              height={8}
+                              mt={6}
+                              width="70%"
+                              radius="xl"
+                            />
+                            <Space h="md" />
+                          </Paper>
+                          <Space h="md" />
+                        </>
+                      ))}
+                    </>
+                  }
+                  endMessage={<Space h={100} />}
+                >
+                  {// @ts-ignore post type
+                  profilePosts?.data
+                    ?.filter((post) => {
+                      // Check if the post is a Mirror, and if so, access metadata accordingly
+                      if (post.__typename === "Mirror" && post.mirrorOn) {
+                        return (
+                          post.mirrorOn.metadata?.__typename ===
+                          "TextOnlyMetadataV3"
+                        );
+                      } else {
+                        return (
+                          // @ts-ignore
+                          post.metadata?.__typename === "TextOnlyMetadataV3"
+                        );
+                      }
+                    })
+                    .map((post) => <Post key={post.id} post={post} />)}
+                </InfiniteScroll>
+              )}
+            </Tabs.Panel>
+
+            <Tabs.Panel value="Video">
+              <Space h="md" />
+
+              {/* Hot feed content */}
+              {!profilePosts.loading && profilePosts && (
+                <InfiniteScroll
+                  dataLength={profilePosts?.data?.length || 0}
+                  next={() => profilePosts?.next()}
+                  hasMore={profilePosts?.hasMore}
+                  loader={
+                    <>
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <>
+                          <Paper
+                            p="xs"
+                            shadow="xl"
+                            radius="md"
+                            withBorder
+                            key={i}
+                          >
+                            <Space h="md" />
+                            <Center>
+                              <Skeleton height={50} circle mb="xl" />
+                            </Center>
+                            <Skeleton height={8} radius="xl" />
+                            <Skeleton height={8} mt={6} radius="xl" />
+                            <Skeleton
+                              height={8}
+                              mt={6}
+                              width="70%"
+                              radius="xl"
+                            />
+                            <Space h="md" />
+                          </Paper>
+                          <Space h="md" />
+                        </>
+                      ))}
+                    </>
+                  }
+                  endMessage={<Space h={100} />}
+                >
+                  {// @ts-ignore post type
+                  profilePosts?.data
+                    ?.filter((post) => {
+                      // Check if the post is a Mirror, and if so, access metadata accordingly
+                      if (post.__typename === "Mirror" && post.mirrorOn) {
+                        return (
+                          post.mirrorOn.metadata?.__typename ===
+                          "VideoMetadataV3"
+                        );
+                      } else {
+                        // @ts-ignore
+                        return post.metadata?.__typename === "VideoMetadataV3";
+                      }
+                    })
+                    .map((post) => <Post key={post.id} post={post} />)}
+                </InfiniteScroll>
+              )}
+            </Tabs.Panel>
+
+            <Tabs.Panel value="Audio">
+              <Space h="md" />
+
+              {/* Hot feed content */}
+              {!profilePosts.loading && profilePosts && (
+                <InfiniteScroll
+                  dataLength={profilePosts?.data?.length || 0}
+                  next={() => profilePosts?.next()}
+                  hasMore={profilePosts?.hasMore}
+                  loader={
+                    <>
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <>
+                          <Paper
+                            p="xs"
+                            shadow="xl"
+                            radius="md"
+                            withBorder
+                            key={i}
+                          >
+                            <Space h="md" />
+                            <Center>
+                              <Skeleton height={50} circle mb="xl" />
+                            </Center>
+                            <Skeleton height={8} radius="xl" />
+                            <Skeleton height={8} mt={6} radius="xl" />
+                            <Skeleton
+                              height={8}
+                              mt={6}
+                              width="70%"
+                              radius="xl"
+                            />
+                            <Space h="md" />
+                          </Paper>
+                          <Space h="md" />
+                        </>
+                      ))}
+                    </>
+                  }
+                  endMessage={<Space h={100} />}
+                >
+                  {// @ts-ignore post type
+                  profilePosts?.data
+                    ?.filter((post) => {
+                      // Check if the post is a Mirror, and if so, access metadata accordingly
+                      if (post.__typename === "Mirror" && post.mirrorOn) {
+                        return (
+                          post.mirrorOn.metadata?.__typename ===
+                          "AudioMetadataV3"
+                        );
+                      } else {
+                        // @ts-ignore
+                        return post.metadata?.__typename === "AudioMetadataV3";
+                      }
+                    })
+                    .map((post) => <Post key={post.id} post={post} />)}
+                </InfiniteScroll>
+              )}
+            </Tabs.Panel>
+
+            <Tabs.Panel value="Images">
+              <Space h="md" />
+
+              {/* Hot feed content */}
+              {!profilePosts.loading && profilePosts && (
+                <InfiniteScroll
+                  dataLength={profilePosts?.data?.length || 0}
+                  next={() => profilePosts?.next()}
+                  hasMore={profilePosts?.hasMore}
+                  loader={
+                    <>
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <>
+                          <Paper
+                            p="xs"
+                            shadow="xl"
+                            radius="md"
+                            withBorder
+                            key={i}
+                          >
+                            <Space h="md" />
+                            <Center>
+                              <Skeleton height={50} circle mb="xl" />
+                            </Center>
+                            <Skeleton height={8} radius="xl" />
+                            <Skeleton height={8} mt={6} radius="xl" />
+                            <Skeleton
+                              height={8}
+                              mt={6}
+                              width="70%"
+                              radius="xl"
+                            />
+                            <Space h="md" />
+                          </Paper>
+                          <Space h="md" />
+                        </>
+                      ))}
+                    </>
+                  }
+                  endMessage={<Space h={100} />}
+                >
+                  {// @ts-ignore post type
+                  profilePosts?.data
+                    ?.filter((post) => {
+                      // Check if the post is a Mirror, and if so, access metadata accordingly
+                      if (post.__typename === "Mirror" && post.mirrorOn) {
+                        return (
+                          post.mirrorOn.metadata?.__typename ===
+                          "ImageMetadataV3"
+                        );
+                      } else {
+                        // @ts-ignore
+                        return post.metadata?.__typename === "ImageMetadataV3";
+                      }
+                    })
+                    .map((post) => <Post key={post.id} post={post} />)}
+                </InfiniteScroll>
+              )}
+            </Tabs.Panel>
+          </Tabs>
         </>
       ) : (
         <Card shadow="sm" padding="lg" radius="md" withBorder>

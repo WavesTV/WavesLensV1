@@ -58,8 +58,8 @@ export function MantineHeader() {
     <>
       {/* Modal content */}
       <Modal
-        title="Search"
-        size="sm"
+        size="auto"
+        withCloseButton={false}
         opened={openedSearch}
         onClose={closeSearch}
       >

@@ -32,16 +32,7 @@ export default function Wallet() {
 
       <Space h="lg" />
       {address ? (
-        <>
-          <Group justify="center">
-            <ConnectWallet
-              theme="dark"
-              auth={{
-                loginOptional: true,
-              }}
-            />
-          </Group>
-        </>
+        <></>
       ) : (
         <>
           <Container size="30rem" px={0}>
