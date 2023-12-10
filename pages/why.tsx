@@ -90,13 +90,13 @@ export default function Why() {
                     <Space h="xs" />
                     <Fade>
                       <List.Item>
-                        View Following with Highlight Filter + Explore Feeds
+                        Following + Hot + Waves + Profile Feeds (Image, Video, Text Filters)
                       </List.Item>
                     </Fade>
                     <Space h="xs" />
                     <Fade>
                       <List.Item>
-                        Livestream via OBS/Streamlabs + Post Livestreams
+                        Livestream via OBS/Streamlabs
                       </List.Item>
                     </Fade>
                     <Space h="xs" />
@@ -119,8 +119,7 @@ export default function Why() {
                     <Space h="xs" />
                     <Fade>
                       <List.Item>
-                        Edit Profile (Display Name, Bio, Profile + Cover
-                        Picture)
+                        Feed Surf Feature (View Other Lens Creator&apos;s Feeds)
                       </List.Item>
                     </Fade>
                     <Space h="xs" />
@@ -129,39 +128,16 @@ export default function Why() {
                     </Fade>
                     <Space h="xs" />
                     <Fade>
+                      <List.Item>Like Posts</List.Item>
+                    </Fade>
+                    
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Powered By Lens Banner + Promoted Artists</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
                       <List.Item>Much UI Buffs</List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
-                      <List.Item>Powered By Lens Banner</List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
-                      <List.Item
-                        icon={
-                          <ThemeIcon color="blue" size={24} radius="xl">
-                            <IconCircleDashed
-                              style={{ width: rem(16), height: rem(16) }}
-                            />
-                          </ThemeIcon>
-                        }
-                      >
-                        Post Actions - Like, Comment, Mirror, Collect
-                      </List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
-                      <List.Item
-                        icon={
-                          <ThemeIcon color="blue" size={24} radius="xl">
-                            <IconCircleDashed
-                              style={{ width: rem(16), height: rem(16) }}
-                            />
-                          </ThemeIcon>
-                        }
-                      >
-                        Dashboard with Profile Feed + Filters
-                      </List.Item>
                     </Fade>
                     <Space h="xs" />
                     <Fade>
@@ -191,7 +167,6 @@ export default function Why() {
                     Monetization + Channel Chats + Enhancements
                   </Text>
                   <Space h="md" />
-
                   <List
                     spacing="xs"
                     size="sm"
@@ -233,15 +208,11 @@ export default function Why() {
                     </Fade>
                     <Space h="xs" />
                     <Fade>
-                      <List.Item>Paid Follows</List.Item>
+                      <List.Item>Post, Comment, Mirrors</List.Item>
                     </Fade>
                     <Space h="xs" />
                     <Fade>
                       <List.Item>Follow/Unfollow Users</List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
-                      <List.Item>Waves Feed</List.Item>
                     </Fade>
                     <Space h="xs" />
                     <Fade>
