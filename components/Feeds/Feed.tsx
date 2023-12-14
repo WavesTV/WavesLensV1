@@ -121,7 +121,7 @@ export default function Feed() {
               </UnstyledButton>
             </Center>
             <Space h="md" />
-            <Player playbackId="d986yofqyztqce4h" title="type shi" />
+            <Player playbackId="254ernorohx1u6xz" title="type shi" />
             <Space h="sm" />
           </Paper>
           <Space h="xl" />
