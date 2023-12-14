@@ -174,7 +174,7 @@ const ProfilePage = () => {
 
           {"wavestv" === profile?.data?.handle?.localName && (
             <Paper>
-              <Player playbackId="254ernorohx1u6xz" title="pp poopoo" />
+              <Player playbackId="ca57j651up688am0" title="pp poopoo" />
             </Paper>
           )}
           <Space h="xl" />
