@@ -26,7 +26,7 @@ import SignInWithLensButton from "@/components/SignInWithLensButton";
 
 const livepeerClient = createReactClient({
   provider: studioProvider({
-    apiKey: "551100ef-305f-46d7-a177-dd3ae12dfe79",
+    apiKey: "f94aaff3-4e57-48c1-8c19-32a9e0a4c35c",
   }),
 });
 
