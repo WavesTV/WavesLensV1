@@ -77,7 +77,7 @@ export function NewCommentNotification({
                 size={46}
                 radius="md"
                 // @ts-ignore
-                src={notification.comment.by.metadata?.picture?.optimized?.uri}
+                src={notification.comment.by.metadata?.picture?.optimized?.uri || "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"}
               />
               <div style={{ flex: 1 }}>
                 <Text size="sm" fw={500}>
@@ -153,7 +153,7 @@ function NewReactionNotification({
                         size={46}
                         radius="md"
                         // @ts-ignore
-                        src={reaction.profile.metadata?.picture?.optimized?.uri}
+                        src={reaction.profile.metadata?.picture?.optimized?.uri || "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"}
                       />
 
                       <div style={{ flex: 1 }}>
@@ -226,7 +226,7 @@ function NewFollowNotification({
                     size={46}
                     radius="md"
                     // @ts-ignore
-                    src={profile.metadata?.picture?.optimized?.uri}
+                    src={profile.metadata?.picture?.optimized?.uri || "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"}
                   />
                   <div style={{ flex: 1 }}>
                     <Text size="sm" fw={500}>
