@@ -123,7 +123,7 @@ export function Spotlight() {
         <ActionIcon
           variant="gradient"
           gradient={{ from: "blue", to: "cyan", deg: 90 }}
-          size="lg"
+          size="xl"
           radius="xl"
           hiddenFrom="sm"
           onClick={open}
