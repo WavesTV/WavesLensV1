@@ -93,7 +93,7 @@ export default function Feed() {
               </UnstyledButton>
             </Center>
             <Space h="md" />
-            <Player playbackId="d986yofqyztqce4h" title="type shi" />
+            <Player playbackId="ca57j651up688am0" title="type shi" />
             <Space h="sm" />
           </Paper>
           <Space h="xl" />
