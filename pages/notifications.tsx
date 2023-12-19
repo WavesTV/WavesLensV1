@@ -42,7 +42,7 @@ export default function Notifications() {
   const session = useSession();
   const router = useRouter();
   const allNotifications = useNotifications();
-
+  console.log(allNotifications)
   const iconStyle = { width: rem(18), height: rem(18) };
   const [activeTab, setActiveTab] = useState<string | null>("All");
 

@@ -15,7 +15,9 @@ import {
   Menu,
   Avatar,
   Modal,
-  Popover,
+  Switch,
+  useMantineTheme,
+  
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -33,11 +35,15 @@ import { ColorSchemeToggle } from "../../ColorSchemeToggle";
 import { SessionType, useSession, useLogout } from "@lens-protocol/react-web";
 import { useDisconnect } from "@thirdweb-dev/react";
 import { BiSearchAlt } from "react-icons/bi";
-import { Search } from "@/components/Search";
+import { SearchUsers } from "@/components/SearchUsers";
+import { SearchPosts } from "@/components/SearchPosts";
 import { Create } from "@/components/create";
 import { BsPlusCircleDotted } from "react-icons/bs";
 import Notifications from "../../../pages/notifications";
 import { useRouter } from "next/router";
+import { useState } from "react";
+import { TbUserFilled } from "react-icons/tb";
+import { FaCommentDots } from "react-icons/fa6";
 
 export function MantineHeader() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
@@ -53,17 +59,64 @@ export function MantineHeader() {
   const router = useRouter();
   const { execute, loading: isPending } = useLogout();
   const disconnect = useDisconnect();
+ const [searchType, setSearchType] = useState("Users"); // Default is "Users"
+ const theme = useMantineTheme();
+  const handleToggle = () => {
+    setSearchType(prevType => prevType === "Users" ? "Posts" : "Users");
+  };
 
   return (
     <>
       {/* Modal content */}
       <Modal
-        size="auto"
+        yOffset={222}
+        size="md"
+        
         withCloseButton={false}
         opened={openedSearch}
-        onClose={closeSearch}
+        onClose={() => {
+          closeSearch();
+          setSearchType("Users");
+      }}
       >
-        <Search />
+        <Space h="md" />
+          <Group justify="center">
+     <Tooltip label={searchType === "Users" ? (
+         <>
+         Search Users
+        </>
+      ) : (
+        <>
+        Search Posts
+        </>
+      )} refProp="rootRef">
+        <Switch
+          checked={searchType === "Posts"}
+          onChange={() => {handleToggle();}}
+          size="xl"
+          onLabel={<FaCommentDots size="1.3rem" style={{ width: rem(16), height: rem(16) }}
+     />} 
+          offLabel={<TbUserFilled color={theme.colors.blue[6]} size="1.3rem" style={{ width: rem(16), height: rem(16) }}
+      />}
+        />
+        </Tooltip>
+      </Group>
+      <Space h="md" />
+
+      {searchType === "Users" && (
+        
+         <>
+         {/* @ts-ignore */}
+        <SearchUsers closeSearch={closeSearch} />
+      </>
+      )}
+      {searchType === "Posts" && (
+        <>
+         {/* @ts-ignore */}
+        <SearchPosts closeSearch={closeSearch} />
+        </>
+      )}
+       
       </Modal>
 
       <Modal size="xl" opened={openedCreate} onClose={closeCreate}>
@@ -154,6 +207,8 @@ export function MantineHeader() {
               >
                 <Menu.Target>
                   <ActionIcon
+                  component={Link}
+                  href="/notifications"
                     variant="gradient"
                     size="xl"
                     aria-label="Gradient action icon"
@@ -170,17 +225,6 @@ export function MantineHeader() {
                     overflowY: "auto",
                   }}
                 >
-                  <Group justify="right">
-                    <UnstyledButton
-                      onClick={() => {
-                        closeNotifs();
-                        router.push("/notifications");
-                      }}
-                    >
-                      <Text size="xs">View More</Text>
-                    </UnstyledButton>
-                  </Group>
-
                   <Notifications />
                 </Menu.Dropdown>
               </Menu>
@@ -197,7 +241,7 @@ export function MantineHeader() {
                   <PiSealQuestion size="1.7rem" />
                 </ActionIcon>
               </Tooltip>
-              <Tooltip label="Search Lens Profile">
+              <Tooltip label="Search Lens Profile and Posts">
                 <ActionIcon
                   onClick={openSearch}
                   variant="light"
@@ -292,9 +336,12 @@ export function MantineHeader() {
           zIndex={1000000}
         >
           <ScrollArea h={`calc(100vh - ${rem(60)})`} mx="-md">
-            <Search />
+            
             <Group p="md">
+               
               <ColorSchemeToggle />
+
+              
             </Group>
 
             <Link href="/" className={classes.link} onClick={closeDrawer}>
@@ -370,7 +417,24 @@ export function MantineHeader() {
               Why Waves
             </Link>
             <Space h="md" />
-
+            <Group className={classes.link}>
+          <ActionIcon
+          onClick={() =>{
+                    openSearch();
+                    closeDrawer();
+                }}
+                
+                variant="gradient"
+                size="xl"
+                aria-label="Gradient action icon"
+                gradient={{ from: "blue", to: "cyan", deg: 270 }}
+              >
+                <BiSearchAlt size="1.7rem" />
+              </ActionIcon>
+              
+              Search
+              </Group>
+              <Space h="md" />
             <Group align="center" grow pb="xl" px="md">
               {session?.authenticated ? (
                 <Menu shadow="md" width={200} zIndex={1000000}>

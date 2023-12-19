@@ -12,7 +12,10 @@ export function MantineAside() {
   return (
     <>
       <Space h={40} />
-      <Text fw={700} ta="center" fs="italic">
+     <Space h="md" />
+
+   
+       <Text fw={700} ta="center" fs="italic">
         Powered By
       </Text>
       <Space h="sm" />
@@ -78,25 +81,40 @@ export function MantineAside() {
           </div>
         </Group>
       </UnstyledButton>
-
-      <Space h="md" />
+         <Space h="md" />
       <Text fw={700} ta="center" fs="italic">
-        Promoted Artist
+        Promoted Artists
       </Text>
       <Space h="md" />
-      <Group ml={5} mr={5}>
-        <iframe
+      <Group ml={11} mr={11}>
+       <iframe
           style={{
             borderRadius: "14px",
           }}
-          src="https://open.spotify.com/embed/album/4m1SepLgm4jLLnNIKK8D5v?utm_source=generator&theme=0"
+          src="https://open.spotify.com/embed/album/74vEZzMxVkd08QOx4lbeRF?utm_source=generator"
           width="100%"
           height="152"
           frameBorder="0"
           allowfullscreen=""
-          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         />
       </Group>
+      <Space h="md" />
+      <Group ml={11} mr={11}>
+        
+         <iframe
+          style={{
+            borderRadius: "14px",
+          }}
+          src="https://open.spotify.com/embed/album/4m1SepLgm4jLLnNIKK8D5v?utm_source=generator"
+          width="100%"
+          height="152"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        />
+      </Group>
+
     </>
   );
 }

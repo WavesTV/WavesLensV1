@@ -10,7 +10,11 @@ export default function formatDate(inputDate: string): string {
     const millisecondsPerDay = 24 * millisecondsPerHour;
     const millisecondsPerWeek = 7 * millisecondsPerDay;
 
-    if (timeDifference < millisecondsPerHour) {
+    if (timeDifference < millisecondsPerMinute) {
+      // Less than a minute
+      const seconds = Math.floor(timeDifference / millisecondsPerSecond);
+      return `${seconds} seconds`;
+    } else if (timeDifference < millisecondsPerHour) {
       // Less than an hour
       return `${Math.floor(timeDifference / millisecondsPerMinute)}m`;
     } else if (timeDifference < millisecondsPerDay) {

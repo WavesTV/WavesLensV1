@@ -16,8 +16,8 @@ import {
 import classes from "../styles/RecommendedWaves.module.css";
 
 interface ViewFollowingProps {
-  profileId: any; // assuming profileId is a string
-  closeFollowing: () => void; // assuming closeFollowing is a function that takes no arguments and returns void
+  profileId: any; 
+  closeFollowing: () => void; 
 }
 
 export function ViewFollowing({

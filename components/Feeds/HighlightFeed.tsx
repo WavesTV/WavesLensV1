@@ -67,7 +67,7 @@ export function HighlightFeed() {
 
         {/* Following Feed content not loading */}
         {highlightsFeed.data === undefined &&
-          session?.type === "WITH_PROFILE" && (
+          !highlightsFeed.loading && (
             <>
               <Center>
                 <ActionIcon

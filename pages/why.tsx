@@ -15,6 +15,7 @@ import { IconCircleCheck, IconCircleDashed } from "@tabler/icons-react";
 import classes from "../styles/MilestoneStepper.module.css";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
 import { TbProgressBolt } from "react-icons/tb";
+import { IoCheckmarkOutline } from "react-icons/io5";
 
 export default function Why() {
   return (
@@ -62,8 +63,7 @@ export default function Why() {
           />
           <Stepper.Step
             label="Milestone 2"
-            loading
-            icon={<TbProgressBolt size="1.7rem" />}
+            
             description={
               <>
                 <Paper shadow="sm" radius="md" withBorder p="xl">
@@ -78,7 +78,7 @@ export default function Why() {
                     center
                     icon={
                       <ThemeIcon color="teal" size={24} radius="xl">
-                        <IconCircleCheck
+                        <IoCheckmarkOutline
                           style={{ width: rem(16), height: rem(16) }}
                         />
                       </ThemeIcon>
@@ -142,13 +142,6 @@ export default function Why() {
                     <Space h="xs" />
                     <Fade>
                       <List.Item
-                        icon={
-                          <ThemeIcon color="blue" size={24} radius="xl">
-                            <IconCircleDashed
-                              style={{ width: rem(16), height: rem(16) }}
-                            />
-                          </ThemeIcon>
-                        }
                       >
                         Live Demo
                       </List.Item>
@@ -159,6 +152,8 @@ export default function Why() {
             }
           />
           <Stepper.Step
+          loading
+            icon={<TbProgressBolt size="1.7rem" />}
             label="Milestone 3"
             description={
               <>
@@ -179,6 +174,90 @@ export default function Why() {
                       </ThemeIcon>
                     }
                   >
+                    <Fade>
+                      <List.Item
+                       icon={
+                           <ThemeIcon color="teal" size={24} radius="xl">
+                        <IoCheckmarkOutline
+                          style={{ width: rem(16), height: rem(16) }}
+                        />
+                      </ThemeIcon>
+                        }
+                      >
+                        New Feed - For better discoverability for new posts/users
+                      </List.Item>
+                    </Fade>
+                       <Space h="xs" />
+                       <Fade>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Enhanced Feed Surf UI
+                      </List.Item>
+                    </Fade>
+                      <Space h="xs" />
+                       <Fade>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Enhanced Search - Search Publications + UI
+                      </List.Item>
+                    </Fade>
+                       <Space h="xs" />
+                        <Fade>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        In-Browser Stream - Easier for non-gamer streamers + Mobile Friendly (Kind of)
+                      </List.Item>
+                    </Fade>
+<Space h="xs" />
+                       <Fade>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Enhanced Recommended Waves
+                      </List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                       <Fade>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        New Promoted Artists (BagBoyBando & Cbo)
+                      </List.Item>
+                    </Fade>
+                       <Space h="xs" />
                     <Fade>
                       <List.Item>Subscriptions + Rewards</List.Item>
                     </Fade>
@@ -204,10 +283,6 @@ export default function Why() {
                     </Fade>
                     <Space h="xs" />
                     <Fade>
-                      <List.Item>Desktop (Mobile Friendly) Streams</List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
                       <List.Item>Post, Comment, Mirrors</List.Item>
                     </Fade>
                     <Space h="xs" />
@@ -215,13 +290,6 @@ export default function Why() {
                       <List.Item>Follow/Unfollow Users</List.Item>
                     </Fade>
                     <Space h="xs" />
-                    <Fade>
-                      <List.Item>More UI Buffs</List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
-                      <List.Item>And More</List.Item>
-                    </Fade>
                   </List>
                 </Paper>
               </>

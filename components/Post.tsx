@@ -142,7 +142,7 @@ export default function Post({ post }: Props) {
                 variant="transparent"
                 leftSection={<GiMirrorMirror size={13} />}
                 component={Link}
-                href={`/profile/${postToUse.by?.handle?.localName}`}
+                href={`/wave/${postToUse.by?.handle?.localName}`}
               >
                 <Text c="dimmed" size="xs">
                   {postToUse.by.handle?.localName} mirrored
@@ -155,7 +155,7 @@ export default function Post({ post }: Props) {
                 variant="transparent"
                 leftSection={<IconMessageCircle size={13} />}
                 component={Link}
-                href={`/profile/${postToUse.by?.handle?.localName}`}
+                href={`/post/${postToUse.commentOn?.id}`}
               >
                 <Text c="dimmed" size="xs">
                   {postToUse.by.handle?.localName} Commented
@@ -173,36 +173,40 @@ export default function Post({ post }: Props) {
           openDelay={200}
           closeDelay={400}
         >
-          <HoverCard.Target>
-            <UnstyledButton
-              component={Link}
-              href={`/profile/${postContent.by?.handle?.localName}`}
-            >
-              <Group justify="center">
-                <Avatar
-                  // @ts-ignore
-                  src={
-                    postContent?.by?.metadata?.picture &&
-                    "optimized" in postContent?.by?.metadata?.picture
-                      ? postContent.by.metadata.picture.optimized?.uri
-                      : "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
-                  }
-                  alt={`${postContent.by?.handle?.localName}'s profile picture`}
-                  size="lg"
-                />
+          
+    
+      {/* HoverCard should only trigger when hovering over the Avatar and Text */}
+      <Group justify="center" style={{ display: 'flex', alignItems: 'center' }}>
+        <HoverCard.Target>
+  <UnstyledButton
+    component={Link}
+    href={`/wave/${postContent.by?.handle?.localName}`}
+     style={{ display: 'flex', alignItems: 'center' }}
+  >
+        <Avatar
+          // @ts-ignore
+          src={
+            postContent?.by?.metadata?.picture &&
+            "optimized" in postContent?.by?.metadata?.picture
+              ? postContent.by.metadata.picture.optimized?.uri
+              : "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+          }
+          alt={`${postContent.by?.handle?.localName}'s profile picture`}
+          size="lg"
+        />
+        <Space w="xs"/>
+        <Text fw={500}>
+          {postContent.by?.metadata?.displayName ||
+            postContent.by?.handle?.localName}
+        </Text>
+         </UnstyledButton>
+</HoverCard.Target>
+      </Group>
+    
+ 
 
-                <Text fw={500}>
-                  {postContent.by?.metadata?.displayName ||
-                    postContent.by?.handle?.localName}
-                </Text>
-              </Group>
-            </UnstyledButton>
-          </HoverCard.Target>
 
-          <UnstyledButton
-            component={Link}
-            href={`/profile/${postContent.by?.handle?.localName}`}
-          >
+         
             <HoverCard.Dropdown>
               <Group>
                 <Avatar
@@ -254,7 +258,7 @@ export default function Post({ post }: Props) {
                 </Text>
               </Group>
             </HoverCard.Dropdown>
-          </UnstyledButton>
+          
         </HoverCard>
 
         <Space h="xl" />
@@ -279,21 +283,15 @@ export default function Post({ post }: Props) {
               </>
             }
           >
-            <Box
-              style={{
-                maxWidth: "100%", // Adjust this value to control the maximum width
-                margin: "0 auto", // Center the content horizontally if needed
-              }}
-            >
               {/* Post content */}
               <Text
                 size="md"
                 style={{
                   maxWidth: "100%",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
                   textAlign: "center",
+                  wordWrap: "break-word",
                 }}
+                
                 dangerouslySetInnerHTML={{
                   __html:
                     // @ts-ignore
@@ -305,7 +303,6 @@ export default function Post({ post }: Props) {
                       : "",
                 }}
               />
-            </Box>
           </Spoiler>
         </Center>
         <Space h="md" />
@@ -318,10 +315,11 @@ export default function Post({ post }: Props) {
                 // @ts-ignore
                 src={postContent?.metadata?.asset?.image?.optimized?.uri}
                 radius="xs"
+                
                 style={{
                   width: "100%", // Width is 100% of the container
-                  height: "auto", // Height is auto to maintain aspect ratio
                   maxWidth: "100%", // Ensures the image doesn't scale beyond its original size
+                  maxHeight: "1000px",
                 }}
                 alt={`${postToUse.by?.handle?.localName}'s Post Image`}
               />
@@ -380,7 +378,7 @@ export default function Post({ post }: Props) {
             <UnstyledButton
               component={Link}
               // @ts-ignore
-              href={`/profile/${postToUse.quoteOn.by?.handle?.localName}`}
+              href={`/wave/${postToUse.quoteOn.by?.handle?.localName}`}
             >
               <Group justify="center">
                 <Avatar

@@ -63,7 +63,7 @@ const ProfilePage = () => {
   });
 
   const profileId = profile?.data?.id;
-
+  console.log(profileId)
   const profilePosts = usePublications({
     where: {
       from: profileId ? [profileId] : undefined,
@@ -132,7 +132,7 @@ const ProfilePage = () => {
         <ViewFollowers profileId={profileId} closeFollowers={closeFollowers} />
       </Modal>
 
-      <Container>
+     
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
             {/* @ts-ignore */}
@@ -145,6 +145,10 @@ const ProfilePage = () => {
               fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
             />
           </Card.Section>
+
+        <Group justify="space-between">
+          <>
+          </>
 
           <Avatar
             alt={`${profile?.data?.handle?.localName}'s profile picture`}
@@ -162,6 +166,9 @@ const ProfilePage = () => {
             mt={-30}
           />
 
+          
+          </Group>
+
           {/* Profile Name */}
           <Group justify="center" className={styles.profileName}>
             <Text fw={500}>{profile?.data?.metadata?.displayName}</Text>
@@ -177,42 +184,49 @@ const ProfilePage = () => {
               <Player playbackId="d986yofqyztqce4h" title="pp poopoo" />
             </Paper>
           )}
-          <Space h="xl" />
-          <Paper shadow="sm" p="lg" radius="md" withBorder>
-            <Group justify="right">
+          <Space h="xs" />
+<Group justify="right">
               <CopyButton
                 value={`https://waves-lensv1.vercel.app/profile/${profile?.data?.handle?.localName}`}
                 timeout={2000}
               >
                 {({ copied, copy }) => (
+                  <Tooltip label={copied ? (`${
+                            profile?.data?.metadata?.displayName ||
+                            profile?.data?.handle?.localName
+                          }'s Wave Copied`):(`Share ${
+                            profile?.data?.metadata?.displayName ||
+                            profile?.data?.handle?.localName
+                          }'s Wave`)}>
                   <Button
-                    size="xs"
+                    radius="sm"
+                size="compact-md"
                     color={copied ? "teal" : "blue"}
                     onClick={copy}
                   >
                     {copied ? (
                       <>
-                        <Tooltip label="Copied Wave">
+                       
                           <IconCheck size={16} />
-                        </Tooltip>
+                      
                       </>
                     ) : (
                       <>
-                        <Tooltip
-                          label={`Share ${
-                            profile?.data?.metadata?.displayName ||
-                            profile?.data?.handle?.localName
-                          }'s Wave`}
-                        >
+                        
                           <IconScreenShare size={16} />
-                        </Tooltip>
+                      
                       </>
                     )}
                   </Button>
+                    </Tooltip>
                 )}
               </CopyButton>
             </Group>
-            <Space h="md" />
+        
+            <Space h="xs" />
+            {profile?.data?.metadata?.bio && (
+              <>
+          <Paper shadow="sm" p="lg" radius="md" withBorder>
             <Text
               fz="sm"
               style={{
@@ -234,8 +248,12 @@ const ProfilePage = () => {
               }}
             />
           </Paper>
-          <Space h="xl" />
 
+          <Space h="xl" />
+          </>
+)}
+
+  
           <Group justify="center">
             <UnstyledButton onClick={openFollowers}>
               <Text fw={500} fz="sm">
@@ -272,9 +290,9 @@ const ProfilePage = () => {
             </Button>
           )}
         </Card>
-      </Container>
+     
       <Space h="xl" />
-
+<Container>
       <Tabs
         variant="pills"
         value={activeTab}
@@ -300,7 +318,7 @@ const ProfilePage = () => {
         </Tabs.List>
 
         <Space h="md" />
-
+              
         {/* Loading */}
         {profilePosts?.loading &&
           Array.from({ length: 10 }).map((_, i) => (
@@ -550,6 +568,7 @@ const ProfilePage = () => {
           )}
         </Tabs.Panel>
       </Tabs>
+      </Container>
     </>
   );
 };

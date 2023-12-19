@@ -3,20 +3,23 @@ import { MantineNavBar } from "@/components/MantineAppShell/MantineNavBar";
 import { MantineAside } from "@/components/MantineAppShell/MantineAside";
 import { MantineFooter } from "@/components/MantineAppShell/MantineFooter";
 import { Spotlight } from "@/components/Spotlight";
-import { useDisclosure } from "@mantine/hooks";
-import { ActionIcon, AppShell, Space, Tooltip } from "@mantine/core";
+import { useDisclosure, useWindowScroll } from "@mantine/hooks";
+import { ActionIcon, AppShell, Space, Tooltip, Button } from "@mantine/core";
 import { RiArrowRightDoubleLine, RiArrowLeftDoubleLine } from "react-icons/ri";
 import classes from "../../styles/RecommendedWaves.module.css";
+import { BiSolidUpArrow } from "react-icons/bi";
+
 
 export function MantineAppShell({ children }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
-
+  const [scroll, scrollTo] = useWindowScroll();
   return (
     <>
       <AppShell
         padding="md"
         header={{ height: 60 }}
+        
         navbar={{
           width: 300,
           breakpoint: "md",
@@ -73,7 +76,21 @@ export function MantineAppShell({ children }) {
           <Space h="md" />
           <Spotlight />
           <Space h="sm" />
-          {children}
+          
+           <div style={{ position: "relative" }}>
+    {children}
+    <ActionIcon variant="light" size="lg" radius="xl" 
+      onClick={() => scrollTo({ y: 0 })}
+      style={{
+        position: "fixed",
+        bottom: "80px",
+        right: "20px", 
+        zIndex: 9999,
+      }}
+    >
+      <BiSolidUpArrow />
+    </ActionIcon>
+  </div>
         </AppShell.Main>
       </AppShell>
     </>

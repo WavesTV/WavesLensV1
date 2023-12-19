@@ -19,15 +19,29 @@ export function Spotlight() {
     <>
       <Modal opened={opened} onClose={close} centered>
         <Text fw={700} ta="center" fs="italic">
-          Promoted Artist
+          Promoted Artists
         </Text>
         <Space h="md" />
+        <Center>
+         <iframe
+          style={{
+            borderRadius: "14px",
+          }}
+          src="https://open.spotify.com/embed/album/74vEZzMxVkd08QOx4lbeRF?utm_source=generator"
+          width="100%"
+          height="152"
+          frameBorder="0"
+          allowfullscreen=""
+          allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+        />
+        </Center>
+          <Space h="md" />
         <Center>
           <iframe
             style={{
               borderRadius: "14px",
             }}
-            src="https://open.spotify.com/embed/album/4m1SepLgm4jLLnNIKK8D5v?utm_source=generator&theme=0"
+            src="https://open.spotify.com/embed/album/4m1SepLgm4jLLnNIKK8D5v?utm_source=generator"
             width="100%"
             height="152"
             frameBorder="0"

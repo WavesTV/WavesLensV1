@@ -136,7 +136,7 @@ function NewReactionNotification({
               <Paper shadow="xl" radius="md" withBorder p="lg">
                 <Group justify="right">
                   <Text c="dimmed" size="xs" fw={500}>
-                    {formatDate(reaction.reactions[index].reactedAt)} ago
+                    {formatDate(reaction.reactions[0].reactedAt)} ago
                   </Text>
                 </Group>
 
@@ -171,7 +171,7 @@ function NewReactionNotification({
 
                   <Space w="xl" />
 
-                  {reaction.reactions[index].reaction === "UPVOTE" && (
+                  {reaction.reactions[0].reaction === "UPVOTE" && (
                     <>
                       <IconHeartFilled size="1.5rem" />
                       <Text fw={500} size="sm">
@@ -180,7 +180,7 @@ function NewReactionNotification({
                     </>
                   )}
 
-                  {reaction.reactions[index].reaction === "DOWNVOTE" && (
+                  {reaction.reactions[0].reaction === "DOWNVOTE" && (
                     <>
                       <IconHeartBroken size="1.5rem" />
                       <Text fw={500} size="sm">

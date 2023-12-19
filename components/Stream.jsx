@@ -56,6 +56,7 @@ import { mainContentFocus, liveStream } from "@lens-protocol/metadata";
 import classes from "../styles/LaunchButton.module.css";
 import useUpload from "@/lib/useUpload";
 import { BsExclamationCircle } from "react-icons/bs";
+import { BrowserStream } from "@/components/BrowserStream";
 
 export const Stream = () => {
   const theme = useMantineTheme();
@@ -64,7 +65,6 @@ export const Stream = () => {
   const [disable, { toggle }] = useDisclosure(false);
   const [progress, setProgress] = useState(0);
   const [loaded, setLoaded] = useState(false);
-  const [activeTab, setActiveTab] = useState("first");
   const [openedMulti, { toggle: toggleMulti }] = useDisclosure(true);
   const embed = useRef(); // We use a ref instead of state to avoid rerenders.
   const upload = useUpload();
@@ -214,6 +214,7 @@ export const Stream = () => {
 
   return (
     <Paper shadow="sm" p="lg" withBorder>
+      <Group justify="space-between">
       <HoverCard width={280} closeDelay={700} shadow="md">
         <HoverCard.Target>
           <ActionIcon radius="xl" size="sm" variant="outline">
@@ -222,21 +223,50 @@ export const Stream = () => {
         </HoverCard.Target>
         <HoverCard.Dropdown>
           <Text fw={500} size="xs">
-            Be sure to install OBS Studio or Stream Labs
+            Be sure to install OBS Studio or Stream via your Browser (Mobile Friendly)
           </Text>
         </HoverCard.Dropdown>
       </HoverCard>
+    <CopyButton
+              value={`https://waves-lensv1.vercel.app/profile/${session?.profile?.handle?.localName}`}
+              timeout={2000}
+            >
+              {({ copied, copy }) => (
+                <>
+      <Tooltip label={copied ? ("Wave Copied"):("Share your Wave")}>
+                <Button
+                  radius="sm"
+                size="compact-md"
+                  color={copied ? "teal" : "blue"}
+                  onClick={copy}
+                >
+                  {copied ? (
+                    <>
+                        <IconCheck size={16} />
+                    </>
+                  ) : (
+                    <>                    
+                        <IconScreenShare size={16} />
+                    </>
+                  )}
+                </Button>
+                </Tooltip>
+                </>
+              )}
+              
+            </CopyButton>
 
+            </Group>
       <Space h="md" />
       <Tabs
         variant="pills"
         radius="md"
-        value={activeTab}
-        onTabChange={setActiveTab}
+        defaultValue="first"
         isDisabled={showOverlay}
       >
-        <Tabs.List justify="center">
+        <Tabs.List grow  justify="center">
           <Tabs.Tab value="first">Stream via OBS/StreamLabs</Tabs.Tab>
+          <Tabs.Tab value="second">Stream via Browser</Tabs.Tab>
         </Tabs.List>
 
         <Space h="md" />
@@ -650,36 +680,12 @@ export const Stream = () => {
               </Button>
             </Group>
           )}
-          <Space h="md" />
-          <Group>
-            <CopyButton
-              value={`https://waves-lensv1.vercel.app/profile/${session?.profile?.handle?.localName}`}
-              timeout={2000}
-            >
-              {({ copied, copy }) => (
-                <Button
-                  size="xs"
-                  color={copied ? "teal" : "blue"}
-                  onClick={copy}
-                >
-                  {copied ? (
-                    <>
-                      <Tooltip label="Copied Wave">
-                        <IconCheck size={16} />
-                      </Tooltip>
-                    </>
-                  ) : (
-                    <>
-                      <Tooltip label="Share your Wave">
-                        <IconScreenShare size={16} />
-                      </Tooltip>
-                    </>
-                  )}
-                </Button>
-              )}
-            </CopyButton>
-          </Group>
+   
         </Tabs.Panel>
+
+         <Tabs.Panel value="second">
+                  <BrowserStream />
+           </Tabs.Panel>
       </Tabs>
     </Paper>
   );

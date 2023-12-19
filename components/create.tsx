@@ -124,6 +124,7 @@ export function Create() {
             radius="md"
             placeholder="Announce your next Stream!"
             onChange={(e) => setContent(e.target.value)}
+            
           />
 
           <Space h="md" />

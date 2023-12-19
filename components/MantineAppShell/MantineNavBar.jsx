@@ -1,18 +1,30 @@
 import { useRouter } from "next/router";
 import { Text, Space, Group, UnstyledButton, Avatar } from "@mantine/core";
 import classes from "../../styles/RecommendedWaves.module.css";
+import { useSession } from '@lens-protocol/react-web';
+import { RecommendedWaves } from "@/components/RecommendedWaves";
 
 export function MantineNavBar() {
   const router = useRouter();
+  const { data: session } = useSession();
 
   return (
     <>
+    
       <Text ta="center" fs="italic" fw={700} size="md">
         Recommended Waves
       </Text>
       <Space h="md" />
-      <UnstyledButton
-        onClick={() => router.push("/profile/titannode")}
+
+
+{session?.authenticated && session.type === "WITH_PROFILE" ? (
+  <>
+    <RecommendedWaves />
+  </>
+) : (
+  <>
+  <UnstyledButton
+        onClick={() => router.push("/wave/titannode")}
         className={classes.user}
       >
         <Group>
@@ -34,7 +46,7 @@ export function MantineNavBar() {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => router.push("/profile/jarrodwatts")}
+        onClick={() => router.push("/wave/jarrodwatts")}
         className={classes.user}
       >
         <Group>
@@ -56,7 +68,7 @@ export function MantineNavBar() {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => router.push("/profile/foundnone")}
+        onClick={() => router.push("/wave/foundnone")}
         className={classes.user}
       >
         <Group>
@@ -78,7 +90,7 @@ export function MantineNavBar() {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => router.push("/profile/rehash")}
+        onClick={() => router.push("/wave/rehash")}
         className={classes.user}
       >
         <Group>
@@ -100,7 +112,7 @@ export function MantineNavBar() {
       </UnstyledButton>
 
       <UnstyledButton
-        onClick={() => router.push("/profile/krassenstein")}
+        onClick={() => router.push("/wave/krassenstein")}
         className={classes.user}
       >
         <Group>
@@ -120,6 +132,9 @@ export function MantineNavBar() {
           </div>
         </Group>
       </UnstyledButton>
+  </>
+)
+}
     </>
   );
 }

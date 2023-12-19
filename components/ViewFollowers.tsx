@@ -16,8 +16,8 @@ import {
 import classes from "../styles/RecommendedWaves.module.css";
 
 interface ViewFollowingProps {
-  profileId: any; // assuming profileId is a string
-  closeFollowers: () => void; // assuming closeFollowing is a function that takes no arguments and returns void
+  profileId: any; 
+  closeFollowers: () => void; 
 }
 
 export function ViewFollowers({
@@ -82,7 +82,7 @@ export function ViewFollowers({
             >
               <UnstyledButton
                 onClick={() => {
-                  router.push(`/profile/${user.handle?.localName}`);
+                  router.push(`/wave/${user.handle?.localName}`);
                   closeFollowers();
                 }}
                 className={classes.user}

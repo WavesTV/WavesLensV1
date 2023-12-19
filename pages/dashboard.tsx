@@ -58,6 +58,8 @@ export default function Dashboard() {
     },
   });
 
+  console.log(session.profile)
+
   const replaceURLs = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const atSymbolRegex = /(\S*@+\S*)/g;

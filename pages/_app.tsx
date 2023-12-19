@@ -40,7 +40,7 @@ function LensThirdwebProvider({ children }: { children: React.ReactNode }) {
     "/dashboard",
     "/notifications",
     "/post/[id]",
-    "/profile/[handle]",
+    "/wave/[handle]",
     "/wallet",
     "/why",
   ];
