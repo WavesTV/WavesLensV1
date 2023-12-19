@@ -25,7 +25,7 @@ export function ViewFollowing({
   closeFollowing,
 }: ViewFollowingProps) {
   const following = useProfileFollowing({ for: profileId });
-  console.log(following);
+
   const router = useRouter();
   return (
     <>

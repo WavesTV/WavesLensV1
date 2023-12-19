@@ -138,7 +138,7 @@ export const BrowserStream = () => {
   });
   const handleEnableRecording = async () => {
     recordStream?.();
-    console.log(recordStream);
+    
   };
   const [isRecordingEnabled, setIsRecordingEnabled] = useState(false);
 

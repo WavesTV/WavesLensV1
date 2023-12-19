@@ -64,8 +64,7 @@ export default function ProfileForm({ Profile }: Props) {
   const upload = useUpload();
 
   const currencies = useCurrencies();
-  console.log(currencies?.data);
-
+  
   const updateProfile = useSetProfileMetadata();
 
   const form = useForm<z.infer<typeof FormSchema>>({
@@ -80,7 +79,7 @@ export default function ProfileForm({ Profile }: Props) {
   const [coverPictureNew, setCoverPicture] = useState<File | undefined>();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+
 
     try {
       let profilePicture: string | undefined;

@@ -32,7 +32,7 @@ export const SearchUsers = ({ query, closeSearch }: SearchResultsProps) => {
   const [searchInput, setSearchInput] = useState(""); 
   const { data, error, loading } = useSearchProfiles({ query: searchInput,
     limit: LimitType.TwentyFive });
-    console.log(data)
+
 
 
 

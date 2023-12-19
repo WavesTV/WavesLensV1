@@ -63,7 +63,7 @@ const ProfilePage = () => {
   });
 
   const profileId = profile?.data?.id;
-  console.log(profileId)
+
   const profilePosts = usePublications({
     where: {
       from: profileId ? [profileId] : undefined,

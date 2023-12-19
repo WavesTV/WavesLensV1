@@ -33,7 +33,7 @@ const { data, loading, error } = useRecommendedProfiles({ for:
     // @ts-ignore
     session?.profile?.id,
     limit: LimitType.Ten });
-console.log(data)
+a)
 const { execute: dismiss, loading: dismissing } = useDismissRecommendedProfiles();
  const router = useRouter();
     

@@ -25,7 +25,7 @@ export function ViewFollowers({
   closeFollowers,
 }: ViewFollowingProps) {
   const followers = useProfileFollowers({ of: profileId });
-  console.log(followers);
+
   const router = useRouter();
   return (
     <>

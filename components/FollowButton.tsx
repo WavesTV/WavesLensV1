@@ -17,7 +17,7 @@ type Props = {
 };
 
 export default function FollowButton({ profile }: Props) {
-  console.log("ppoo" + profile.metadata);
+ 
 
   const {
     execute: unfollow,

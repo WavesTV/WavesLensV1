@@ -41,7 +41,7 @@ export const SearchPosts = ({ query, closeSearch }: SearchResultsProps) => {
     limit: LimitType.TwentyFive,
     where: { publicationTypes: [SearchPublicationType.Post]},
         });
-    console.log(data)
+
 
 
 

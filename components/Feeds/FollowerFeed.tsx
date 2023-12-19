@@ -85,7 +85,7 @@ export function FollowerFeed({ query }: SearchResultsProps) {
     },
   });
 
-  console.log(surfFeed)
+
 
   return (
     <>
@@ -157,7 +157,7 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                  <UnstyledButton
                 onClick={() => {
                   setSurfFeedUser(user?.id);
-                  console.log(user.id)
+                  
                   setOpened(false);
                 }}
                 className={classes.user}
