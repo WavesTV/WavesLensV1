@@ -55,9 +55,12 @@ export function FollowerFeed({ query }: SearchResultsProps) {
   const [activeTab, setActiveTab] = useState<string | null>("All");
   const iconStyle = { width: rem(18), height: rem(18) };
   const [checked, setChecked] = useState(false);
-  const [surfFeedUser, setSurfFeedUser] = useState<ProfileId | null>(null);
+  const [surfFeedUser, setSurfFeedUser] = useState<ProfileId | undefined>(undefined);
+
+
+
   const [opened, setOpened] = useState(false);
-type ProfileId = string;
+
   const theme = createTheme({
     cursorType: "pointer",
   });
@@ -123,7 +126,7 @@ type ProfileId = string;
                 variant="light"
                 onClick={() => {
                  
-                  setSurfFeedUser(null);
+                  setSurfFeedUser(undefined);
                              setHandle("");
                 }
                 }
@@ -271,7 +274,7 @@ type ProfileId = string;
   <Group justify="right">
                         <ActionIcon
                           onClick={() => {
-                            setSurfFeedUser(null);
+                            setSurfFeedUser(undefined);
                              setHandle("");
                           }}
                           variant="light"
@@ -337,7 +340,7 @@ type ProfileId = string;
                       <Group justify="right">
                         <ActionIcon
                           onClick={() => {
-                            setSurfFeedUser(null);
+                            setSurfFeedUser(undefined);
                              setHandle("");
                           }}
                           variant="light"
@@ -406,7 +409,7 @@ type ProfileId = string;
 <Group justify="right">
                         <ActionIcon
                           onClick={() => {
-                          setSurfFeedUser(null);
+                          setSurfFeedUser(undefined);
                              setHandle("");
                           }}
                           variant="light"
@@ -475,7 +478,7 @@ type ProfileId = string;
 <Group justify="right">
                         <ActionIcon
                           onClick={() => {
-                           setSurfFeedUser(null);
+                           setSurfFeedUser(undefined);
                              setHandle("");
                           }}
                           variant="light"
@@ -544,7 +547,7 @@ type ProfileId = string;
 <Group justify="right">
                         <ActionIcon
                           onClick={() => {
-                            setSurfFeedUser(null);
+                            setSurfFeedUser(undefined);
                              setHandle("");
                           }}
                           variant="light"
