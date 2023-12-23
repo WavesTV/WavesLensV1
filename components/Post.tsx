@@ -45,6 +45,8 @@ import { notifications } from "@mantine/notifications";
 import { GiMirrorMirror } from "react-icons/gi";
 import { Player } from "@livepeer/react";
 import { IconExclamationMark } from "@tabler/icons-react";
+import { FaComments } from "react-icons/fa6";
+import { AudioPlayer } from 'react-audio-play';
 
 type Props = {
   post: Post | Comment | Quote | Mirror;
@@ -86,6 +88,7 @@ export default function Post({ post }: Props) {
     return false;
   }, [session, postToUse]);
 
+
   async function handleReaction() {
     if (!react) return;
 
@@ -105,6 +108,15 @@ export default function Post({ post }: Props) {
   }
   // State to track if the user has reacted to the post
   const [userUpvoted, setUserUpvotedReacted] = useState(false);
+
+   const postMedia = useMemo(() => {
+    return (
+      postContent?.metadata?.__typename === "AudioMetadataV3" ||
+      postContent?.metadata?.__typename === "ImageMetadataV3" ||
+      postContent?.metadata?.__typename === "VideoMetadataV3" ||
+      null
+    );
+  }, [postToUse]);
 
   const replaceURLs = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
@@ -159,6 +171,19 @@ export default function Post({ post }: Props) {
               >
                 <Text c="dimmed" size="xs">
                   {postToUse.by.handle?.localName} Commented
+                </Text>
+              </Button>
+            )}
+
+            {postToUse.__typename === "Quote" && (
+              <Button
+                variant="transparent"
+                leftSection={<FaComments size={13} />}
+                component={Link}
+                href={`/post/${postToUse.quoteOn?.id}`}
+              >
+                <Text c="dimmed" size="xs">
+                {postToUse.by.handle?.localName} Quoted
                 </Text>
               </Button>
             )}
@@ -287,9 +312,12 @@ export default function Post({ post }: Props) {
               <Text
                 size="md"
                 style={{
-                  maxWidth: "100%",
-                  textAlign: "center",
-                  wordWrap: "break-word",
+              maxWidth: "100%",  // Ensure message text does not overflow
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              whiteSpace: "normal",  // Allow text to wrap
+              wordWrap: "break-word",
+               textAlign: "center",  // Allow long words to break
                 }}
                 
                 dangerouslySetInnerHTML={{
@@ -307,61 +335,87 @@ export default function Post({ post }: Props) {
         </Center>
         <Space h="md" />
 
+         
+
         {
           // @ts-ignore
-          postContent.metadata?.asset?.image && (
-            <Center>
+          postToUse.metadata?.asset?.image && (
+            
               <Image
                 // @ts-ignore
-                src={postContent?.metadata?.asset?.image?.optimized?.uri}
+                src={postToUse?.metadata?.asset?.image?.optimized?.uri}
                 radius="xs"
                 
                 style={{
                   width: "100%", // Width is 100% of the container
                   maxWidth: "100%", // Ensures the image doesn't scale beyond its original size
-                  maxHeight: "1000px",
+                  maxHeight: "888px",
                 }}
                 alt={`${postToUse.by?.handle?.localName}'s Post Image`}
               />
-            </Center>
+         
           )
         }
 
         {
           // @ts-ignore
-          postContent?.metadata?.asset?.video && (
-            <Center>
-              <Player
-                // @ts-ignore
-                src={postContent?.metadata?.asset?.video?.optimized?.uri}
+          postToUse?.metadata?.__typename === "VideoMetadataV3" &&
+(
+
+
+          <Player
+                 // @ts-ignore
+                src={postToUse?.metadata?.asset?.video?.optimized?.uri}
+                aspectRatio="1to1"
+                controls={{ autohide: 0, hotkeys: false, defaultVolume: 0.6 }}
+                showPipButton
+                theme={{
+                colors: {
+                  loading: '#3cdfff',
+                }
+        }}
+
+
               />
-            </Center>
+         
+           
           )
         }
 
         {
           // @ts-ignore
-          postContent?.metadata?.asset?.audio && (
-            <Center>
-              <iframe
+          postToUse?.metadata?.asset?.audio && (
+            <>
+            {// @ts-ignore
+            postContent?.metadata?.asset?.cover?.optimized?.uri && (
+              <Image
                 // @ts-ignore
-                src={"postContent?.metadata?.asset?.audio?.optimized?.uri"}
+                src={postContent?.metadata?.asset?.cover?.optimized?.uri}
+                radius="xs"
+                mt={22}
+                style={{
+                  width: "100%", // Width is 100% of the container
+                  maxWidth: "100%", // Ensures the image doesn't scale beyond its original size
+                  maxHeight: "888px",
+                }}
+                alt={`${postToUse.by?.handle?.localName}'s Post Image`}
               />
-            </Center>
+            )}
+            <Group grow>
+              <AudioPlayer
+                // @ts-ignore
+                src={postContent?.metadata?.asset?.audio?.optimized?.uri}
+                color="#0099ff"
+				        sliderColor="#0099ff"
+				        style={{ background: '#000'}}
+              />
+              </Group>
+              </>
+            
           )
         }
+<Space h="sm"/>
 
-        {
-          // @ts-ignore
-          postContent?.metadata?.embed && (
-            <Center>
-              <Player
-                // @ts-ignore
-                src={postContent?.metadata?.embed}
-              />
-            </Center>
-          )
-        }
 
         {post.__typename === "Quote" && (
           <Paper shadow="xl" radius="md" p="xs" withBorder>
@@ -375,7 +429,20 @@ export default function Post({ post }: Props) {
               </Text>
             </Group>
 
-            <UnstyledButton
+            
+                <HoverCard
+          width={320}
+          shadow="md"
+          withArrow
+          openDelay={200}
+          closeDelay={400}
+        >
+          
+    
+      {/* HoverCard should only trigger when hovering over the Avatar and Text */}
+      <Group justify="center" style={{ display: 'flex', alignItems: 'center' }}>
+        <HoverCard.Target>
+  <UnstyledButton
               component={Link}
               // @ts-ignore
               href={`/wave/${postToUse.quoteOn.by?.handle?.localName}`}
@@ -384,7 +451,7 @@ export default function Post({ post }: Props) {
                 <Avatar
                   src={
                     // @ts-ignore
-                    postToUse?.by?.metadata?.picture?.optimized?.uri ||
+                    postToUse?.quoteOn.by?.metadata?.picture?.optimized?.uri ||
                     "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
                   }
                   alt={
@@ -396,13 +463,78 @@ export default function Post({ post }: Props) {
 
                 <Text fw={500}>
                   {
+                    
                     // @ts-ignore
-                    postToUse.quoteOn.by?.handle?.localName
+                    postToUse.quoteOn.by?.metadata?.displayName || postToUse.quoteOn.by?.handle?.localName
                   }
                 </Text>
               </Group>
             </UnstyledButton>
+</HoverCard.Target>
+      </Group>
+    
+ 
 
+
+         
+            <HoverCard.Dropdown>
+              <Group>
+               <Avatar
+                  src={
+                    // @ts-ignore
+                    postToUse?.quoteOn.by?.metadata?.picture?.optimized?.uri ||
+                    "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
+                  }
+                  alt={
+                    // @ts-ignore
+                    `${postToUse.quoteOn.by?.handle?.localName}'s profile picture`
+                  }
+                  size="lg"
+                />
+
+
+                <div style={{ flex: 1 }}>
+                   <Text fw={500}>
+                  {
+                    // @ts-ignore
+                    postToUse.quoteOn.by?.metadata?.displayName || postToUse.quoteOn.by?.handle?.localName
+                  }
+                </Text>
+
+                  <Text c="dimmed" size="sm">
+                    @{// @ts-ignore
+                    postToUse.quoteOn.by?.handle?.localName}
+                  </Text>
+                </div>
+              </Group>
+              <Space h="md" />
+              <Text lineClamp={3} fw={200}>
+                {
+                  // @ts-ignore
+                    postToUse.quoteOn.by?.metadata?.bio || null
+                }
+              </Text>
+              <Space h="md" />
+              <Group justify="center">
+                <Text fw={500} size="sm">
+                  {
+                    // @ts-ignore
+                    postToUse.quoteOn.by?.stats.followers || "0"
+                  }{" "}
+                  Followers
+                </Text>
+                |
+                <Text fw={500} size="sm">
+                  {
+                    // @ts-ignore
+                    postToUse.quoteOn.by?.stats.following || "0"
+                  }{" "}
+                  Following
+                </Text>
+              </Group>
+            </HoverCard.Dropdown>
+          
+        </HoverCard>
             <Space h="xl" />
 
             <Center>
@@ -495,6 +627,40 @@ export default function Post({ post }: Props) {
                 </Center>
               )
             }
+
+            {
+          // @ts-ignore
+          postToUse?.quoteOn?.metadata?.asset?.audio && (
+            <>
+            {// @ts-ignore
+            postToUse?.quoteOn?.metadata?.asset?.cover?.optimized?.uri && (
+              <Image
+                // @ts-ignore
+                src={postToUse?.quoteOn?.metadata?.asset?.cover?.optimized?.uri}
+                radius="xs"
+                mt={22}
+                style={{
+                  width: "100%", // Width is 100% of the container
+                  maxWidth: "100%", // Ensures the image doesn't scale beyond its original size
+                  maxHeight: "888px",
+                }}
+                alt={`${// @ts-ignore
+                  postToUse?.quoteOn?.by?.handle?.localName}'s Post Image`}
+              />
+            )}
+            <Group grow>
+              <AudioPlayer
+                // @ts-ignore
+                src={postToUse?.quoteOn?.metadata?.asset?.audio?.optimized?.uri}
+                color="#0099ff"
+				        sliderColor="#0099ff"
+				        style={{ background: '#000'}}
+              />
+              </Group>
+              </>
+            
+          )
+        }
 
             {
               // @ts-ignore

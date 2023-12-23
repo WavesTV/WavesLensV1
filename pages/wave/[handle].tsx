@@ -30,6 +30,7 @@ import {
   rem,
   UnstyledButton,
   Modal,
+  Collapse
 } from "@mantine/core";
 import styles from "../../styles/ProfileCard.module.css";
 import { Player } from "@livepeer/react";
@@ -46,7 +47,8 @@ import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 import { ViewFollowing } from "@/components/ViewFollowing";
 import { ViewFollowers } from "@/components/ViewFollowers";
-
+import { Chat } from "@/components/Chat"
+import { IoMusicalNotesSharp } from "react-icons/io5";
 const ProfilePage = () => {
   const iconStyle = { width: rem(18), height: rem(18) };
   const [activeTab, setActiveTab] = useState<string | null>("All");
@@ -57,7 +59,8 @@ const ProfilePage = () => {
     useDisclosure(false);
   const [openedFollowers, { open: openFollowers, close: closeFollowers }] =
     useDisclosure(false);
-
+  const [opened, { toggle }] = useDisclosure(true);
+  
   const profile = useProfile({
     forHandle: `lens/${handle}`,
   });
@@ -181,7 +184,19 @@ const ProfilePage = () => {
 
           {"wavestv" === profile?.data?.handle?.localName && (
             <Paper>
-              <Player playbackId="ca57j651up688am0" title="pp poopoo" />
+              <Player 
+              playbackId="ca57j651up688am0" 
+              title="pp poopoo" 
+              lowLatency="force" 
+              priority 
+              controls={{ autohide: 0, hotkeys: false, defaultVolume: 0.6 }}
+              showPipButton
+              theme={{
+                  colors: {
+                    loading: '#3cdfff',
+                  }
+                }}
+              />
             </Paper>
           )}
           <Space h="xs" />
@@ -290,6 +305,30 @@ const ProfilePage = () => {
             </Button>
           )}
         </Card>
+            
+            <Space h="sm"/>
+            <Center>
+              <Button variant="light" hiddenFrom="md" onClick={toggle}>
+               {opened ? (
+                <>
+                Close Chat
+                </>
+               ):(
+                <>
+                Open Chat
+                </>
+               )}
+                
+              </Button>
+            </Center>
+              <Group justify="center" hiddenFrom="md">
+
+                <Collapse transitionDuration={1000} transitionTimingFunction="smooth" in={opened}>
+                  <Chat handle={handle || "Anon"} />
+                </Collapse>
+
+              </Group>
+        
      
       <Space h="xl" />
 <Container>
@@ -315,6 +354,13 @@ const ProfilePage = () => {
             value="Images"
             leftSection={<FaImage style={iconStyle} />}
           />
+
+          <Tabs.Tab
+            value="Audio"
+            leftSection={<IoMusicalNotesSharp style={iconStyle} />}
+          />
+
+          
         </Tabs.List>
 
         <Space h="md" />

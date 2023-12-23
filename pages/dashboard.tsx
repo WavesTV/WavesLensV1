@@ -37,6 +37,7 @@ import { FaImage } from "react-icons/fa6";
 import { useState } from "react";
 import { ViewFollowing } from "@/components/ViewFollowing";
 import { ViewFollowers } from "@/components/ViewFollowers";
+import { IoMusicalNotesSharp } from "react-icons/io5";
 
 export default function Dashboard() {
   const { data: session } = useSession();
@@ -239,6 +240,7 @@ export default function Dashboard() {
           </Card>
 
           <Space h="xl" />
+          <Container>
           <Tabs
             variant="pills"
             value={activeTab}
@@ -260,6 +262,11 @@ export default function Dashboard() {
               <Tabs.Tab
                 value="Images"
                 leftSection={<FaImage style={iconStyle} />}
+              />
+
+              <Tabs.Tab
+                value="Audio"
+                leftSection={<IoMusicalNotesSharp style={iconStyle} />}
               />
             </Tabs.List>
 
@@ -574,6 +581,7 @@ export default function Dashboard() {
               )}
             </Tabs.Panel>
           </Tabs>
+          </Container>
         </>
       ) : (
         <Card shadow="sm" padding="lg" radius="md" withBorder>

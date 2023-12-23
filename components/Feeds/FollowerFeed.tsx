@@ -43,7 +43,7 @@ import { GiWaveCrest, GiWaveSurfer } from "react-icons/gi";
 import { RiArrowDropDownFill } from "react-icons/ri";
 import classes from "../../styles/RecommendedWaves.module.css";
 import { MdSurfing } from "react-icons/md";
-
+import { IoMusicalNotesSharp } from "react-icons/io5";
 type SearchResultsProps = {
   query: string;
 };
@@ -234,6 +234,11 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                       <Tabs.Tab
                         value="Images"
                         leftSection={<FaImage style={iconStyle} />}
+                      />
+
+                      <Tabs.Tab
+                        value="Audio"
+                        leftSection={<IoMusicalNotesSharp style={iconStyle} />}
                       />
                     </Tabs.List>
 
@@ -639,7 +644,14 @@ export function FollowerFeed({ query }: SearchResultsProps) {
             value="Images"
             leftSection={<FaImage style={iconStyle} />}
           />
+
+          <Tabs.Tab
+                        value="Audio"
+                        leftSection={<IoMusicalNotesSharp style={iconStyle} />}
+                      />
         </Tabs.List>
+
+        
 
         <Space h="md" />
 

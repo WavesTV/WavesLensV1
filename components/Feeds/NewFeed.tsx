@@ -34,6 +34,7 @@ import { MdVideoCameraBack } from "react-icons/md";
 import { MdAudiotrack } from "react-icons/md";
 import { FaImage } from "react-icons/fa6";
 import { useState } from "react";
+import { IoMusicalNotesSharp } from "react-icons/io5";
 
 export function NewFeed() {
   const iconStyle = { width: rem(18), height: rem(18) };
@@ -61,6 +62,11 @@ export function NewFeed() {
         />
 
         <Tabs.Tab value="Images" leftSection={<FaImage style={iconStyle} />} />
+
+        <Tabs.Tab
+                        value="Audio"
+                        leftSection={<IoMusicalNotesSharp style={iconStyle} />}
+                      />
       </Tabs.List>
 
       <Tabs.Panel value="All">

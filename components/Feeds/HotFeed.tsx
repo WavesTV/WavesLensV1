@@ -34,7 +34,7 @@ import { MdVideoCameraBack } from "react-icons/md";
 import { MdAudiotrack } from "react-icons/md";
 import { FaImage } from "react-icons/fa6";
 import { useState } from "react";
-
+import { IoMusicalNotesSharp } from "react-icons/io5";
 export function HotFeed() {
   const iconStyle = { width: rem(18), height: rem(18) };
   const [activeTab, setActiveTab] = useState<string | null>("All");
@@ -46,6 +46,8 @@ export function HotFeed() {
     orderBy: ExplorePublicationsOrderByType.LensCurated,
     limit: LimitType.TwentyFive,
   });
+
+  console.log(hotFeed)
   return (
     <Tabs variant="pills" value={activeTab} onChange={setActiveTab} radius="xl">
       <Tabs.List justify="center">
@@ -60,6 +62,8 @@ export function HotFeed() {
         />
 
         <Tabs.Tab value="Images" leftSection={<FaImage style={iconStyle} />} />
+
+        <Tabs.Tab value="Audio" leftSection={<IoMusicalNotesSharp style={iconStyle} />}/>
       </Tabs.List>
 
       <Tabs.Panel value="All">

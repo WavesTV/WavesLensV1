@@ -1,11 +1,7 @@
 import {
   useSession,
   Post as PostType,
-  useFeed,
-  useProfile,
 } from "@lens-protocol/react-web";
-import InfiniteScroll from "react-infinite-scroll-component";
-import Post from "@/components/Post";
 import { FaUsers } from "react-icons/fa";
 import {
   Container,
@@ -24,13 +20,10 @@ import classes from "../../styles/Tabs.module.css";
 import { useRouter } from "next/router";
 import { Player } from "@livepeer/react";
 import { BsFire } from "react-icons/bs";
-import { GiWaveCrest, GiWaveSurfer } from "react-icons/gi";
+import { GiWaveCrest } from "react-icons/gi";
 import { FollowerFeed } from "./FollowerFeed";
-
 import { HotFeed } from "./HotFeed";
 import { NewFeed } from "./NewFeed";
-
-import { useState } from "react";
 import { PiClockCountdownFill } from "react-icons/pi";
 
 export default function Feed() {
@@ -93,7 +86,20 @@ export default function Feed() {
               </UnstyledButton>
             </Center>
             <Space h="md" />
-            <Player playbackId="ca57j651up688am0" title="type shi" />
+            <Player 
+            playbackId="ca57j651up688am0" 
+            title="type shi" 
+            lowLatency="force" 
+            priority 
+            
+            controls={{ autohide: 0, hotkeys: false, defaultVolume: 0.6 }}
+            showPipButton
+            theme={{
+                colors: {
+                  loading: '#3cdfff',
+                }
+              }}
+                />
             <Space h="sm" />
           </Paper>
           <Space h="xl" />

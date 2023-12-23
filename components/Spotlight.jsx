@@ -31,7 +31,7 @@ export function Spotlight() {
           width="100%"
           height="152"
           frameBorder="0"
-          allowfullscreen=""
+          
           allow="clipboard-write; encrypted-media; fullscreen; picture-in-picture"
         />
         </Center>
@@ -45,7 +45,7 @@ export function Spotlight() {
             width="100%"
             height="152"
             frameBorder="0"
-            allowfullscreen=""
+            
             allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
             loading="lazy"
           />
@@ -125,7 +125,7 @@ export function Spotlight() {
           gradient={{ from: "blue", to: "cyan", deg: 90 }}
           size="xl"
           radius="xl"
-          hiddenFrom="sm"
+          hiddenFrom="md"
           onClick={open}
         >
           <PiShootingStarLight size="1.4rem" />

@@ -22,7 +22,6 @@ import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { MantineAppShell } from "@/components/MantineAppShell/MantineAppShell";
-import SignInWithLensButton from "@/components/SignInWithLensButton";
 
 const livepeerClient = createReactClient({
   provider: studioProvider({

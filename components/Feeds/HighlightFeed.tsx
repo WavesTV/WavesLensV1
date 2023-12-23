@@ -18,7 +18,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@/components/Post";
 import { BsChatSquareTextFill } from "react-icons/bs";
 import { PiVideoFill } from "react-icons/pi";
-
+import { IoMusicalNotesSharp } from "react-icons/io5";
 import { MdVideoCameraBack } from "react-icons/md";
 import { FaImage } from "react-icons/fa6";
 import { useState } from "react";
@@ -61,6 +61,11 @@ export function HighlightFeed() {
             value="Images"
             leftSection={<FaImage style={iconStyle} />}
           />
+
+          <Tabs.Tab
+                        value="Audio"
+                        leftSection={<IoMusicalNotesSharp style={iconStyle} />}
+                      />
         </Tabs.List>
 
         <Space h="md" />

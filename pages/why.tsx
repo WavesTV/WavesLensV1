@@ -229,7 +229,7 @@ export default function Why() {
                         In-Browser Stream - Easier for non-gamer streamers + Mobile Friendly (Kind of)
                       </List.Item>
                     </Fade>
-<Space h="xs" />
+                  <Space h="xs" />
                        <Fade>
                       <List.Item
                        icon={
@@ -257,18 +257,32 @@ export default function Why() {
                         New Promoted Artists (BagBoyBando & Cbo)
                       </List.Item>
                     </Fade>
-                       <Space h="xs" />
+                    <Space h="xs" />
                     <Fade>
-                      <List.Item>Subscriptions + Rewards</List.Item>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Channel Chats
+                      </List.Item>
                     </Fade>
                     <Space h="xs" />
                     <Fade>
-                      <List.Item>Donations</List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
-                      <List.Item>
-                        Channel Chats (1st iteration will use Firebase)
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Display Audio Posts
                       </List.Item>
                     </Fade>
                     <Space h="xs" />
