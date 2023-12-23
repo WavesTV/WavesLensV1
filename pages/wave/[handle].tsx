@@ -187,7 +187,7 @@ const ProfilePage = () => {
               <Player 
               playbackId="ca57j651up688am0" 
               title="pp poopoo" 
-              lowLatency="force" 
+            
               priority 
               controls={{ autohide: 0, hotkeys: false, defaultVolume: 0.6 }}
               showPipButton
