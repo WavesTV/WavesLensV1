@@ -89,7 +89,7 @@ export default function Feed() {
             <Player 
             playbackId="ca57j651up688am0" 
             title="type shi" 
-            lowLatency="force" 
+    
             priority 
             
             controls={{ autohide: 0, hotkeys: false, defaultVolume: 0.6 }}
