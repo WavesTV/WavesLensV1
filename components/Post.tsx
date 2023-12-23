@@ -116,7 +116,7 @@ export default function Post({ post }: Props) {
       postContent?.metadata?.__typename === "VideoMetadataV3" ||
       null
     );
-  }, [postToUse]);
+  }, [postContent?.metadata?.__typename]);
 
   const replaceURLs = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
