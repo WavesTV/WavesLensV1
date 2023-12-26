@@ -41,7 +41,7 @@ export function MantineAppShell({ children }) {
         </AppShell.Header>
 
         <AppShell.Navbar>
-          {navOpened ? (
+          {navOpened && (
             <>
             <Group justify="right">
               <Tooltip position="right-start" label="Close Navbar">
@@ -57,13 +57,13 @@ export function MantineAppShell({ children }) {
               </Tooltip>
               </Group>
             </>
-          ) : null}
+          )}
           <Space h="md" />
           <MantineNavBar />
         </AppShell.Navbar>
 
         <AppShell.Aside>
-        {asideOpened ? (
+        {asideOpened && (
             <>
               <Tooltip position="right-start" label="Close Sidebar">
                 <ActionIcon
@@ -77,7 +77,7 @@ export function MantineAppShell({ children }) {
                 </ActionIcon>
               </Tooltip>
             </>
-          ) : null}
+          )}
 
         {(router.pathname.startsWith('/wave/') && handle) || (router.pathname === '/dashboard' && session?.type === "WITH_PROFILE") ? (
   <>
@@ -96,7 +96,7 @@ export function MantineAppShell({ children }) {
 
         <AppShell.Main>
 
-          {!asideOpened ? (
+          {!asideOpened && (
             <Tooltip position="right-start" label="Open Sidebar">
               <div style={{ position: "fixed", zIndex: 9999, right: "20px"}}>
                 <ActionIcon variant="light" onClick={toggleAside} visibleFrom="sm">
@@ -105,9 +105,9 @@ export function MantineAppShell({ children }) {
               </div>
             </Tooltip>
             
-          ) : null}
+          )}
 
-          {!navOpened ? (
+          {!navOpened && (
             <Tooltip position="right-start" label="Open Navbar">
               <div style={{ position: "fixed", zIndex: 9999 }}>
                 <ActionIcon variant="light" onClick={toggleNav} visibleFrom="sm">
@@ -115,7 +115,7 @@ export function MantineAppShell({ children }) {
                 </ActionIcon>
               </div>
             </Tooltip>
-          ) : null}
+          )}
 
           <Space h="md" />
           <Spotlight />
