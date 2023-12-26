@@ -144,7 +144,7 @@ function NewReactionNotification({
                   <UnstyledButton
                     onClick={() =>
                       router.push(
-                        `/profile/${reaction.profile.handle?.localName}`,
+                        `/wave/${reaction.profile.handle?.localName}`,
                       )
                     }
                   >
@@ -217,7 +217,7 @@ function NewFollowNotification({
           <Center>
             <UnstyledButton
               onClick={() =>
-                router.push(`/profile/${profile.handle?.localName}`)
+                router.push(`/wave/${profile.handle?.localName}`)
               }
             >
               <Paper shadow="xl" radius="md" withBorder p="lg">

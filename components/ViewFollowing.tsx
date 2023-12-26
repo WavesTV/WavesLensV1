@@ -82,7 +82,7 @@ export function ViewFollowing({
             >
               <UnstyledButton
                 onClick={() => {
-                  router.push(`/profile/${user.handle?.localName}`);
+                  router.push(`/wave/${user.handle?.localName}`);
                   closeFollowing();
                 }}
                 className={classes.user}
