@@ -202,7 +202,7 @@ const ProfilePage = () => {
           <Space h="xs" />
 <Group justify="right">
               <CopyButton
-                value={`https://waves-lensv1.vercel.app/profile/${profile?.data?.handle?.localName}`}
+                value={`https://waves-lensv1.vercel.app/wave/${profile?.data?.handle?.localName}`}
                 timeout={2000}
               >
                 {({ copied, copy }) => (

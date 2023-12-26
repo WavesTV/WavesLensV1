@@ -8983,13 +8983,6 @@ react-audio-play@^0.0.18:
   resolved "https://registry.yarnpkg.com/react-audio-play/-/react-audio-play-0.0.18.tgz#64cb3c2163f66d35ed8c3bf5728dc3ace041aedc"
   integrity sha512-JpscC1IfUWQKbZwL97gSVqeTdLp0ansFLT8EZl52HrMRgWsfCbom+8ND2PYE/5GWU62QVtb85JeENh6UcfsqyQ==
 
-react-audio-player@^0.17.0:
-  version "0.17.0"
-  resolved "https://registry.yarnpkg.com/react-audio-player/-/react-audio-player-0.17.0.tgz#4be7b1952512801f36ba0865a9c98f7b108f991e"
-  integrity sha512-aCZgusPxA9HK7rLZcTdhTbBH9l6do9vn3NorgoDZRxRxJlOy9uZWzPaKjd7QdcuP2vXpxGA/61JMnnOEY7NXeA==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-awesome-reveal@^4.2.5:
   version "4.2.7"
   resolved "https://registry.yarnpkg.com/react-awesome-reveal/-/react-awesome-reveal-4.2.7.tgz#31869d7866d9789ebf630a096bd849cd5d701c53"

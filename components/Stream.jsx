@@ -228,7 +228,7 @@ export const Stream = () => {
         </HoverCard.Dropdown>
       </HoverCard>
     <CopyButton
-              value={`https://waves-lensv1.vercel.app/profile/${session?.profile?.handle?.localName}`}
+              value={`https://waves-lensv1.vercel.app/wave/${session?.profile?.handle?.localName}`}
               timeout={2000}
             >
               {({ copied, copy }) => (
