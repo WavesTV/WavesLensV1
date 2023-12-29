@@ -4,17 +4,16 @@ import {
   Group,
   UnstyledButton,
   Avatar,
-  Center,
 } from "@mantine/core";
 import classes from "../../styles/RecommendedWaves.module.css";
 
+
 export function MantineAside() {
+
   return (
     <>
-      <Space h={40} />
-     <Space h="md" />
-
-   
+    
+      <Space h="md" />
        <Text fw={700} ta="center" fs="italic">
         Powered By
       </Text>

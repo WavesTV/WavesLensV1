@@ -10,7 +10,7 @@ import {
   Space,
   Group,
   Container,
-  Skeleton,
+  ActionIcon,
   Center,
 } from "@mantine/core";
 import Link from "next/link";
@@ -22,6 +22,8 @@ const Home: NextPage = () => {
 
   return (
     <>
+
+    
       <Container size={560} p={0}>
         {session?.authenticated && session?.type === "WITH_PROFILE" ? (
           <>

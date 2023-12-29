@@ -184,7 +184,7 @@ export default function Why() {
                       </ThemeIcon>
                         }
                       >
-                        New Feed - For better discoverability for new posts/users
+                        New Feed for better discoverability for new posts/users
                       </List.Item>
                     </Fade>
                        <Space h="xs" />
@@ -283,6 +283,20 @@ export default function Why() {
                         }
                       >
                         Display Audio Posts
+                      </List.Item>
+                    </Fade>
+                     <Space h="xs" />
+                    <Fade>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Global Chat for Engagement, Feedback, New Users
                       </List.Item>
                     </Fade>
                     <Space h="xs" />

@@ -18,7 +18,7 @@ import {
   Group,
   Center,
   Button,
-  Box,
+  HoverCard,
   Avatar,
   Paper,
   UnstyledButton,
@@ -31,6 +31,7 @@ import { IconHeartFilled, IconHeartBroken } from "@tabler/icons-react";
 import { FaHeartCirclePlus } from "react-icons/fa6";
 import classes from "./../styles/RecommendedWaves.module.css";
 import Post from "@/components/Post";
+import { PiUsersThreeFill } from "react-icons/pi";
 
 function NotificationItemWrapper({ children }: { children: ReactNode }) {
   return <article>{children}</article>;
@@ -197,9 +198,10 @@ function NewReactionNotification({
               </Paper>
             </Center>
           </div>
+          <Space h="sm" />
         </>
       ))}
-      <Space h="sm" />
+     
     </NotificationItemWrapper>
   );
 }
@@ -210,49 +212,111 @@ function NewFollowNotification({
   notification: FollowNotification;
 }) {
   const router = useRouter();
+
   return (
     <NotificationItemWrapper>
-      {notification.followers.map((profile) => (
-        <div key={profile.id}>
-          <Center>
-            <UnstyledButton
-              onClick={() =>
-                router.push(`/wave/${profile.handle?.localName}`)
-              }
-            >
-              <Paper shadow="xl" radius="md" withBorder p="lg">
-                <Group preventGrowOverflow={false} wrap="nowrap">
-                  <Avatar
-                    size={46}
-                    radius="md"
-                    // @ts-ignore
-                    src={profile.metadata?.picture?.optimized?.uri || "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"}
+      <Center>
+<Paper shadow="xl" radius="md" withBorder p="lg">
+        <Group justify="center"> 
+      <Text fw={500} size="md">Followed You</Text>
+      <PiUsersThreeFill  size="1.5rem" />
+        </Group>
+
+    <Space h="xs"/>
+
+       <Group mr={11}>
+       <Avatar.Group>
+       
+            {notification.followers.slice(0, 7).map((profile) => (
+              <>
+       
+          <HoverCard
+          width={320}
+          shadow="md"
+          withArrow
+          openDelay={200}
+          closeDelay={400}
+          zIndex={99999999}
+        >  
+  <HoverCard.Target >
+  <UnstyledButton
+    onClick={() =>
+       router.push(`/wave/${profile.handle?.localName}`)
+    }
+  >
+              <div key={profile.id}>
+                <Avatar 
+                  src={// @ts-ignore
+                    profile.metadata?.picture?.optimized?.uri || 
+                    "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"} 
                   />
-                  <div style={{ flex: 1 }}>
-                    <Text size="sm" fw={500}>
-                      {profile.metadata?.displayName ??
-                        profile.handle?.localName}
-                    </Text>
+                </div>
+      </UnstyledButton>
+      </HoverCard.Target>
+                
+      <HoverCard.Dropdown >
+              <Group>
+                <Avatar
+                  // @ts-ignore
+                   src={// @ts-ignore
+                    profile.metadata?.picture?.optimized?.uri || 
+                    "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"} 
+                  alt={`${profile.handle?.localName}'s profile picture`}
+                  size="lg"
+                />
 
-                    <Text c="dimmed" size="xs">
-                      @{profile.handle?.localName ?? profile.id}
-                    </Text>
-                  </div>
+                <div style={{ flex: 1 }}>
+                  <Text size="md" fw={500}>
+                    {profile.metadata?.displayName ||
+                      profile.handle?.localName}
+                  </Text>
 
-                  <Group>
-                    <AiOutlineUsergroupAdd size="1.5rem" />
+                  <Text c="dimmed" size="sm">
+                    @{profile.handle?.localName}
+                  </Text>
+                </div>
+              </Group>
+              <Space h="md" />
+              <Text lineClamp={3} fw={200}>
+                {
+                  // @ts-ignore
+                  profile.metadata?.bio || null
+                }
+              </Text>
+               <Space h="md" />
+              <Group justify="center">
+                <Text fw={500} size="sm">
+                  {
+                    // @ts-ignore
+                    profile.stats.followers || "0"
+                  }{" "}
+                  Followers
+                </Text>
+                |
+                <Text fw={500} size="sm">
+                  {
+                    // @ts-ignore
+                    profile.stats.following || "0"
+                  }{" "}
+                  Following
+                </Text>
+              </Group>
+              
+            </HoverCard.Dropdown>
+        </HoverCard>    
+     
+      </>
+                ))}
 
-                    <Text fw={500} size="sm">
-                      Followed You
-                    </Text>
-                  </Group>
-                </Group>
-              </Paper>
-            </UnstyledButton>
-          </Center>
-          <Space h="sm" />
-        </div>
-      ))}
+                {notification.followers.length > 7 && (
+                <Avatar>+{notification.followers.length - 7}</Avatar>
+              )}
+            
+          </Avatar.Group>
+          </Group>
+    </Paper>
+    </Center>
+    <Space h="sm" />
     </NotificationItemWrapper>
   );
 }
@@ -282,6 +346,7 @@ function NewMirrorNotification({
   return (
     <NotificationItemWrapper>
       <p>New mirror on {notification.publication.id}</p>
+      <Space h="sm" />
     </NotificationItemWrapper>
   );
 }
@@ -294,6 +359,7 @@ function NewQuoteNotification({
   return (
     <NotificationItemWrapper>
       <p>New quote {notification.quote.id}</p>
+      <Space h="sm" />
     </NotificationItemWrapper>
   );
 }

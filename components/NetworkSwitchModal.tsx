@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNetworkMismatch, useAddress } from "@thirdweb-dev/react";
 import { useRouter } from "next/router";
 import SignInWithLensButton from "./SignInWithLensButton";
-import { Center, Container, Group, Paper, Space, Text } from "@mantine/core";
+import { Center, Container, Group, Paper, Space, Text, Modal } from "@mantine/core";
 
 const MODAL_DISPLAY_DELAY = 1000; // Set the delay time in milliseconds
 

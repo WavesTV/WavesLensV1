@@ -204,7 +204,7 @@ const PostPage = () => {
         <Group justify="left">
           <Avatar
             // @ts-ignore
-            src={session?.profile?.metadata?.picture || "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"}
+            src={session?.profile?.metadata?.picture.optimized.uri || "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"}
             size="lg"
             radius="xl"
           />

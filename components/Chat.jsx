@@ -44,7 +44,7 @@ export const Chat = ({ handle }) => {
       querySnapshot.forEach((doc) => {
         messages.push({ ...doc.data(), id: doc.id });
       });
-      console.log(messages)
+      
       setMessages(messages);
     });
 
@@ -66,7 +66,7 @@ export const Chat = ({ handle }) => {
              // @ts-ignore
              session.profile?.handle?.localName
              ,
-     photoURL: session?.profile?.metadata?.picture ||
+     photoURL: session?.profile?.metadata?.picture.optimized.uri ||
             "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe",
       room: handle,
     });
@@ -79,7 +79,7 @@ export const Chat = ({ handle }) => {
     <Paper p="sm" className="chat-app">
       <Text fw={777} size="xl" ta="center">{handle}&apos;s Chat</Text>
       <Space h="md"/>
-      <ScrollArea h={723} scrollbarSize={6} scrollHideDelay={1500} viewportRef={viewport}>
+      <ScrollArea h={666} scrollbarSize={6} scrollHideDelay={1500} viewportRef={viewport}>
       <div style={{ height: "723px", maxHeight: "723px", width: "244px"}} className="messages">
         {messages.map((message) => (
           <>

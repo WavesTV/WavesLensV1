@@ -72,11 +72,11 @@ const { execute: dismiss, loading: dismissing } = useDismissRecommendedProfiles(
       
  {data.slice(0, 5).map((user: any) => (
      <HoverCard
-     key={user?.id}
+        key={user?.id}
           width={320}
           shadow="md"
           withArrow
-          
+          position="right"
         >
           
               <Group >
@@ -98,7 +98,7 @@ const { execute: dismiss, loading: dismissing } = useDismissRecommendedProfiles(
                     }
                     radius="xl"
                   />
-</HoverCard.Target>
+              </HoverCard.Target>
                   <div style={{ flex: 1 }}>
                     <Text size="sm" fw={500}>
                       {user.metadata?.displayName || user.handle?.localName}

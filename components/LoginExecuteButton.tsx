@@ -25,6 +25,8 @@ export default function LoginExecuteButton() {
     },
   });
 
+  
+
   if (!address)
     return (
       <ConnectWallet
@@ -43,9 +45,10 @@ export default function LoginExecuteButton() {
               <Paper shadow="lg" radius="md" withBorder p="sm" key={profile.id}>
                 <Group justify="space-between" wrap="nowrap">
                   <Avatar
-                    // @ts-ignore
+                    
                     src={
-                      profile.metadata?.picture ||
+                      // @ts-ignore
+                      profile.metadata?.picture.optimized.uri ||
                       "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
                     }
                     alt={`${profile.handle?.localName}'s profile`}

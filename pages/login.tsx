@@ -25,6 +25,7 @@ const Login: NextPage = () => {
     }
   }, [session, router, session?.type]);
 
+
   return (
     <>
       <Space h="xl" />
@@ -43,7 +44,7 @@ const Login: NextPage = () => {
 
         <Space h="md" />
         <Group justify="center">
-          {/* Wallet connected, has profile on Lens. */}
+        {/* Wallet connected, has profile on Lens. */}
           {session?.authenticated ? (
             // Render content when both walletInfo and activeProfile data are available
             <>
