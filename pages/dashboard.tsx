@@ -16,6 +16,7 @@ import {
   Tabs,
   rem,
   UnstyledButton,
+  Collapse
 } from "@mantine/core";
 import {
   Post as PostType,
@@ -38,6 +39,7 @@ import { useState } from "react";
 import { ViewFollowing } from "@/components/ViewFollowing";
 import { ViewFollowers } from "@/components/ViewFollowers";
 import { IoMusicalNotesSharp } from "react-icons/io5";
+import { Chat } from "@/components/Chat";
 
 export default function Dashboard() {
   const { data: session } = useSession();
@@ -49,7 +51,7 @@ export default function Dashboard() {
     useDisclosure(false);
   const [openedFollowers, { open: openFollowers, close: closeFollowers }] =
     useDisclosure(false);
-
+  const [openedChat, { toggle }] = useDisclosure(true);
   const profilePosts = usePublications({
     where: {
       from:
@@ -155,7 +157,7 @@ export default function Dashboard() {
               {/* @ts-ignore */}
               <Image
                 // @ts-ignore
-                src={session?.profile?.metadata?.coverPicture}
+                src={session?.profile?.metadata?.coverPicture?.optimized.uri}
                 height={200}
                 fallbackSrc="https://www.hdwallpaper.nu/wp-content/uploads/2015/07/Ocean-wave-stock-image_WEB.jpg"
                 alt="cover picture"
@@ -163,9 +165,10 @@ export default function Dashboard() {
             </Card.Section>
 
             <Avatar
-              // @ts-ignore
+              
               src={
-                session?.profile?.metadata?.picture ||
+                // @ts-ignore
+                session?.profile?.metadata?.picture.optimized.uri ||
                 "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
               }
               className={styles.avatar}
@@ -239,7 +242,31 @@ export default function Dashboard() {
             <Space h="md" />
           </Card>
 
-          <Space h="xl" />
+          <Space h="sm"/>
+            <Center>
+              <Button variant="light" hiddenFrom="md" onClick={toggle}>
+               {openedChat ? (
+                <>
+                Close Chat
+                </>
+               ):(
+                <>
+                Open Chat
+                </>
+               )}
+                
+              </Button>
+            </Center>
+              <Group justify="center" hiddenFrom="md">
+
+                <Collapse transitionDuration={1000} transitionTimingFunction="smooth" in={openedChat}>
+                  <Chat handle={session.profile?.handle?.localName} />
+                </Collapse>
+
+              </Group>
+        
+     
+      <Space h="xl" />
           <Container>
           <Tabs
             variant="pills"

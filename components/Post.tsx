@@ -197,6 +197,7 @@ export default function Post({ post }: Props) {
           withArrow
           openDelay={200}
           closeDelay={400}
+          zIndex={99999999}
         >
           
     

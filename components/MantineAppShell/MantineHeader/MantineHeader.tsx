@@ -17,7 +17,6 @@ import {
   Modal,
   Switch,
   useMantineTheme,
-  
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import {
@@ -55,6 +54,7 @@ export function MantineHeader() {
   const [openedNotifs, { toggle: openNotifs, close: closeNotifs }] =
     useDisclosure(false);
   const { data: session } = useSession();
+
 
   const router = useRouter();
   const { execute, loading: isPending } = useLogout();
@@ -271,9 +271,10 @@ export function MantineHeader() {
                       <Avatar
                         size="md"
                         radius="xl"
-                        mx="auto" // @ts-ignore
+                        mx="auto" 
                         src={
-                          session?.profile?.metadata?.picture ||
+                          // @ts-ignore
+                          session?.profile?.metadata?.picture.optimized.uri ||
                           "https://gw.ipfs-lens.dev/ipfs/bafybeidkewnnnisaqmwk7ornt6fymjddlkhlou2tsfhaxxnird4w4yrebe"
                         }
                       />

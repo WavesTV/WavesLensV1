@@ -5,39 +5,28 @@ import {
   useNetworkMismatch,
   useSwitchChain,
 } from "@thirdweb-dev/react";
-import React from "react";
-import { Button, Loader } from "@mantine/core";
+import React, { useEffect } from "react";
 import { CHAIN } from "../const/chains";
 import LoginExecuteButton from "./LoginExecuteButton";
 
 export default function SignInWithLensButton() {
-  const address = useAddress();
+ const address = useAddress();
   const wrongNetwork = useNetworkMismatch();
   const switchChain = useSwitchChain();
 
- if (!address) {
+  useEffect(() => {
+    if (wrongNetwork) {
+      switchChain(CHAIN.chainId);
+    }
+  }, [wrongNetwork, switchChain]);
+
+  if (!address) {
     return (
       <ConnectWallet
-        style={{
-          width: "100%",
-        }}
-        auth={{
-          loginOptional: true,
-        }}
+        style={{ width: "100%" }}
+        auth={{ loginOptional: true }}
         theme="dark"
       />
-    );
-  }
-
-  if (wrongNetwork) {
-    return (
-      <Button
-        onClick={() => {
-          switchChain(CHAIN.chainId);
-        }}
-      >
-        Switch to {CHAIN.name}
-      </Button>
     );
   }
 
@@ -48,9 +37,7 @@ export default function SignInWithLensButton() {
   return (
     <ConnectWallet
       theme="dark"
-      auth={{
-        loginOptional: true,
-      }}
+      auth={{ loginOptional: true }}
     />
   );
 }

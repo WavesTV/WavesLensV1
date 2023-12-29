@@ -4,24 +4,30 @@ import { MantineAside } from "@/components/MantineAppShell/MantineAside";
 import { MantineFooter } from "@/components/MantineAppShell/MantineFooter";
 import { Spotlight } from "@/components/Spotlight";
 import { useDisclosure, useWindowScroll } from "@mantine/hooks";
-import { ActionIcon, AppShell, Space, Tooltip, Group } from "@mantine/core";
+import { ActionIcon, AppShell, Space, Tooltip, Group, Modal } from "@mantine/core";
 import { RiArrowRightDoubleLine, RiArrowLeftDoubleLine } from "react-icons/ri";
 import classes from "../../styles/RecommendedWaves.module.css";
 import { BiSolidUpArrow } from "react-icons/bi";
 import { useRouter } from 'next/router';
 import { Chat } from "@/components/Chat";
 import { useSession } from "@lens-protocol/react-web";
+import { LiaGlobeSolid } from "react-icons/lia";
 
 export function MantineAppShell({ children }) {
   const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [navOpened, { toggle: toggleNav }] = useDisclosure(true);
   const [asideOpened, { toggle: toggleAside }] = useDisclosure(true);
+  const [openedChat, { open: openChat, close: closeChat }] = useDisclosure(false);
   const [scroll, scrollTo] = useWindowScroll();
   const router = useRouter();
   const { handle } = router.query;
    const { data: session } = useSession();
   return (
     <>
+    <Modal p="md" opened={openedChat} onClose={closeChat}>
+        <Chat handle={"Global Waves"} />
+    </Modal>
+
       <AppShell
         padding="md"
         header={{ height: 60 }}
@@ -118,7 +124,22 @@ export function MantineAppShell({ children }) {
           )}
 
           <Space h="md" />
-          <Spotlight />
+          <Group justify="space-between">
+            <Spotlight />
+
+            <Tooltip label="Global Chat">
+        <ActionIcon
+          variant="gradient"
+          gradient={{ from: "blue", to: "cyan", deg: 90 }}
+          size="xl"
+          radius="xl"
+          onClick={openChat}
+        >
+          <LiaGlobeSolid size="2rem" />
+        </ActionIcon>
+      </Tooltip>
+          </Group>
+          
           <Space h="sm" />
           
            <div style={{ position: "relative" }}>

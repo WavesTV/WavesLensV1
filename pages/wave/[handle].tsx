@@ -138,7 +138,7 @@ const ProfilePage = () => {
      
         <Card shadow="sm" padding="lg" radius="md" withBorder>
           <Card.Section>
-            {/* @ts-ignore */}
+            
             <Image
               // @ts-ignore
               alt={`${profile?.data?.handle?.localName}'s cover photo`}

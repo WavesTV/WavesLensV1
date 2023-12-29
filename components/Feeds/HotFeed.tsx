@@ -47,7 +47,7 @@ export function HotFeed() {
     limit: LimitType.TwentyFive,
   });
 
-  console.log(hotFeed)
+ 
   return (
     <Tabs variant="pills" value={activeTab} onChange={setActiveTab} radius="xl">
       <Tabs.List justify="center">
