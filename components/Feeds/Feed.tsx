@@ -87,7 +87,7 @@ export default function Feed() {
             </Center>
             <Space h="md" />
             <Player 
-            playbackId="ca57j651up688am0" 
+            playbackId="f233fkk7ul7av63z" 
             title="type shi" 
     
             priority 
