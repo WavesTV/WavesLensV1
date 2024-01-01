@@ -185,7 +185,7 @@ const ProfilePage = () => {
           {"wavestv" === profile?.data?.handle?.localName && (
             <Paper>
               <Player 
-              playbackId="ca57j651up688am0" 
+              playbackId="f233fkk7ul7av63z" 
               title="pp poopoo" 
             
               priority 
