@@ -46,8 +46,11 @@ export default function Notifications() {
   const iconStyle = { width: rem(18), height: rem(18) };
   const [activeTab, setActiveTab] = useState<string | null>("All");
 
+
+  
+
   if (
-    allNotifications.data === undefined &&
+    !allNotifications.loading && !allNotifications.data &&
     session?.data?.type === "WITH_PROFILE"
   ) {
     return (

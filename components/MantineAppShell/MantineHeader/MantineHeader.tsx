@@ -280,6 +280,20 @@ export function MantineHeader() {
                       />
                     </Menu.Target>
                     <Menu.Dropdown>
+                       <Menu.Label>Visit Lens Explorer</Menu.Label>
+                              <Menu.Item
+                                onClick={() =>
+                                  window.open(
+                                    "https://momoka.lens.xyz/",
+                                    "_blank"
+                                  )
+                                }
+                                leftSection={<Avatar src="https://pbs.twimg.com/profile_images/1654121403669680129/Ebc2fvyq_400x400.jpg" size={17} />}
+                              >
+                                Lens Explorer
+                              </Menu.Item>
+
+                              <Menu.Divider />
                       <Menu.Item
                         onClick={(e: any) => {
                           e.preventDefault();
@@ -453,6 +467,20 @@ export function MantineHeader() {
                     </Button>
                   </Menu.Target>
                   <Menu.Dropdown>
+                     <Menu.Label>Visit Lens Explorer</Menu.Label>
+                              <Menu.Item
+                                onClick={() =>
+                                  window.open(
+                                    "https://momoka.lens.xyz/",
+                                    "_blank"
+                                  )
+                                }
+                                leftSection={<Avatar src="https://pbs.twimg.com/profile_images/1654121403669680129/Ebc2fvyq_400x400.jpg" size={17} />}
+                              >
+                                Lens Explorer
+                              </Menu.Item>
+
+                              <Menu.Divider />
                     <Menu.Item
                       leftSection={<IconLogout size={17} color="red" />}
                       onClick={(e: any) => {
