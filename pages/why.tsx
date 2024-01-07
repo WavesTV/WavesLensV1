@@ -431,6 +431,10 @@ export default function Why() {
                       <List.Item>Invite/Onboard Web2 Streamers</List.Item>
                     </Fade>
                     <Space h="xs" />
+                    <Fade>
+                      <List.Item>Mucho mas</List.Item>
+                    </Fade>
+                    <Space h="xs" />
                   </List>
                 </Paper>
               </>
