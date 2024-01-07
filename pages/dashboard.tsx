@@ -22,9 +22,11 @@ import {
   Post as PostType,
   useSession,
   usePublications,
+  useBookmarks
 } from "@lens-protocol/react-web";
 import styles from "../styles/ProfileCard.module.css";
 import { Stream } from "@/components/Stream";
+import { Bookmarks } from "@/components/Bookmarks";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Post from "@/components/Post";
 import { GiWaveCrest } from "react-icons/gi";
@@ -38,7 +40,7 @@ import { FaImage } from "react-icons/fa6";
 import { useState } from "react";
 import { ViewFollowing } from "@/components/ViewFollowing";
 import { ViewFollowers } from "@/components/ViewFollowers";
-import { IoMusicalNotesSharp } from "react-icons/io5";
+import { IoMusicalNotesSharp, IoBookmark } from "react-icons/io5";
 import { Chat } from "@/components/Chat";
 
 export default function Dashboard() {
@@ -52,6 +54,7 @@ export default function Dashboard() {
   const [openedFollowers, { open: openFollowers, close: closeFollowers }] =
     useDisclosure(false);
   const [openedChat, { toggle }] = useDisclosure(true);
+
   const profilePosts = usePublications({
     where: {
       from:
@@ -60,6 +63,8 @@ export default function Dashboard() {
           : undefined,
     },
   });
+
+
 
 
 
@@ -295,6 +300,13 @@ export default function Dashboard() {
                 value="Audio"
                 leftSection={<IoMusicalNotesSharp style={iconStyle} />}
               />
+
+              {session?.authenticated && session.type === "WITH_PROFILE" && (
+              <Tabs.Tab
+                value="Bookmarks"
+                leftSection={<IoBookmark style={iconStyle} />}
+              />
+              )}
             </Tabs.List>
 
             <Space h="md" />
@@ -359,8 +371,8 @@ export default function Dashboard() {
                   }
                 >
                   {// @ts-ignore post type
-                  profilePosts?.data?.map((post: PostType) => (
-                    <Post key={post.id} post={post} />
+                  profilePosts?.data?.map((post: PostType, index) => (
+                    <Post key={index} post={post} />
                   ))}
                 </InfiniteScroll>
               )}
@@ -423,7 +435,7 @@ export default function Dashboard() {
                         );
                       }
                     })
-                    .map((post) => <Post key={post.id} post={post} />)}
+                    .map((post, index) => <Post key={post.id} post={post} />)}
                 </InfiniteScroll>
               )}
             </Tabs.Panel>
@@ -483,7 +495,7 @@ export default function Dashboard() {
                         return post.metadata?.__typename === "VideoMetadataV3";
                       }
                     })
-                    .map((post) => <Post key={post.id} post={post} />)}
+                    .map((post, index) => <Post key={index} post={post} />)}
                 </InfiniteScroll>
               )}
             </Tabs.Panel>
@@ -543,7 +555,7 @@ export default function Dashboard() {
                         return post.metadata?.__typename === "AudioMetadataV3";
                       }
                     })
-                    .map((post) => <Post key={post.id} post={post} />)}
+                    .map((post, index) => <Post key={index} post={post} />)}
                 </InfiniteScroll>
               )}
             </Tabs.Panel>
@@ -603,10 +615,20 @@ export default function Dashboard() {
                         return post.metadata?.__typename === "ImageMetadataV3";
                       }
                     })
-                    .map((post) => <Post key={post.id} post={post} />)}
+                    .map((post, index) => <Post key={index} post={post} />)}
                 </InfiniteScroll>
               )}
             </Tabs.Panel>
+
+             {session?.authenticated && session.type === "WITH_PROFILE" && (
+              <Tabs.Panel value="Bookmarks">
+              <Space h="md" />
+              <Bookmarks />
+
+              </Tabs.Panel>
+              )}
+
+            
           </Tabs>
           </Container>
         </>

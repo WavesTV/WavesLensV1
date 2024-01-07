@@ -36,6 +36,14 @@ export default function Why() {
       >
         Roadmap
       </Text>
+       <Text
+        ta="center"
+        size="xl"
+        fw={555}
+        fs="italic"
+      >
+        Lens Grant Milestones
+      </Text>
       <Space h={70} />
       <Center>
         <Stepper
@@ -159,7 +167,7 @@ export default function Why() {
               <>
                 <Paper shadow="sm" radius="md" withBorder p="xl">
                   <Text c="dimmed" fw={200}>
-                    Monetization + Channel Chats + Enhancements
+                    Channel Chats + More
                   </Text>
                   <Space h="md" />
                   <List
@@ -226,7 +234,7 @@ export default function Why() {
                           </ThemeIcon>
                         }
                       >
-                        In-Browser Stream - Easier for non-gamer streamers + Mobile Friendly (Kind of)
+                        In-Browser Stream - Easier for non-gamer streamers + Mobile Friendly
                       </List.Item>
                     </Fade>
                   <Space h="xs" />
@@ -298,20 +306,41 @@ export default function Why() {
                       >
                         Global Chat for Engagement, Feedback, New Users
                       </List.Item>
+                      
                     </Fade>
-                    <Space h="xs" />
+                     <Space h="xs" />
                     <Fade>
-                      <List.Item>Stream Collects</List.Item>
-                    </Fade>
-                    <Space h="xs" />
-                    <Fade>
-                      <List.Item>
-                        More Post Types(Images, Embed Links, Videos)
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Not Interested Toggle
                       </List.Item>
+                      
+                    </Fade>
+                     <Space h="xs" />
+                    <Fade>
+                      <List.Item
+                       icon={
+                          <ThemeIcon color="teal" size={24} radius="xl">
+                            <IoCheckmarkOutline
+                              style={{ width: rem(16), height: rem(16) }}
+                            />
+                          </ThemeIcon>
+                        }
+                      >
+                        Bookmark Toggle + Dashboard Tab to view bookmarks
+                      </List.Item>
+                      
                     </Fade>
                     <Space h="xs" />
                     <Fade>
-                      <List.Item>Post, Comment, Mirrors</List.Item>
+                      <List.Item>Apply to be Whitelisted for Gasless/Signless then Post, Comment, Mirrors, Collects will work in prod (Functions written)</List.Item>
                     </Fade>
                     <Space h="xs" />
                     <Fade>
@@ -323,9 +352,96 @@ export default function Why() {
               </>
             }
           />
+
+
+          
         </Stepper>
+
       </Center>
       <Space h="xl" />
+      <Text
+        ta="center"
+        size="xl"
+        fw={555}
+        fs="italic"
+      >
+        More Planned Features
+      </Text>
+     
+      <Center>
+      <Stepper
+          active={0}
+          orientation="vertical"
+          size="xl"
+          classNames={classes}
+          completedIcon={<IoMdCheckmarkCircleOutline size="1.7rem" />}
+        >
+          
+       
+          <Stepper.Step
+            icon={<IconCircleDashed size="1.7rem" />}
+            
+            description={
+              <>
+                <Paper shadow="sm" radius="md" withBorder p="xl">
+                  
+                  <Space h="md" />
+                  <List
+                    spacing="xs"
+                    size="sm"
+                    center
+                    icon={
+                      <ThemeIcon color="blue" size={24} radius="xl">
+                        <IconCircleDashed
+                          style={{ width: rem(16), height: rem(16) }}
+                        />
+                      </ThemeIcon>
+                    }
+                  >
+                   
+                    <Fade>
+                      <List.Item>Stream Clips</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Mobile App Alpha</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Incorporate more Open Actions as open source evolves or build my own</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Analytics</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>More Post Types</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Direct Messaging</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Integrations + Partnerships</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                    <Fade>
+                      <List.Item>Invite/Onboard Web2 Streamers</List.Item>
+                    </Fade>
+                    <Space h="xs" />
+                  </List>
+                </Paper>
+              </>
+            }
+          />
+
+
+          
+        </Stepper>
+
+      </Center>
 
       <Space h={111} />
     </>

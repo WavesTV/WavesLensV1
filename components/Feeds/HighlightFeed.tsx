@@ -138,8 +138,8 @@ export function HighlightFeed() {
             >
               {session &&
                 session.authenticated &&
-                highlightsFeed?.data?.map((post) => (
-                  <Post key={post.id} post={post} />
+                highlightsFeed?.data?.map((post, index) => (
+                  <Post key={index} post={post} />
                 ))}
             </InfiniteScroll>
           )}
@@ -180,7 +180,7 @@ export function HighlightFeed() {
                 ?.filter(
                   (post) => post.metadata?.__typename === "TextOnlyMetadataV3",
                 )
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -220,7 +220,7 @@ export function HighlightFeed() {
                 ?.filter(
                   (post) => post.metadata?.__typename === "VideoMetadataV3",
                 )
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -260,7 +260,7 @@ export function HighlightFeed() {
                 ?.filter(
                   (post) => post.metadata?.__typename === "AudioMetadataV3",
                 )
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -300,7 +300,7 @@ export function HighlightFeed() {
                 ?.filter(
                   (post) => post.metadata?.__typename === "ImageMetadataV3",
                 )
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>

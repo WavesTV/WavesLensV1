@@ -370,6 +370,8 @@ export default function Notifications() {
           </>
         )}
       </Container>
+
+      <Space h="xl" />
     </>
   );
 }

@@ -48,7 +48,9 @@ import { useDisclosure } from "@mantine/hooks";
 import { ViewFollowing } from "@/components/ViewFollowing";
 import { ViewFollowers } from "@/components/ViewFollowers";
 import { Chat } from "@/components/Chat"
-import { IoMusicalNotesSharp } from "react-icons/io5";
+import { IoMusicalNotesSharp, IoBookmark } from "react-icons/io5";
+
+
 const ProfilePage = () => {
   const iconStyle = { width: rem(18), height: rem(18) };
   const [activeTab, setActiveTab] = useState<string | null>("All");
@@ -360,7 +362,6 @@ const ProfilePage = () => {
             leftSection={<IoMusicalNotesSharp style={iconStyle} />}
           />
 
-          
         </Tabs.List>
 
         <Space h="md" />
@@ -414,8 +415,8 @@ const ProfilePage = () => {
               }
             >
               {// @ts-ignore post type
-              profilePosts?.data?.map((post: PostType) => (
-                <Post key={post.id} post={post} />
+              profilePosts?.data?.map((post: PostType, index) => (
+                <Post key={index} post={post} />
               ))}
             </InfiniteScroll>
           )}
@@ -465,7 +466,7 @@ const ProfilePage = () => {
                     return post.metadata?.__typename === "TextOnlyMetadataV3";
                   }
                 })
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -513,7 +514,7 @@ const ProfilePage = () => {
                     return post.metadata?.__typename === "VideoMetadataV3";
                   }
                 })
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -561,7 +562,7 @@ const ProfilePage = () => {
                     return post.metadata?.__typename === "AudioMetadataV3";
                   }
                 })
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -609,7 +610,7 @@ const ProfilePage = () => {
                     return post.metadata?.__typename === "ImageMetadataV3";
                   }
                 })
-                .map((post) => <Post key={post.id} post={post} />)}
+                .map((post, index) => <Post key={index} post={post} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>

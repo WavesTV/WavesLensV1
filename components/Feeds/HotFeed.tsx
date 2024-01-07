@@ -115,8 +115,8 @@ export function HotFeed() {
             endMessage={<Space h={100} />}
           >
             {// @ts-ignore post type
-            hotFeed?.data?.map((post: PostType) => (
-              <Post key={post.id} post={post} />
+            hotFeed?.data?.map((post: PostType, index) => (
+              <Post key={index} post={post} />
             ))}
           </InfiniteScroll>
         )}
@@ -157,7 +157,7 @@ export function HotFeed() {
               ?.filter(
                 (post) => post.metadata?.__typename === "TextOnlyMetadataV3",
               )
-              .map((post) => <Post key={post.id} post={post} />)}
+              .map((post, index) => <Post key={index} post={post} />)}
           </InfiniteScroll>
         )}
       </Tabs.Panel>
@@ -197,7 +197,7 @@ export function HotFeed() {
               ?.filter(
                 (post) => post.metadata?.__typename === "VideoMetadataV3",
               )
-              .map((post) => <Post key={post.id} post={post} />)}
+              .map((post, index) => <Post key={index} post={post} />)}
           </InfiniteScroll>
         )}
       </Tabs.Panel>
@@ -237,7 +237,7 @@ export function HotFeed() {
               ?.filter(
                 (post) => post.metadata?.__typename === "AudioMetadataV3",
               )
-              .map((post) => <Post key={post.id} post={post} />)}
+              .map((post, index) => <Post key={index} post={post} />)}
           </InfiniteScroll>
         )}
       </Tabs.Panel>
@@ -277,7 +277,7 @@ export function HotFeed() {
               ?.filter(
                 (post) => post.metadata?.__typename === "ImageMetadataV3",
               )
-              .map((post) => <Post key={post.id} post={post} />)}
+              .map((post, index) => <Post key={index} post={post} />)}
           </InfiniteScroll>
         )}
       </Tabs.Panel>

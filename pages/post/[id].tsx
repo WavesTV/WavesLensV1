@@ -137,6 +137,8 @@ const PostPage = () => {
     forId: id as PublicationId,
   });
 
+  console.log(publication)
+
   const comments = usePublications({
     where: {
       commentOn: {
@@ -194,7 +196,7 @@ const PostPage = () => {
       <Center>
         <Container>
           {!!publication?.data && session?.data && (
-            <Post post={publication?.data as PostType | Comment} />
+            <Post key={id as PublicationId} post={publication?.data as PostType | Comment} />
           )}
         </Container>
       </Center>
@@ -257,7 +259,7 @@ const PostPage = () => {
       >
         {!!comments?.data &&
           comments?.data?.length > 0 &&
-          comments?.data?.map((post) => <Post key={post.id} post={post} />)}
+          comments?.data?.map((post, index) => <Post key={index} post={post} />)}
       </InfiniteScroll>
     </>
   );

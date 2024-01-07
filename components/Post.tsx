@@ -8,9 +8,14 @@ import {
   Comment,
   PublicationReactionType,
   useSession,
-  hasReacted,
+  useBookmarkToggle,
   Quote,
   Mirror,
+  AnyPublication,
+  PrimaryPublication,
+  useNotInterestedToggle,
+  useReportPublication,
+  ReportReason
 } from "@lens-protocol/react-web";
 import { useRouter } from "next/router";
 import {
@@ -28,7 +33,10 @@ import {
   Center,
   Button,
   HoverCard,
-  Box,
+  Modal,
+  Menu,
+  rem,
+  Select
 } from "@mantine/core";
 import {
   IconCheck,
@@ -47,6 +55,12 @@ import { Player } from "@livepeer/react";
 import { IconExclamationMark } from "@tabler/icons-react";
 import { FaComments } from "react-icons/fa6";
 import { AudioPlayer } from 'react-audio-play';
+import { FaHeartBroken } from "react-icons/fa";
+import { useHover, useDisclosure } from '@mantine/hooks';
+ import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoBookmarkOutline } from "react-icons/io5";
+import { IoBookmark } from "react-icons/io5";
+import { MdHideImage, MdReport } from "react-icons/md";
 
 type Props = {
   post: Post | Comment | Quote | Mirror;
@@ -58,8 +72,13 @@ function isMirrorPost(post: Post | Comment | Quote | Mirror): post is Mirror {
 
 export default function Post({ post }: Props) {
   const router = useRouter();
-  const { execute: react, loading, error } = useReactionToggle();
+  const { execute: react, error } = useReactionToggle();
   const { data: session } = useSession();
+  const { hovered, ref } = useHover();
+  const { execute: toggle, error: bookmarkError } = useBookmarkToggle();
+  const { execute: toggleNotInterested, error: NiError } = useNotInterestedToggle();
+  const [reportType, setReportType] = useState<string | null>('');
+  const [opened, { open, close }] = useDisclosure(false);
 
   // Either use the post, or if it has been decrypted, use the decrypted post
   const postToUse = useMemo(() => {
@@ -78,46 +97,6 @@ export default function Post({ post }: Props) {
     });
   }
 
-  const hasReaction = useMemo(() => {
-    if (session?.authenticated && postToUse && "canUpvote" in postToUse) {
-      return hasReacted({
-        publication: postToUse as Post,
-        reaction: PublicationReactionType.Upvote,
-      });
-    }
-    return false;
-  }, [session, postToUse]);
-
-
-  async function handleReaction() {
-    if (!react) return;
-
-    if (!hasReaction) {
-      await react({
-        publication: postToUse as Post,
-        reaction: PublicationReactionType.Upvote,
-      });
-
-      setUserUpvotedReacted(true);
-    } else {
-      await react({
-        publication: postToUse as Post,
-        reaction: PublicationReactionType.Downvote,
-      });
-    }
-  }
-  // State to track if the user has reacted to the post
-  const [userUpvoted, setUserUpvotedReacted] = useState(false);
-
-   const postMedia = useMemo(() => {
-    return (
-      postContent?.metadata?.__typename === "AudioMetadataV3" ||
-      postContent?.metadata?.__typename === "ImageMetadataV3" ||
-      postContent?.metadata?.__typename === "VideoMetadataV3" ||
-      null
-    );
-  }, [postContent]);
-
   const replaceURLs = (text: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const atSymbolRegex = /(\S*@+\S*)/g;
@@ -130,8 +109,10 @@ export default function Post({ post }: Props) {
       .replace(atSymbolRegex, (match: any) => ` ${match} `);
   };
 
+
   return (
     <>
+
       <Paper p="xs" shadow="xl" radius="md" withBorder>
         <Space h="sm" />
 
@@ -187,6 +168,118 @@ export default function Post({ post }: Props) {
                 </Text>
               </Button>
             )}
+             <Menu shadow="md">
+              <Menu.Target>
+                    <ActionIcon size="xs" variant="transparent">
+                    <BsThreeDotsVertical />
+                    </ActionIcon>
+                    </Menu.Target>
+
+                      <Menu.Dropdown >
+               { // @ts-ignore
+               postToUse?.operations?.hasBookmarked ? (
+                  <Menu.Item onClick={() => {
+                    toggle({publication: postToUse as AnyPublication}); 
+                    if (!bookmarkError) {
+                    notifications.show({
+                      title: "Success",
+                      icon: <IconCheck size="1.1rem" />,
+                      color: "green",
+                      message: "Bookmark successfully removed!",
+                    }); 
+                  } else {
+                    notifications.show({
+                      title: "Error",
+                      icon: <IconX size="1.1rem" />,
+                      color: "red",
+                      message: "Something Happened",
+                    }); 
+
+                    }
+                  
+                  
+                  }} 
+                    leftSection={<IoBookmark style={{ width: rem(15), height: rem(15) }} />}>
+                    Remove Bookmark
+                  </Menu.Item>
+               ):(
+                  <Menu.Item onClick={() => {
+                    toggle({publication: postToUse as AnyPublication})
+                  if (!bookmarkError) {
+                    notifications.show({
+                      title: "Success",
+                      icon: <IconCheck size="1.1rem" />,
+                      color: "green",
+                      message: "Successfully Bookmarked! View on your Dashboard.",
+                    }); 
+                  } else {
+                    notifications.show({
+                      title: "Error",
+                      icon: <IconX size="1.1rem" />,
+                      color: "red",
+                      message: "Something Happened",
+                    }); 
+
+                    }
+                }} 
+                  leftSection={<IoBookmarkOutline style={{ width: rem(15), height: rem(15) }} />}>
+                    Bookmark
+                  </Menu.Item>
+               )}
+             
+                { // @ts-ignore
+               postToUse?.operations?.isNotInterested ? (
+                  <Menu.Item onClick={() => {
+                    toggleNotInterested({publication: postToUse as AnyPublication})
+                    if (!NiError) {
+                    notifications.show({
+                      title: "Success",
+                      icon: <IconCheck size="1.1rem" />,
+                      color: "green",
+                      message: "Successfully undone!",
+                    }); 
+                  } else {
+                    notifications.show({
+                      title: "Error",
+                      icon: <IconX size="1.1rem" />,
+                      color: "red",
+                      message: "Something Happened!",
+                    }); 
+
+                    }
+                  }} 
+                  leftSection={<MdHideImage style={{ width: rem(15), height: rem(15) }} />}>
+                    Undo Not Interested
+                  </Menu.Item>
+               ):(
+                  <Menu.Item onClick={() => {
+                    toggleNotInterested({publication: postToUse as AnyPublication})
+                     if (!NiError) {
+                    notifications.show({
+                      title: "Success",
+                      icon: <IconCheck size="1.1rem" />,
+                      color: "green",
+                      message: "Not Interested!",
+                    }); 
+                  } else {
+                    notifications.show({
+                      title: "Error",
+                      icon: <IconX size="1.1rem" />,
+                      color: "red",
+                      message: "Something Happened!",
+                    }); 
+
+                    }
+                  }} 
+                  leftSection={<MdHideImage style={{ width: rem(15), height: rem(15) }} />}>
+                    Not Interested
+                  </Menu.Item>
+               )}
+
+              </Menu.Dropdown>
+
+              
+            </Menu>
           </Group>
         </div>
 
@@ -743,13 +836,17 @@ export default function Post({ post }: Props) {
               {postContent?.stats?.mirrors}
             </Text>
 
-            {/* Hearts */}
-            <Tooltip position="bottom" label="Heart">
-              <ActionIcon
+             {/* Hearts */}
+             {// @ts-ignore
+               postToUse?.operations?.hasUpvoted ? (
+               <div ref={ref}>
+                <Tooltip label="Remove Upvote">
+                <ActionIcon
+                
                 variant="subtle"
                 radius="md"
                 size={36}
-                onClick={(e: any) => {
+                onClick={ async (e: any) => {
                   e.stopPropagation();
                   try {
                     if (!session?.authenticated) {
@@ -762,9 +859,56 @@ export default function Post({ post }: Props) {
                       return; // Return early to prevent further execution
                     }
 
-                    handleReaction();
+                    await react({
+                      reaction: PublicationReactionType.Upvote,
+                      publication: postToUse as PrimaryPublication,
+                    });
                     notifications.show({
-                      title: "Liked!",
+                      title: "Success",
+                      icon: <FaHeartBroken size="1.1rem" />,
+                      color: "blue",
+                      message: "Successfully removed upvote!",
+                    });
+                  } catch (error) {
+                    notifications.show({
+                      title: "Error",
+                      icon: <IconX size="1.1rem" />,
+                      color: "red",
+                      message: `Something Happened! ${error}`,
+                    });
+                    
+                  }
+                }}
+              >
+               {hovered ? <FaHeartBroken size={18} /> : <IconHeartFilled size={18} stroke={1.5} /> }
+                </ActionIcon>
+                </Tooltip>
+                </div>
+               ) : (
+                <Tooltip label="Upvote">
+                <ActionIcon
+                variant="subtle"
+                radius="md"
+                size={36}
+                onClick={ async (e: any) => {
+                  e.stopPropagation();
+                  try {
+                    if (!session?.authenticated) {
+                      notifications.show({
+                        title: "Error",
+                        icon: <IconX size="1.1rem" />,
+                        color: "red",
+                        message: `Login to like this post!`,
+                      });
+                      return; // Return early to prevent further execution
+                    }
+
+                    await react({
+                      reaction: PublicationReactionType.Upvote,
+                      publication: postToUse as PrimaryPublication,
+                    });
+                    notifications.show({
+                      title: "Success",
                       icon: <IconHeartFilled size="1.1rem" />,
                       color: "blue",
                       message: `You Liked ${
@@ -778,17 +922,14 @@ export default function Post({ post }: Props) {
                       color: "red",
                       message: `Something Happened! ${error}`,
                     });
-                    console.error(error);
+                    
                   }
                 }}
               >
-                {userUpvoted || hasReaction ? (
-                  <IconHeartFilled size={18} stroke={1.5} />
-                ) : (
-                  <IconHeart size={18} stroke={1.5} />
-                )}
-              </ActionIcon>
-            </Tooltip>
+                <IconHeart size={18} stroke={1.5} />
+                </ActionIcon>
+                </Tooltip>
+               )}
             <Text size="xs" c="dimmed">
               {postContent?.stats?.upvotes}
             </Text>
