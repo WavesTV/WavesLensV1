@@ -74,6 +74,8 @@ export function FollowerFeed({ query }: SearchResultsProps) {
     },
   });
 
+  console.log(followingFeed)
+
   const [handle, setHandle] = useState("");
 
   const { data, error, loading } = useSearchProfiles({ query: handle,
@@ -332,9 +334,9 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                         endMessage={<Space h={100} />}
                       >
                         {// @ts-ignore post type
-                        surfFeed?.data?.map((post: PostType) => (
+                        surfFeed?.data?.map((post: PostType, index) => (
                           // @ts-ignore
-                          <Post key={post.id} post={post.root} />
+                          <Post key={index} post={post.root} />
                         ))}
                       </InfiniteScroll>
                     </Tabs.Panel>
@@ -402,8 +404,8 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                                 post.root.metadata?.__typename ===
                                 "TextOnlyMetadataV3",
                             )
-                            .map((post) => (
-                              <Post key={post.id} post={post.root} />
+                            .map((post, index) => (
+                              <Post key={index} post={post.root} />
                             ))}
                         </InfiniteScroll>
                       )}
@@ -471,8 +473,8 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                                 post.root.metadata?.__typename ===
                                 "VideoMetadataV3",
                             )
-                            .map((post) => (
-                              <Post key={post.root.id} post={post.root} />
+                            .map((post, index) => (
+                              <Post key={index} post={post.root} />
                             ))}
                         </InfiniteScroll>
                       )}
@@ -540,8 +542,8 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                                 post.root.metadata?.__typename ===
                                 "AudioMetadataV3",
                             )
-                            .map((post) => (
-                              <Post key={post.root.id} post={post.root} />
+                            .map((post, index) => (
+                              <Post key={index} post={post.root} />
                             ))}
                         </InfiniteScroll>
                       )}
@@ -609,8 +611,8 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                                 post.root.metadata?.__typename ===
                                 "ImageMetadataV3",
                             )
-                            .map((post) => (
-                              <Post key={post.root.id} post={post.root} />
+                            .map((post, index) => (
+                              <Post key={index} post={post.root} />
                             ))}
                         </InfiniteScroll>
                       )}
@@ -723,8 +725,8 @@ export function FollowerFeed({ query }: SearchResultsProps) {
             >
               {session &&
                 session.authenticated &&
-                followingFeed?.data?.map((post) => (
-                  <Post key={post.root.id} post={post.root} />
+                followingFeed?.data?.map((post, index) => (
+                  <Post key={index} post={post.root} />
                 ))}
             </InfiniteScroll>
           )}
@@ -766,7 +768,7 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                   (post) =>
                     post.root.metadata?.__typename === "TextOnlyMetadataV3",
                 )
-                .map((post) => <Post key={post.root.id} post={post.root} />)}
+                .map((post, index) => <Post key={index} post={post.root} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -807,7 +809,7 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                   (post) =>
                     post.root.metadata?.__typename === "VideoMetadataV3",
                 )
-                .map((post) => <Post key={post.root.id} post={post.root} />)}
+                .map((post, index) => <Post key={index} post={post.root} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -848,7 +850,7 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                   (post) =>
                     post.root.metadata?.__typename === "AudioMetadataV3",
                 )
-                .map((post) => <Post key={post.root.id} post={post.root} />)}
+                .map((post, index) => <Post key={index} post={post.root} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>
@@ -889,7 +891,7 @@ export function FollowerFeed({ query }: SearchResultsProps) {
                   (post) =>
                     post.root.metadata?.__typename === "ImageMetadataV3",
                 )
-                .map((post) => <Post key={post.root.id} post={post.root} />)}
+                .map((post, index) => <Post key={index} post={post.root} />)}
             </InfiniteScroll>
           )}
         </Tabs.Panel>

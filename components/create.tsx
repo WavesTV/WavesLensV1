@@ -57,6 +57,7 @@ export function Create() {
         metadata: uri,
       });
 
+      console.log(result)
       if (result.isFailure()) {
         // handle failure scenarios
         return;

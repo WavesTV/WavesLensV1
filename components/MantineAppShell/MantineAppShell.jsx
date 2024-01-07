@@ -123,7 +123,7 @@ export function MantineAppShell({ children }) {
             </Tooltip>
           )}
 
-          <Space h="md" />
+          <Space h="xl" />
           <Group justify="space-between">
             <Spotlight />
 
