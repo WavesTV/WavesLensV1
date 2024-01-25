@@ -29,13 +29,16 @@ import { useRouter } from "next/router";
 
 export function RecommendedWaves({ profileId }: { profileId: ProfileId }) {
 const { data: session } = useSession();
-const { data, loading, error } = useRecommendedProfiles({ for: 
+const { execute: dismiss, loading: dismissing } = useDismissRecommendedProfiles();
+const router = useRouter();
+const { data, loading, error } = useRecommendedProfiles({ 
+  for: 
     // @ts-ignore
     session?.profile?.id,
-    limit: LimitType.Ten });
+    limit: LimitType.Ten 
+});
 
-const { execute: dismiss, loading: dismissing } = useDismissRecommendedProfiles();
- const router = useRouter();
+
     
     return(
         <>

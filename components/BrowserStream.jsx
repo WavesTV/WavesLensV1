@@ -519,16 +519,7 @@ export const BrowserStream = () => {
                   </Group>
 
                   <Space h="md" />
-                  <Group justify="center">
-                    <Button
-                      fullWidth
-                      color="red"
-                      radius="xl"
-                      onClick={handleEndStream}
-                    >
-                      End Wave
-                    </Button>
-                  </Group>
+                 
                 </>
               ) : (
                 <Group justify="center">

@@ -57,6 +57,7 @@ import classes from "../styles/LaunchButton.module.css";
 import useUpload from "@/lib/useUpload";
 import { BsExclamationCircle } from "react-icons/bs";
 import { BrowserStream } from "@/components/BrowserStream";
+import { HowToOBS } from "@/components/HowTo/HowToOBS";
 
 export const Stream = () => {
   const theme = useMantineTheme();
@@ -299,23 +300,7 @@ export const Stream = () => {
                           justifyContent: "space-between",
                         }}
                       >
-                        <HoverCard width={280} closeDelay={700} shadow="md">
-                          <HoverCard.Target>
-                            <ActionIcon radius="xl" size="sm" variant="outline">
-                              <TiInfoLargeOutline />
-                            </ActionIcon>
-                          </HoverCard.Target>
-                          <HoverCard.Dropdown>
-                            <Text fw={500} size="xs">
-                              This is a one time use Stream Key.
-                            </Text>
-                            <Space h="xs" />
-                            <Text fw={500} size="xs">
-                              Paste in the Stream URL and Key to your Studio.
-                            </Text>
-                            <Space h="xs" />
-                          </HoverCard.Dropdown>
-                        </HoverCard>
+                        <HowToOBS />
                       </div>
                       <Space h="md" />
                       <Group justify="center">
@@ -636,16 +621,7 @@ export const Stream = () => {
                   </Group>
 
                   <Space h="md" />
-                  <Group justify="center">
-                    <Button
-                      fullWidth
-                      color="red"
-                      radius="xl"
-                      onClick={handleEndStream}
-                    >
-                      End Wave
-                    </Button>
-                  </Group>
+                  
                 </>
               ) : (
                 <Group justify="center">

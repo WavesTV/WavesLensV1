@@ -71,7 +71,10 @@ export function FollowerFeed({ query }: SearchResultsProps) {
         session && "profile" in session && session?.profile?.id
           ? session.profile.id
           : undefined,
+          
     },
+    // @ts-ignore
+    limit: LimitType.Fifty,
   });
 
   console.log(followingFeed)

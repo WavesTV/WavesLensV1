@@ -2,11 +2,11 @@ import { SiteConfig } from "../types";
 
 export const siteConfig: SiteConfig = {
   name: "Waves",
-  description: "Decentralized Live Streaming",
+  description: "Twitch meets Twitter",
   url: "https://waves-lensv1.vercel.app/",
   ogImage: "TODO: Add og image",
   links: {
-    twitter: "https://twitter.com/jarrodwattsdev",
-    github: "https://github.com/jarrodwatts/backme",
+    twitter: "x",
+    github: "g",
   },
 };
